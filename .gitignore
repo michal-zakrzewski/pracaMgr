@@ -1,0 +1,8 @@
+#ignore Input folder
+input/
+
+#ignore Zip files
+*.zip
+
+#ignore venv dir
+venv/

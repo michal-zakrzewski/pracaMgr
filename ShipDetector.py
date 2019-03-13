@@ -62,3 +62,9 @@ model.fit(
     epochs=100,
     validation_data=(x_val, y_val),
 )
+
+ship_mnist = keras.datasets.ship_mnist
+
+(train_images, train_labels), (test_images, test_labels) = ship_mnist.load_data()
+
+class_names = ['water', 'ship']
