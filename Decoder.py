@@ -1,8 +1,8 @@
 import PIL
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 from IPython.core.display import display
+import matplotlib.pyplot as plt
 
 df = pd.read_csv("../input/train_ship_segmentations_v2.csv", index_col=0).dropna()
 display(df.head())
