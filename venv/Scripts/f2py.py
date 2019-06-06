@@ -1,4 +1,4 @@
-#!C:\Mgrv01\venv\Scripts\python.exe
+#!D:\GitHub\pracaMgr\venv\Scripts\python.exe
 # See http://cens.ioc.ee/projects/f2py2e/
 from __future__ import division, print_function
 
