@@ -3,6 +3,7 @@ input/
 
 #ignore Zip files
 *.zip
+*.pyc
 
 #ignore venv dir
 venv/
