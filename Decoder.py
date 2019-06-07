@@ -10,7 +10,7 @@ display(df.head())
 df['EncodedPixels']['000155de5.jpg']
 
 # turn rle example into a list of ints
-rle = [int(i) for i in df['EncodedPixels']['000155de5.jpg'].split()]
+rle = [int(i) for i in df['EncodedPixels']['55bd28f41.jpg'].split()]
 # turn list of ints into a list of (`start`, `length`) `pairs`
 pairs = list(zip(rle[0:-1:2], rle[1::2])) 
 pairs[:3]
@@ -75,13 +75,8 @@ def apply_mask(image, mask):
 img = load_img(df.loc[0, 'ImageId'])
 mask_pixels = rle_to_pixels(df.loc[0, 'EncodedPixels'])
 print(mask_pixels[0], mask_pixels[len(mask_pixels)-1])
-
-coordinates = mask_pixels[0], mask_pixels[len(mask_pixels)-1]
-coordinate1 = mask_pixels[0]
-coordinate2 = mask_pixels[len(mask_pixels)-1]
-
 with open("file.txt", "w") as f:
-    print(*sum((mask_pixels[0],mask_pixels[-1]),()),sep=', ',file=f)
+    print(df.loc[0, 'ImageId'], *sum((mask_pixels[0],mask_pixels[-1]),()), "ship",sep=',',file=f)
     f.close()
 
 img = apply_mask(img, mask_pixels)
@@ -99,6 +94,6 @@ for axes in axes_list:
         ax.imshow(apply_mask(load_img(df.loc[row_index, 'ImageId']), rle_to_pixels(df.loc[row_index, 'EncodedPixels'])))
         ax.set_title(df.loc[row_index, 'ImageId'])
         with open("file.txt", "a") as f:
-            print(*sum((rle_to_pixels(df.loc[row_index, 'EncodedPixels'])[0],
-                        rle_to_pixels(df.loc[row_index, 'EncodedPixels'])[-1]), ()), sep=',', file=f)
+            print(df.loc[row_index, 'ImageId'],*sum((rle_to_pixels(df.loc[row_index, 'EncodedPixels'])[0],
+                        rle_to_pixels(df.loc[row_index, 'EncodedPixels'])[-1]), ()), "ship", sep=',', file=f)
             f.close()
