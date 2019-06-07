@@ -4,7 +4,8 @@ import pandas as pd
 from IPython.core.display import display
 import matplotlib.pyplot as plt
 
-df = pd.read_csv("../input/train_ship_segmentations_v2.csv", index_col=0).dropna()
+# ../input/train_ship_segmentations_v2.csv for Windows, ./input/train_ship_segmentations_v2.csv for MacOS
+df = pd.read_csv("./input/train_ship_segmentations_v2.csv", index_col=0).dropna()
 display(df.head())
 df['EncodedPixels']['000155de5.jpg']
 
@@ -62,26 +63,26 @@ plt.imshow(canvas);
 # Here we merge those n-ships into the a continuos rle-code for the image....
 df = df.groupby("ImageId")[['EncodedPixels']].agg(lambda rle_codes: ' '.join(rle_codes)).reset_index()
 
-load_img = lambda filename: np.array(PIL.Image.open(f"../input/train_v2/{filename}"))
+# ../input/train_v2/ for Windows, ./input/train_v2/ for MacOS
+load_img = lambda filename: np.array(PIL.Image.open(f"./input/train_v2/{filename}"))
 
 def apply_mask(image, mask):
     for x, y in mask:
         image[x, y, [0, 1]] = 255
     return image
 
+
 img = load_img(df.loc[0, 'ImageId'])
 mask_pixels = rle_to_pixels(df.loc[0, 'EncodedPixels'])
-print (mask_pixels[0], ' ,', mask_pixels[len(mask_pixels)-1])
+print(mask_pixels[0], mask_pixels[len(mask_pixels)-1])
+
 coordinates = mask_pixels[0], mask_pixels[len(mask_pixels)-1]
 coordinate1 = mask_pixels[0]
 coordinate2 = mask_pixels[len(mask_pixels)-1]
-#for x in coordinates:
-#    print ("".join(x))
 
-#lst=[('A', 'B', 'C'), ('B', 'C', 'A'), ('C', 'B', 'B')]
-
-#for x in lst:
-#    print ("".join(x))
+with open("file.txt", "w") as f:
+    print(*sum((mask_pixels[0],mask_pixels[-1]),()),sep=', ',file=f)
+    f.close()
 
 img = apply_mask(img, mask_pixels)
 plt.imshow(img);
