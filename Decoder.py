@@ -87,8 +87,8 @@ with open("file.txt", "w") as f:
 img = apply_mask(img, mask_pixels)
 plt.imshow(img);
 
-w = 6
-h = 6
+w = 20
+h = 20
 
 _, axes_list = plt.subplots(h, w, figsize=(2*w, 2*h))
 
@@ -98,3 +98,7 @@ for axes in axes_list:
         row_index = np.random.randint(len(df)) # take a random row from the df
         ax.imshow(apply_mask(load_img(df.loc[row_index, 'ImageId']), rle_to_pixels(df.loc[row_index, 'EncodedPixels'])))
         ax.set_title(df.loc[row_index, 'ImageId'])
+        with open("file.txt", "a") as f:
+            print(*sum((rle_to_pixels(df.loc[row_index, 'EncodedPixels'])[0],
+                        rle_to_pixels(df.loc[row_index, 'EncodedPixels'])[-1]), ()), sep=',', file=f)
+            f.close()

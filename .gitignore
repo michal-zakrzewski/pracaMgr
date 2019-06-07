@@ -1,5 +1,6 @@
 #ignore Input folder
 input/
+.idea/
 
 #ignore Zip files
 *.zip
