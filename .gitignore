@@ -1,10 +1,10 @@
 #ignore Input folder
-input/
-.idea/
+input/*
+idea/*
 
 #ignore Zip files
 *.zip
 *.pyc
 
 #ignore venv dir
-venv/
+venv/*
