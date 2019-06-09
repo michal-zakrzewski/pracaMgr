@@ -19,9 +19,7 @@ from keras_frcnn import losses as losses
 import keras_frcnn.roi_helpers as roi_helpers
 from keras.utils import generic_utils
 from keras.callbacks import TensorBoard
-
 from keras_frcnn.simple_parser import get_data
-from keras_frcnn import resnet as nn
 
 
 # tensorboard
@@ -40,10 +38,8 @@ sys.setrecursionlimit(40000)
 parser = OptionParser()
 
 parser.add_option("-p", "--path", dest="train_path", help="Path to training data.")
-# parser.add_option("-o", "--parser", dest="parser", help="Parser to use. One of simple or pascal_voc",
-#                   default="pascal_voc")
 parser.add_option("-n", "--num_rois", dest="num_rois", help="Number of RoIs to process at once.", default=32)
-# parser.add_option("--network", dest="network", help="Base network to use. Supports vgg or resnet50.", default='resnet50')
+parser.add_option("--network", dest="network", help="Base network to use. Supports vgg or resnet50.", default='resnet50')
 parser.add_option("--hf", dest="horizontal_flips", help="Augment with horizontal flips in training. (Default=false).", action="store_true", default=False)
 parser.add_option("--vf", dest="vertical_flips", help="Augment with vertical flips in training. (Default=false).", action="store_true", default=False)
 parser.add_option("--rot", "--rot_90", dest="rot_90", help="Augment with 90 degree rotations in training. (Default=false).",
@@ -60,13 +56,6 @@ parser.add_option("--input_weight_path", dest="input_weight_path", help="Input p
 if not options.train_path:   # if filename is not given
     parser.error('Error: path to training data must be specified. Pass --path to command line')
 
-# if options.parser == 'pascal_voc':
-#     from keras_frcnn.pascal_voc_parser import get_data
-# elif options.parser == 'simple':
-#     from keras_frcnn.simple_parser import get_data
-# else:
-#     raise ValueError("Command line option parser must be one of 'pascal_voc' or 'simple'")
-
 # pass the settings from the command line, and persist them in the config object
 C = config.Config()
 
@@ -77,21 +66,21 @@ C.rot_90 = bool(options.rot_90)
 C.model_path = options.output_weight_path
 C.num_rois = int(options.num_rois)
 
-# if options.network == 'vgg':
-#     C.network = 'vgg'
-#     from keras_frcnn import vgg as nn
-# elif options.network == 'resnet50':
-#     from keras_frcnn import resnet as nn
-#     C.network = 'resnet50'
-# elif options.network == 'xception':
-#     from keras_frcnn import xception as nn
-#     C.network = 'xception'
-# elif options.network == 'inception_resnet_v2':
-#     from keras_frcnn import inception_resnet_v2 as nn
-#     C.network = 'inception_resnet_v2'
-# else:
-#     print('Not a valid model')
-#     raise ValueError
+if options.network == 'vgg':
+    C.network = 'vgg'
+    from keras_frcnn import vgg as nn
+elif options.network == 'resnet50':
+    from keras_frcnn import resnet as nn
+    C.network = 'resnet50'
+elif options.network == 'xception':
+    from keras_frcnn import xception as nn
+    C.network = 'xception'
+elif options.network == 'inception_resnet_v2':
+    from keras_frcnn import inception_resnet_v2 as nn
+    C.network = 'inception_resnet_v2'
+else:
+    print('Not a valid model')
+    raise ValueError
 
 # check if weight path was passed via command line
 if options.input_weight_path:

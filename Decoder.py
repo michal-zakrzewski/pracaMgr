@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import os
 from IPython.core.display import display
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
@@ -10,8 +11,11 @@ import PIL
 df_tmp = pd.read_csv("./input/train_ship_segmentations_v2.csv").dropna()
 df_tmp = df_tmp.drop_duplicates("ImageId", keep='first')
 df_tmp.to_csv("./tmp.csv", index_label=False, index=False)
-
+del df_tmp
 df = pd.read_csv("./tmp.csv", index_col=0).dropna()
+
+if os.path.exists("./tmp.csv"):
+    os.remove("./tmp.csv")
 
 # turn rle example into a list of ints
 rle = [int(i) for i in df['EncodedPixels']['55bd28f41.jpg'].split()]
@@ -19,13 +23,10 @@ rle = [int(i) for i in df['EncodedPixels']['55bd28f41.jpg'].split()]
 pairs = list(zip(rle[0:-1:2], rle[1::2]))
 
 start = pairs[0][0]
-print(f"Original start position: {start}")
 
 coordinate = (start % 768, start // 768)
-print(f"Maps to this coordinate: {coordinate}")
 
 back = 768 * coordinate[1] + coordinate[0]
-print(f"And back: {back}")
 
 pixels = [(pixel_position % 768, pixel_position // 768)
                             for start, length in pairs
@@ -48,7 +49,7 @@ def rle_to_pixels(rle_code):
 df = df.groupby("ImageId")[['EncodedPixels']].agg(lambda rle_codes: ' '.join(rle_codes)).reset_index()
 
 
-for i in range(2000):
+for i in range(10):
     row_index = np.random.randint(len(df))  # take a random row from the df
     mask_pixels = rle_to_pixels(df.loc[row_index, 'EncodedPixels'])
     tuple_y, tuple_x = zip(*mask_pixels)
@@ -58,24 +59,30 @@ for i in range(2000):
     y_min = min(table_y)
     x_max = max(table_x)
     y_max = max(table_y)
-    with open("entry_data.txt", "a") as f:
-        print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
-              file=f)
-    f.close()
 
-    # NOTE: uncomment following part for checking if the Bounding Boxes are correctly selected
+    # if a ship is has a size more than 10% of the image, it might be an error in the EncodedPixels data
+    if ((y_max - y_min)*(x_max-x_max)/589824 < 0.1):
+        with open("entry_data.txt", "a") as f:
+            f.write("input/train_v2/")
+            print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
+                  file=f)
 
-    # load_img = lambda filename: np.array(PIL.Image.open(f"./input/train_v2/{filename}"))
-    # im = np.array(load_img(df.loc[row_index, 'ImageId']), dtype=np.uint8)
-    # # Create figure and axes
-    # fig, ax = plt.subplots(1)
-    # # Display the image
-    # ax.imshow(im)
-    # # Create a Rectangle patch
-    # rect = patches.Rectangle((x_min, y_min), x_max-x_min, y_max-y_min, linewidth=1, edgecolor='r', facecolor='none')
-    # # Add the patch to the Axes
-    # ax.add_patch(rect)
-    # ax.set_title(df.loc[row_index, 'ImageId'])
-    # plt.show()
+        # NOTE: uncomment following part for checking if the Bounding Boxes are correctly selected
+
+        # load_img = lambda filename: np.array(PIL.Image.open(f"./input/train_v2/{filename}"))
+        # im = np.array(load_img(df.loc[row_index, 'ImageId']), dtype=np.uint8)
+        # # Create figure and axes
+        # fig, ax = plt.subplots(1)
+        # # Display the image
+        # ax.imshow(im)
+        # # Create a Rectangle patch
+        # rect = patches.Rectangle((x_min, y_min), x_max-x_min, y_max-y_min, linewidth=1,
+        #                          edgecolor='r', facecolor='none')
+        # # Add the patch to the Axes
+        # ax.add_patch(rect)
+        # ax.set_title(df.loc[row_index, 'ImageId'])
+        # plt.show()
+    else:
+        i -= 1
 
 print("Finished")
