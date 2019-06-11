@@ -20,6 +20,7 @@ import keras_frcnn.roi_helpers as roi_helpers
 from keras.utils import generic_utils
 from keras.callbacks import TensorBoard
 from keras_frcnn.simple_parser import get_data
+from keras_frcnn import resnet as nn
 
 
 # tensorboard
@@ -44,7 +45,7 @@ parser.add_option("--hf", dest="horizontal_flips", help="Augment with horizontal
 parser.add_option("--vf", dest="vertical_flips", help="Augment with vertical flips in training. (Default=false).", action="store_true", default=False)
 parser.add_option("--rot", "--rot_90", dest="rot_90", help="Augment with 90 degree rotations in training. (Default=false).",
                   action="store_true", default=False)
-parser.add_option("--num_epochs", dest="num_epochs", help="Number of epochs.", default=2000)
+parser.add_option("--num_epochs", dest="num_epochs", help="Number of epochs.", default=5)
 parser.add_option("--config_filename", dest="config_filename",
                   help="Location to store all the metadata related to the training (to be used when testing).",
                   default="config.pickle")
@@ -115,9 +116,9 @@ random.shuffle(all_imgs)
 
 num_imgs = len(all_imgs)
 
-train_imgs = [s for s in all_imgs if s['imageset'] == 'train']
+train_imgs = [s for s in all_imgs]
 val_imgs = [s for s in all_imgs if s['imageset'] == 'val']
-test_imgs = [s for s in all_imgs if s['imageset'] == 'test']
+test_imgs = [s for s in all_imgs]
 
 print('Num train samples {}'.format(len(train_imgs)))
 print('Num val samples {}'.format(len(val_imgs)))
@@ -212,7 +213,7 @@ for epoch_num in range(num_epochs):
             if mean_overlapping_bboxes == 0:
                 print('RPN is not producing bounding boxes that overlap the ground truth boxes. Check RPN settings or keep training.')
 
-        # data generator에서 X, Y, image
+        # data generator X, Y, image
         X, Y, img_data = next(data_gen_train)
 
         loss_rpn = model_rpn.train_on_batch(X, Y)

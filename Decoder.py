@@ -49,7 +49,7 @@ def rle_to_pixels(rle_code):
 df = df.groupby("ImageId")[['EncodedPixels']].agg(lambda rle_codes: ' '.join(rle_codes)).reset_index()
 
 
-for i in range(10):
+for i in range(20):
     row_index = np.random.randint(len(df))  # take a random row from the df
     mask_pixels = rle_to_pixels(df.loc[row_index, 'EncodedPixels'])
     tuple_y, tuple_x = zip(*mask_pixels)
@@ -59,9 +59,10 @@ for i in range(10):
     y_min = min(table_y)
     x_max = max(table_x)
     y_max = max(table_y)
+    image_size = (x_max - x_min) * (y_max - y_min)
 
     # if a ship is has a size more than 10% of the image, it might be an error in the EncodedPixels data
-    if ((y_max - y_min)*(x_max-x_max)/589824 < 0.1):
+    if (image_size/589824 < 0.1):
         with open("entry_data.txt", "a") as f:
             f.write("input/train_v2/")
             print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
@@ -84,5 +85,7 @@ for i in range(10):
         # plt.show()
     else:
         i -= 1
+        print(df.loc[row_index, 'ImageId'], "looks as too big, check it out later if this is a correct file")
+        print("Proposed BB: ", x_min, y_min, x_max, y_max)
 
 print("Finished")
