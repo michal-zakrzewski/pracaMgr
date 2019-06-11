@@ -8,14 +8,14 @@ import PIL
 
 
 # ../input/train_ship_segmentations_v2.csv for Windows and Kaggle, ./input/train_ship_segmentations_v2.csv for MacOS
-df_tmp = pd.read_csv("./input/train_ship_segmentations_v2.csv").dropna()
+df_tmp = pd.read_csv("../input/train_ship_segmentations_v2.csv").dropna()
 df_tmp = df_tmp.drop_duplicates("ImageId", keep='first')
-df_tmp.to_csv("./tmp.csv", index_label=False, index=False)
+df_tmp.to_csv("../tmp.csv", index_label=False, index=False)
 del df_tmp
-df = pd.read_csv("./tmp.csv", index_col=0).dropna()
+df = pd.read_csv("../tmp.csv", index_col=0).dropna()
 
 if os.path.exists("./tmp.csv"):
-    os.remove("./tmp.csv")
+    os.remove("../tmp.csv")
 
 # turn rle example into a list of ints
 rle = [int(i) for i in df['EncodedPixels']['55bd28f41.jpg'].split()]
