@@ -8,14 +8,14 @@ import PIL
 
 
 # ../input/train_ship_segmentations_v2.csv for Windows and Kaggle, ./input/train_ship_segmentations_v2.csv for MacOS
-df_tmp = pd.read_csv("./input/train_ship_segmentations_v2.csv").dropna()
+df_tmp = pd.read_csv("../input/train_ship_segmentations_v2.csv").dropna()
 df_tmp = df_tmp.drop_duplicates("ImageId", keep='first')
-df_tmp.to_csv("./tmp.csv", index_label=False, index=False)
+df_tmp.to_csv("../tmp.csv", index_label=False, index=False)
 del df_tmp
-df = pd.read_csv("./tmp.csv", index_col=0).dropna()
+df = pd.read_csv("../tmp.csv", index_col=0).dropna()
 
 if os.path.exists("./tmp.csv"):
-    os.remove("./tmp.csv")
+    os.remove("../tmp.csv")
 
 # turn rle example into a list of ints
 rle = [int(i) for i in df['EncodedPixels']['55bd28f41.jpg'].split()]
@@ -49,7 +49,7 @@ def rle_to_pixels(rle_code):
 df = df.groupby("ImageId")[['EncodedPixels']].agg(lambda rle_codes: ' '.join(rle_codes)).reset_index()
 
 
-for i in range(10):
+for i in range(20):
     row_index = np.random.randint(len(df))  # take a random row from the df
     mask_pixels = rle_to_pixels(df.loc[row_index, 'EncodedPixels'])
     tuple_y, tuple_x = zip(*mask_pixels)
@@ -59,9 +59,10 @@ for i in range(10):
     y_min = min(table_y)
     x_max = max(table_x)
     y_max = max(table_y)
+    image_size = (x_max - x_min) * (y_max - y_min)
 
     # if a ship is has a size more than 10% of the image, it might be an error in the EncodedPixels data
-    if ((y_max - y_min)*(x_max-x_max)/589824 < 0.1):
+    if (image_size/589824 < 0.1):
         with open("entry_data.txt", "a") as f:
             f.write("input/train_v2/")
             print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
@@ -84,5 +85,7 @@ for i in range(10):
         # plt.show()
     else:
         i -= 1
+        print(df.loc[row_index, 'ImageId'], "looks as too big, check it out later if this is a correct file")
+        print("Proposed BB: ", x_min, y_min, x_max, y_max)
 
 print("Finished")
