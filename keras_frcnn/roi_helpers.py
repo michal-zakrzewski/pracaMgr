@@ -93,12 +93,9 @@ def calc_iou(R, img_data, C, class_mapping):
     X = np.array(x_roi)
     Y1 = np.array(y_class_num)
     print("\nY1 table: \n", Y1)
-    print("\n first value: ", Y1[0][0])
-    print("\n 2 value: ", Y1[0][1])
     if len(Y1) == 1 and Y1[0][0] == "1" and Y1[0][1] == "0":
         print("\nGotcha! ", len(Y1))
-        Y1[0][0] = "2"
-        Y1[0][1] = "2"
+        return None, None, None, None
     Y2 = np.concatenate([np.array(y_class_regr_label),np.array(y_class_regr_coords)],axis=1)
 
     return np.expand_dims(X, axis=0), np.expand_dims(Y1, axis=0), np.expand_dims(Y2, axis=0), IoUs
