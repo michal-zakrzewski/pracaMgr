@@ -246,7 +246,6 @@ for epoch_num in range(num_epochs):
 
         rpn_accuracy_rpn_monitor.append(len(pos_samples))
         rpn_accuracy_for_epoch.append((len(pos_samples)))
-        selected_neg_samples = []
 
         if C.num_rois > 1:
             if len(pos_samples) < C.num_rois//2:
@@ -255,8 +254,6 @@ for epoch_num in range(num_epochs):
                 selected_pos_samples = np.random.choice(pos_samples, C.num_rois//2, replace=False).tolist()
             try:
                 selected_neg_samples = np.random.choice(neg_samples, C.num_rois - len(selected_pos_samples), replace=False).tolist()
-            except ValueError:
-                print("\nIncorrect data - debug point 1", ValueError)
             except:
                 selected_neg_samples = np.random.choice(neg_samples, C.num_rois - len(selected_pos_samples), replace=True).tolist()
 
