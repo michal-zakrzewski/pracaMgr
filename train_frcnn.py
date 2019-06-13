@@ -118,7 +118,7 @@ num_imgs = len(all_imgs)
 
 train_imgs = [s for s in all_imgs]
 val_imgs = [s for s in all_imgs if s['imageset'] == 'val']
-test_imgs = [s for s in all_imgs]
+test_imgs = [s for s in all_imgs if s['imageset'] == 'test']
 
 print('Num train samples {}'.format(len(train_imgs)))
 print('Num val samples {}'.format(len(val_imgs)))
@@ -232,11 +232,14 @@ for epoch_num in range(num_epochs):
 
         # sampling positive/negative samples
         neg_samples = np.where(Y1[0, :, -1] == 1)
+        print("Negative samples table: ", neg_samples)
         pos_samples = np.where(Y1[0, :, -1] == 0)
 
         if len(neg_samples) > 0:
             neg_samples = neg_samples[0]
+            print("Many negatives")
         else:
+            print("None negatives!")
             neg_samples = []
 
         if len(pos_samples) > 0:
@@ -254,8 +257,15 @@ for epoch_num in range(num_epochs):
                 selected_pos_samples = np.random.choice(pos_samples, C.num_rois//2, replace=False).tolist()
             try:
                 selected_neg_samples = np.random.choice(neg_samples, C.num_rois - len(selected_pos_samples), replace=False).tolist()
+                print("jestem w try: ", selected_neg_samples)
             except:
-                selected_neg_samples = np.random.choice(neg_samples, C.num_rois - len(selected_pos_samples), replace=True).tolist()
+                try:
+                    selected_neg_samples = np.random.choice(neg_samples, C.num_rois - len(selected_pos_samples), replace=True).tolist()
+                    print("Catch: ", selected_neg_samples)
+                except:
+                    print("There's a problem with neg_samples")
+                    break
+
 
             sel_samples = selected_pos_samples + selected_neg_samples
         else:
