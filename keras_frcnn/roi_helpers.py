@@ -93,7 +93,7 @@ def calc_iou(R, img_data, C, class_mapping):
     X = np.array(x_roi)
     Y1 = np.array(y_class_num)
     print("\nY1 table: \n", Y1)
-    if len(Y1 == 1) or (Y1 == 0) or (Y1 == 2):
+    if len(Y1) == 1 or len(Y1) == 0 or len(Y1) == 2:
         print("\nGotcha! ", len(Y1))
         Y1 = []
         print("\nY1 table: \n", Y1)
