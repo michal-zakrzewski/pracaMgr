@@ -233,8 +233,6 @@ for epoch_num in range(num_epochs):
         # sampling positive/negative samples
         neg_samples = np.where(Y1[0, :, -1] == 1)
         print(neg_samples)
-        print("\n", type(neg_samples))
-        print(len(neg_samples))
         pos_samples = np.where(Y1[0, :, -1] == 0)
 
         if len(neg_samples[0]) > 0:
@@ -257,8 +255,12 @@ for epoch_num in range(num_epochs):
                 selected_pos_samples = np.random.choice(pos_samples, C.num_rois//2, replace=False).tolist()
             try:
                 selected_neg_samples = np.random.choice(neg_samples, C.num_rois - len(selected_pos_samples), replace=False).tolist()
-            except:
-                selected_neg_samples = np.random.choice(neg_samples, C.num_rois - len(selected_pos_samples), replace=True).tolist()
+            except ValueError:
+                try:
+                    selected_neg_samples = np.random.choice(neg_samples, C.num_rois - len(selected_pos_samples), replace=True).tolist()
+                except:
+                    print("Sorry, it's empty: ", neg_samples)
+                    continue
 
             sel_samples = selected_pos_samples + selected_neg_samples
         else:

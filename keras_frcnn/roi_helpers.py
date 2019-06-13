@@ -92,7 +92,6 @@ def calc_iou(R, img_data, C, class_mapping):
 
     X = np.array(x_roi)
     Y1 = np.array(y_class_num)
-    print("Y1: ", type(Y1))
     Y2 = np.concatenate([np.array(y_class_regr_label),np.array(y_class_regr_coords)],axis=1)
 
     return np.expand_dims(X, axis=0), np.expand_dims(Y1, axis=0), np.expand_dims(Y2, axis=0), IoUs

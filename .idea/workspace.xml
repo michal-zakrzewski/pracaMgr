@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1d952f90-d518-4ff0-8929-851fca2222d1" name="Default Changelist" comment="Adding training model">
+    <list default="true" id="1d952f90-d518-4ff0-8929-851fca2222d1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keras_frcnn/roi_helpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/keras_frcnn/roi_helpers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/train_frcnn.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_frcnn.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,8 +34,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/train_frcnn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="772">
-              <caret line="235" column="29" selection-start-line="235" selection-start-column="29" selection-end-line="235" selection-end-column="29" />
+            <state relative-caret-position="1198">
+              <caret line="261" column="46" selection-start-line="261" selection-start-column="46" selection-end-line="261" selection-end-column="46" />
               <folding>
                 <element signature="e#24#55#0" expanded="true" />
               </folding>
@@ -45,8 +46,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/keras_frcnn/roi_helpers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="966">
-              <caret line="93" column="30" lean-forward="true" selection-start-line="93" selection-start-column="30" selection-end-line="93" selection-end-column="30" />
+            <state relative-caret-position="913">
+              <caret line="93" column="30" selection-start-line="93" selection-start-column="30" selection-end-line="93" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -283,7 +284,7 @@
       <workItem from="1560002169920" duration="801000" />
       <workItem from="1560003049316" duration="14427000" />
       <workItem from="1560076139054" duration="6039000" />
-      <workItem from="1560238381869" duration="18103000" />
+      <workItem from="1560238381869" duration="20641000" />
     </task>
     <task id="LOCAL-00001" summary="Progress...">
       <created>1552418390381</created>
@@ -481,11 +482,32 @@
       <option name="project" value="LOCAL" />
       <updated>1560428176959</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Debug">
+      <created>1560428670641</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1560428670641</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Debug">
+      <created>1560429830427</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1560429830427</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Debug">
+      <created>1560431920230</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1560431920230</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="62535000" />
+    <option name="totallyTimeSpent" value="65073000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-2559" y="-367" width="2560" height="1417" extended-state="6" />
@@ -708,15 +730,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/keras_frcnn/roi_helpers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="966">
-          <caret line="93" column="30" lean-forward="true" selection-start-line="93" selection-start-column="30" selection-end-line="93" selection-end-column="30" />
+        <state relative-caret-position="913">
+          <caret line="93" column="30" selection-start-line="93" selection-start-column="30" selection-end-line="93" selection-end-column="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/train_frcnn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="772">
-          <caret line="235" column="29" selection-start-line="235" selection-start-column="29" selection-end-line="235" selection-end-column="29" />
+        <state relative-caret-position="1198">
+          <caret line="261" column="46" selection-start-line="261" selection-start-column="46" selection-end-line="261" selection-end-column="46" />
           <folding>
             <element signature="e#24#55#0" expanded="true" />
           </folding>
