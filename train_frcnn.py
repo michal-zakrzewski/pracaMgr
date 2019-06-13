@@ -232,11 +232,14 @@ for epoch_num in range(num_epochs):
 
         # sampling positive/negative samples
         neg_samples = np.where(Y1[0, :, -1] == 1)
-        print("Negative samples table: ", neg_samples)
         pos_samples = np.where(Y1[0, :, -1] == 0)
 
-        if len(neg_samples) > 1:
-            neg_samples = neg_samples[0]
+        if len(neg_samples) > 0:
+            if neg_samples!=[]:
+                neg_samples = neg_samples[0]
+            else:
+                print('Negative samples table (found empty table): ', neg_samples)
+                break
         else:
             print("Negative samples table: ", neg_samples)
             neg_samples = []
