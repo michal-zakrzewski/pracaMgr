@@ -233,10 +233,11 @@ for epoch_num in range(num_epochs):
         # sampling positive/negative samples
         neg_samples = np.where(Y1[0, :, -1] == 1)
         print(neg_samples)
+        print("\n", type(neg_samples))
         print(len(neg_samples))
         pos_samples = np.where(Y1[0, :, -1] == 0)
 
-        if neg_samples:
+        if not all(neg_samples):
             neg_samples = neg_samples[0]
         else:
             neg_samples = []
