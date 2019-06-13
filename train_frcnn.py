@@ -255,7 +255,7 @@ for epoch_num in range(num_epochs):
             try:
                 selected_neg_samples = np.random.choice(neg_samples, C.num_rois - len(selected_pos_samples), replace=False).tolist()
             except ValueError:
-                print("Incorrect data! ", selected_neg_samples)
+                print("Incorrect data - debug point 1")
                 break
             except:
                 selected_neg_samples = np.random.choice(neg_samples, C.num_rois - len(selected_pos_samples), replace=True).tolist()
