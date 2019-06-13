@@ -235,11 +235,10 @@ for epoch_num in range(num_epochs):
         print("Negative samples table: ", neg_samples)
         pos_samples = np.where(Y1[0, :, -1] == 0)
 
-        if len(neg_samples) > 0:
+        if len(neg_samples) > 1:
             neg_samples = neg_samples[0]
-            print("Many negatives")
         else:
-            print("None negatives!")
+            print("Negative samples table: ", neg_samples)
             neg_samples = []
 
         if len(pos_samples) > 0:
@@ -259,13 +258,8 @@ for epoch_num in range(num_epochs):
                 selected_neg_samples = np.random.choice(neg_samples, C.num_rois - len(selected_pos_samples), replace=False).tolist()
                 print("jestem w try: ", selected_neg_samples)
             except:
-                try:
-                    selected_neg_samples = np.random.choice(neg_samples, C.num_rois - len(selected_pos_samples), replace=True).tolist()
-                    print("Catch: ", selected_neg_samples)
-                except:
-                    print("There's a problem with neg_samples")
-                    break
-
+                selected_neg_samples = np.random.choice(neg_samples, C.num_rois - len(selected_pos_samples), replace=True).tolist()
+                print("Catch: ", selected_neg_samples)
 
             sel_samples = selected_pos_samples + selected_neg_samples
         else:
