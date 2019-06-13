@@ -246,6 +246,7 @@ for epoch_num in range(num_epochs):
 
         rpn_accuracy_rpn_monitor.append(len(pos_samples))
         rpn_accuracy_for_epoch.append((len(pos_samples)))
+        selected_neg_samples = []
 
         if C.num_rois > 1:
             if len(pos_samples) < C.num_rois//2:
