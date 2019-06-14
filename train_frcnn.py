@@ -323,6 +323,13 @@ for epoch_num in range(num_epochs):
                     print('Total loss decreased from {} to {}, saving weights'.format(best_loss,curr_loss))
                 best_loss = curr_loss
                 model_all.save_weights(C.model_path)
+                try:
+                    os.rename("/content/model_frcnn.hdf5", "/content/gdrive/My\ Drive/pracaMgr/model_frcnn.hdf5")
+                except:
+                    try:
+                        os.rename("/content/pracaMgr/model_frcnn.hdf5", "/content/gdrive/My\ Drive/pracaMgr/model_frcnn.hdf5")
+                    except:
+                        print("Sorry sir, can't move it")
 
             break
 
