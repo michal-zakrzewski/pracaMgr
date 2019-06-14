@@ -118,7 +118,7 @@ num_imgs = len(all_imgs)
 
 train_imgs = [s for s in all_imgs]
 val_imgs = [s for s in all_imgs if s['imageset'] == 'val']
-test_imgs = [s for s in all_imgs]
+test_imgs = [s for s in all_imgs if s['imageset'] == 'test']
 
 print('Num train samples {}'.format(len(train_imgs)))
 print('Num val samples {}'.format(len(val_imgs)))
@@ -234,7 +234,7 @@ for epoch_num in range(num_epochs):
         neg_samples = np.where(Y1[0, :, -1] == 1)
         pos_samples = np.where(Y1[0, :, -1] == 0)
 
-        if len(neg_samples) > 0:
+        if len(neg_samples[0]) > 0:
             neg_samples = neg_samples[0]
         else:
             neg_samples = []
@@ -253,9 +253,12 @@ for epoch_num in range(num_epochs):
             else:
                 selected_pos_samples = np.random.choice(pos_samples, C.num_rois//2, replace=False).tolist()
             try:
-                selected_neg_samples = np.random.choice(neg_samples, C.num_rois - len(selected_pos_samples), replace=False).tolist()
-            except:
-                selected_neg_samples = np.random.choice(neg_samples, C.num_rois - len(selected_pos_samples), replace=True).tolist()
+                selected_neg_samples = np.random.choice(neg_samples, C.num_rois - len(selected_pos_samples), replace = False).tolist()
+            except ValueError:
+                try:
+                    selected_neg_samples = np.random.choice(neg_samples, C.num_rois - len(selected_pos_samples), replace = True).tolist()
+                except:
+                    continue
 
             sel_samples = selected_pos_samples + selected_neg_samples
         else:
@@ -318,6 +321,13 @@ for epoch_num in range(num_epochs):
                     print('Total loss decreased from {} to {}, saving weights'.format(best_loss,curr_loss))
                 best_loss = curr_loss
                 model_all.save_weights(C.model_path)
+                try:
+                    os.rename("/content/model_frcnn.hdf5", "/content/gdrive/My\ Drive/pracaMgr/model_frcnn.hdf5")
+                except:
+                    try:
+                        os.rename("/content/pracaMgr/model_frcnn.hdf5", "/content/gdrive/My\ Drive/pracaMgr/model_frcnn.hdf5")
+                    except:
+                        print("Sorry sir, can't move it")
 
             break
 
