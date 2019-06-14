@@ -258,7 +258,6 @@ for epoch_num in range(num_epochs):
                 try:
                     selected_neg_samples = np.random.choice(neg_samples, C.num_rois - len(selected_pos_samples), replace = True).tolist()
                 except:
-                    print("Sorry, it's empty: ", neg_samples)
                     continue
 
             sel_samples = selected_pos_samples + selected_neg_samples
