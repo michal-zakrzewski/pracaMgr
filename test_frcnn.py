@@ -12,6 +12,7 @@ from keras import backend as K
 from keras.layers import Input
 from keras.models import Model
 from keras_frcnn import roi_helpers
+import keras_frcnn.resnet as nn
 
 sys.setrecursionlimit(40000)
 
@@ -24,6 +25,7 @@ parser.add_option("--config_filename", dest="config_filename",
                   help="Location to read the metadata related to the training (generated when training).",
                   default="config.pickle")
 parser.add_option("--network", dest="network", help="Base network to use. Supports vgg or resnet50.", default='resnet50')
+parser.add_option("--input_weight_path", dest="input_weight_path", help="Input path for weights.", default="./model_frcnn.hdf5")
 
 (options, args) = parser.parse_args()
 
@@ -38,15 +40,6 @@ with open(config_output_filename, 'rb') as f_in:
 
 with open("results.csv", "w") as f:
     f.write("Image name, Is ship, Amount of ships")
-
-if C.network == 'resnet50':
-    import keras_frcnn.resnet as nn
-elif C.network == 'xception':
-    import keras_frcnn.xception as nn
-elif C.network == 'inception_resnet_v2':
-    import keras_frcnn.inception_resnet_v2 as nn
-elif C.network == 'vgg':
-    import keras_frcnn.vgg as nn
 
 # turn off any data augmentation at test time
 C.use_horizontal_flips = False
@@ -109,14 +102,7 @@ print(class_mapping)
 class_to_color = {class_mapping[v]: np.random.randint(0, 255, 3) for v in class_mapping}
 C.num_rois = int(options.num_rois)
 
-if C.network == 'resnet50':
-    num_features = 1024
-elif C.network == 'xception':
-    num_features = 1024
-elif C.network == 'inception_resnet_v2':
-    num_features = 1024
-elif C.network == 'vgg':
-    num_features = 512
+num_features = 1024
 
 if K.image_dim_ordering() == 'th':
     input_shape_img = (3, None, None)
@@ -257,6 +243,11 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     if len(all_dets) > 0:
         with open("results.csv", "a") as f:
             print(img_name, "1", len(all_dets), sep=',', file=f)
+        with open("ship_detected.csv", "a") as g:
+            print(img_name, "1", len(all_dets), sep=',', file=g)
+    else:
+        with open("results.csv", "a") as f:
+            print(img_name, "0", len(all_dets), sep=',', file=f)
 
     cv2.imshow('img', img)
     cv2.waitKey(50)
