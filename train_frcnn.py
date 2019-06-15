@@ -8,6 +8,7 @@ import numpy as np
 from optparse import OptionParser
 import pickle
 import os
+import shutil
 
 import tensorflow as tf
 from keras import backend as K
@@ -21,8 +22,6 @@ from keras.utils import generic_utils
 from keras.callbacks import TensorBoard
 from keras_frcnn.simple_parser import get_data
 from keras_frcnn import resnet as nn
-from google.colab import files
-
 
 # tensorboard
 def write_log(callback, names, logs, batch_no):
@@ -299,7 +298,7 @@ for epoch_num in range(num_epochs):
                 best_loss = curr_loss
                 model_all.save_weights(C.model_path)
                 try:
-                    files.download('example.txt')
+                    shutil.move("/content/pracaMgr/weights.hdf5", "/content/gdrive/My Drive/pracaMgr/Weights/weights.hdf5")
                 except:
                     print("Saving was not possible, sorry")
 

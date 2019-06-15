@@ -36,6 +36,9 @@ config_output_filename = options.config_filename
 with open(config_output_filename, 'rb') as f_in:
     C = pickle.load(f_in)
 
+with open("results.csv", "w") as f:
+    f.write("Image name, Is ship, Amount of ships")
+
 if C.network == 'resnet50':
     import keras_frcnn.resnet as nn
 elif C.network == 'xception':
@@ -251,6 +254,10 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
 
     print('Elapsed time = {}'.format(time.time() - st))
     print(all_dets)
-    #cv2.imshow('img', img)
-    #cv2.waitKey(0)
+    if len(all_dets) > 0:
+        with open("results.csv", "a") as f:
+            print(img_name, "1", len(all_dets), sep=',', file=f)
+
+    cv2.imshow('img', img)
+    cv2.waitKey(50)
     cv2.imwrite('./results_imgs/{}.png'.format(idx),img)
