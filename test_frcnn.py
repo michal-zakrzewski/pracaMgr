@@ -39,7 +39,9 @@ with open(config_output_filename, 'rb') as f_in:
     C = pickle.load(f_in)
 
 with open("results.csv", "w") as f:
-    f.write("Image name, Is ship, Amount of ships")
+    f.write('ImageName,IsShip,AmountOfShips\n')
+with open("ship_detected.csv", "w") as g:
+    f.write('ImageName,IsShip,AmountOfShips\n')
 
 # turn off any data augmentation at test time
 C.use_horizontal_flips = False
@@ -249,6 +251,6 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
         with open("results.csv", "a") as f:
             print(img_name, "0", len(all_dets), sep=',', file=f)
 
-    cv2.imshow('img', img)
-    cv2.waitKey(50)
-    cv2.imwrite('./results_imgs/{}.png'.format(idx),img)
+    #cv2.imshow('img', img)
+    #cv2.waitKey(50)
+    cv2.imwrite('./results_imgs/{}.png'.format(idx), img)
