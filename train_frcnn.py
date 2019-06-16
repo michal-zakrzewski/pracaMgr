@@ -8,6 +8,7 @@ import numpy as np
 from optparse import OptionParser
 import pickle
 import os
+import shutil
 
 import tensorflow as tf
 from keras import backend as K
@@ -21,7 +22,6 @@ from keras.utils import generic_utils
 from keras.callbacks import TensorBoard
 from keras_frcnn.simple_parser import get_data
 from keras_frcnn import resnet as nn
-
 
 # tensorboard
 def write_log(callback, names, logs, batch_no):
@@ -39,18 +39,12 @@ sys.setrecursionlimit(40000)
 parser = OptionParser()
 
 parser.add_option("-p", "--path", dest="train_path", help="Path to training data.")
-parser.add_option("-n", "--num_rois", dest="num_rois", help="Number of RoIs to process at once.", default=32)
-parser.add_option("--network", dest="network", help="Base network to use. Supports vgg or resnet50.", default='resnet50')
-parser.add_option("--hf", dest="horizontal_flips", help="Augment with horizontal flips in training. (Default=false).", action="store_true", default=False)
-parser.add_option("--vf", dest="vertical_flips", help="Augment with vertical flips in training. (Default=false).", action="store_true", default=False)
-parser.add_option("--rot", "--rot_90", dest="rot_90", help="Augment with 90 degree rotations in training. (Default=false).",
-                  action="store_true", default=False)
-parser.add_option("--num_epochs", dest="num_epochs", help="Number of epochs.", default=5)
+parser.add_option("--num_epochs", dest="num_epochs", help="Number of epochs.", default=40)
 parser.add_option("--config_filename", dest="config_filename",
                   help="Location to store all the metadata related to the training (to be used when testing).",
                   default="config.pickle")
-parser.add_option("--output_weight_path", dest="output_weight_path", help="Output path for weights.", default='./model_frcnn.hdf5')
-parser.add_option("--input_weight_path", dest="input_weight_path", help="Input path for weights. If not specified, will try to load default weights provided by keras.")
+parser.add_option("--output_weight_path", dest="output_weight_path", help="Output path for weights.", default='./weights.hdf5')
+parser.add_option("--input_weight_path", dest="input_weight_path", help="Input path for weights.")
 
 (options, args) = parser.parse_args()
 
@@ -60,28 +54,9 @@ if not options.train_path:   # if filename is not given
 # pass the settings from the command line, and persist them in the config object
 C = config.Config()
 
-C.use_horizontal_flips = bool(options.horizontal_flips)
-C.use_vertical_flips = bool(options.vertical_flips)
-C.rot_90 = bool(options.rot_90)
-
 C.model_path = options.output_weight_path
-C.num_rois = int(options.num_rois)
-
-if options.network == 'vgg':
-    C.network = 'vgg'
-    from keras_frcnn import vgg as nn
-elif options.network == 'resnet50':
-    from keras_frcnn import resnet as nn
-    C.network = 'resnet50'
-elif options.network == 'xception':
-    from keras_frcnn import xception as nn
-    C.network = 'xception'
-elif options.network == 'inception_resnet_v2':
-    from keras_frcnn import inception_resnet_v2 as nn
-    C.network = 'inception_resnet_v2'
-else:
-    print('Not a valid model')
-    raise ValueError
+C.num_rois = 32
+C.network = 'resnet50'
 
 # check if weight path was passed via command line
 if options.input_weight_path:
@@ -200,7 +175,7 @@ print('Starting training')
 
 for epoch_num in range(num_epochs):
 
-    progbar = generic_utils.Progbar(epoch_length)   # keras progress bar 사용
+    progbar = generic_utils.Progbar(epoch_length)   # keras progress bar
     print('Epoch {}/{}'.format(epoch_num + 1, num_epochs))
 
     while True:
@@ -209,7 +184,7 @@ for epoch_num in range(num_epochs):
         if len(rpn_accuracy_rpn_monitor) == epoch_length and C.verbose:
             mean_overlapping_bboxes = float(sum(rpn_accuracy_rpn_monitor))/len(rpn_accuracy_rpn_monitor)
             rpn_accuracy_rpn_monitor = []
-            print('Average number of overlapping bounding boxes from RPN = {} for {} previous iterations'.format(mean_overlapping_bboxes, epoch_length))
+            print('\nAverage number of overlapping bounding boxes from RPN = {} for {} previous iterations'.format(mean_overlapping_bboxes, epoch_length))
             if mean_overlapping_bboxes == 0:
                 print('RPN is not producing bounding boxes that overlap the ground truth boxes. Check RPN settings or keep training.')
 
@@ -258,6 +233,7 @@ for epoch_num in range(num_epochs):
                 try:
                     selected_neg_samples = np.random.choice(neg_samples, C.num_rois - len(selected_pos_samples), replace = True).tolist()
                 except:
+                    # The neg_samples is [[1 0 ]] only, therefore there's no negative sample
                     continue
 
             sel_samples = selected_pos_samples + selected_neg_samples
@@ -322,12 +298,9 @@ for epoch_num in range(num_epochs):
                 best_loss = curr_loss
                 model_all.save_weights(C.model_path)
                 try:
-                    os.rename("/content/model_frcnn.hdf5", "/content/gdrive/My\ Drive/pracaMgr/model_frcnn.hdf5")
+                    shutil.move("/content/pracaMgr/weights.hdf5", "/content/gdrive/My Drive/pracaMgr/Weights/weights.hdf5")
                 except:
-                    try:
-                        os.rename("/content/pracaMgr/model_frcnn.hdf5", "/content/gdrive/My\ Drive/pracaMgr/model_frcnn.hdf5")
-                    except:
-                        print("Sorry sir, can't move it")
+                    print("Saving was not possible, sorry")
 
             break
 
