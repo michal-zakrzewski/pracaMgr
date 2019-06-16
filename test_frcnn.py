@@ -40,8 +40,8 @@ with open(config_output_filename, 'rb') as f_in:
 
 with open("results.csv", "w") as f:
     f.write('ImageName,IsShip,AmountOfShips\n')
-with open("ship_detected.csv", "w") as g:
-    f.write('ImageName,IsShip,AmountOfShips\n')
+# with open("ship_detected.csv", "w") as g:
+#     f.write('ImageName,IsShip,AmountOfShips\n')
 
 # turn off any data augmentation at test time
 C.use_horizontal_flips = False
