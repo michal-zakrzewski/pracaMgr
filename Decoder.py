@@ -1,10 +1,20 @@
 import numpy as np
 import pandas as pd
-# from IPython.core.display import display
+from optparse import OptionParser
+from sys import platform
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import PIL
-from optparse import OptionParser
+
+print(platform)
+if platform == "linux" or platform == "linux2":
+    from IPython.core.display import display
+    path = str("/content/pracaMgr/input")
+elif platform == "darwin":
+    path = str("./input")
+elif platform == "win32":
+    path = str("../input")
+
 
 parser = OptionParser()
 
@@ -13,7 +23,9 @@ parser.add_option("-n", "--ships_number", dest="ships_number", help="Number of s
 (options, args) = parser.parse_args()
 
 # ../input/train_ship_segmentations_v2.csv for Windows and Kaggle, ./input/train_ship_segmentations_v2.csv for MacOS
-df = pd.read_csv("../input/train_ship_segmentations_v2.csv", index_col=0).dropna()
+path_to_csv = path + "/train_ship_segmentations_v2.csv"
+print(path_to_csv)
+df = pd.read_csv(path_to_csv, index_col=0).dropna()
 print("Number of ships: ", len(df))
 
 if not options.ships_number:

@@ -22,6 +22,15 @@ from keras.utils import generic_utils
 from keras.callbacks import TensorBoard
 from keras_frcnn.simple_parser import get_data
 from keras_frcnn import resnet as nn
+from sys import platform
+
+if platform == "linux" or platform == "linux2":
+    from IPython.core.display import display
+    path = str("/content/pracaMgr/input")
+elif platform == "darwin":
+    path = str("./input")
+elif platform == "win32":
+    path = str("../input")
 
 # tensorboard
 def write_log(callback, names, logs, batch_no):
@@ -298,7 +307,7 @@ for epoch_num in range(num_epochs):
                 best_loss = curr_loss
                 model_all.save_weights(C.model_path)
                 try:
-                    shutil.move("/content/pracaMgr/weights.hdf5", "/content/gdrive/My Drive/pracaMgr/Weights/weights.hdf5")
+                    shutil.move(path + "/weights.hdf5", "/content/gdrive/My Drive/pracaMgr/Weights/weights.hdf5")
                 except:
                     print("Saving was not possible, sorry")
 
