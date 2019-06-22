@@ -109,7 +109,7 @@ if K.image_dim_ordering() == 'th':
 else:
     input_shape_img = (None, None, 3)
 
-# input placeholder 정의
+# input placeholder
 img_input = Input(shape=input_shape_img)
 roi_input = Input(shape=(None, 4))
 

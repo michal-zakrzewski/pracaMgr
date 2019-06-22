@@ -1,21 +1,33 @@
 import numpy as np
 import pandas as pd
-import os
-from IPython.core.display import display
+# from IPython.core.display import display
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import PIL
+from optparse import OptionParser
 
+parser = OptionParser()
+
+parser.add_option("-n", "--ships_number", dest="ships_number", help="Number of ships for detection")
+
+(options, args) = parser.parse_args()
 
 # ../input/train_ship_segmentations_v2.csv for Windows and Kaggle, ./input/train_ship_segmentations_v2.csv for MacOS
-df_tmp = pd.read_csv("../input/train_ship_segmentations_v2.csv").dropna()
-df_tmp = df_tmp.drop_duplicates("ImageId", keep='first')
-df_tmp.to_csv("../tmp.csv", index_label=False, index=False)
-del df_tmp
-df = pd.read_csv("../tmp.csv", index_col=0).dropna()
+df = pd.read_csv("./input/train_ship_segmentations_v2.csv", index_col=0).dropna()
+print("Number of ships: ", len(df))
 
-if os.path.exists("./tmp.csv"):
-    os.remove("../tmp.csv")
+if not options.ships_number:
+    print("Going with full check")
+    number = len(df)
+else:
+    if int(options.ships_number) > len(df):
+        number = 0
+        parser.error("Error: Number of ships are greater than total number of ships")
+    elif int(options.ships_number) == len(df):
+        print("Going with full check anyway")
+        number = len(df)
+    else:
+        number = int(options.ships_number)
 
 # turn rle example into a list of ints
 rle = [int(i) for i in df['EncodedPixels']['55bd28f41.jpg'].split()]
@@ -45,12 +57,22 @@ def rle_to_pixels(rle_code):
 
 # An image may have more than one row in the df,
 # Meaning that the image has more than one ship present
-# Here we merge those n-ships into the a continuos rle-code for the image....
-df = df.groupby("ImageId")[['EncodedPixels']].agg(lambda rle_codes: ' '.join(rle_codes)).reset_index()
+# This part resets index for next ship occurence
+df = df.reset_index()
+# Counter for ships detected and set incorrectly by rle_to_pixels, TODO: check why
+incorrect = 0
+correct = 0
+used_rows = []
 
-
-for i in range(20):
-    row_index = np.random.randint(len(df))  # take a random row from the df
+for i in range(number):
+    if number == len(df):
+        row_index = i  # take all rows one-by-one
+    else:
+        while True:
+            row_index = np.random.randint(len(df))  # take a random row from the df
+            if row_index not in used_rows:
+                used_rows.append(row_index)
+                break
     mask_pixels = rle_to_pixels(df.loc[row_index, 'EncodedPixels'])
     tuple_y, tuple_x = zip(*mask_pixels)
     table_x = list(tuple_x)
@@ -59,15 +81,20 @@ for i in range(20):
     y_min = min(table_y)
     x_max = max(table_x)
     y_max = max(table_y)
-    image_size = (x_max - x_min) * (y_max - y_min)
+    cond1 = x_min == 0 and x_max == 767
+    cond2 = x_max == 0 and x_min == 767
+    cond3 = y_min == 0 and y_max == 767
+    cond4 = y_max == 0 and y_min == 767
 
-    # if a ship is has a size more than 10% of the image, it might be an error in the EncodedPixels data
-    if (image_size/589824 < 0.1):
-        with open("entry_data.txt", "a") as f:
-            f.write("input/train_v2/")
+    # decoder might makes mistakes - make sure that there's no BB for whole width/height
+    if cond1 or cond2 or cond3 or cond4:
+        incorrect += 1
+        with open("incorrect_images.csv", "a") as g:
+            g.write("input/train_v2/")
             print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
-                  file=f)
+                  file=g)
 
+    else:
         # NOTE: uncomment following part for checking if the Bounding Boxes are correctly selected
 
         # load_img = lambda filename: np.array(PIL.Image.open(f"./input/train_v2/{filename}"))
@@ -83,9 +110,15 @@ for i in range(20):
         # ax.add_patch(rect)
         # ax.set_title(df.loc[row_index, 'ImageId'])
         # plt.show()
-    else:
-        i -= 1
-        print(df.loc[row_index, 'ImageId'], "looks as too big, check it out later if this is a correct file")
-        print("Proposed BB: ", x_min, y_min, x_max, y_max)
 
+        correct += 1
+        with open("entry_data.csv", "a") as f:
+            f.write("input/train_v2/")
+            print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
+                  file=f)
+
+print("Checked ships: ", number)
+print("Incorrect ships: ", incorrect)
+print("Correct ships: ", correct)
+print("Incorrect to correct ratio: ", incorrect/correct)
 print("Finished")
