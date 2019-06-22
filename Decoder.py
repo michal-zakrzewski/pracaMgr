@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import PIL
 
-print(platform)
 if platform == "linux" or platform == "linux2":
     from IPython.core.display import display
     path = str("/content/pracaMgr/input")
@@ -14,6 +13,9 @@ elif platform == "darwin":
     path = str("./input")
 elif platform == "win32":
     path = str("../input")
+else:
+    print(platform)
+    NameError("Error: System type not defined. Please check platform name")
 
 
 parser = OptionParser()
