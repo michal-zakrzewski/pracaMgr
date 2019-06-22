@@ -13,7 +13,7 @@ parser.add_option("-n", "--ships_number", dest="ships_number", help="Number of s
 (options, args) = parser.parse_args()
 
 # ../input/train_ship_segmentations_v2.csv for Windows and Kaggle, ./input/train_ship_segmentations_v2.csv for MacOS
-df = pd.read_csv("./input/train_ship_segmentations_v2.csv", index_col=0).dropna()
+df = pd.read_csv("../input/train_ship_segmentations_v2.csv", index_col=0).dropna()
 print("Number of ships: ", len(df))
 
 if not options.ships_number:
