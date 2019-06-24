@@ -126,10 +126,16 @@ for i in range(number):
         # plt.show()
 
         correct += 1
-        with open("entry_data.csv", "a") as f:
-            f.write("input/train_v2/")
-            print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
-                  file=f)
+        if platform == "linux" or platform == "linux2":
+            with open("entry_data.csv", "a") as f:
+                f.write("/content/pracaMgr/input/train_v2/")
+                print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
+                      file=f)
+        else:
+            with open("entry_data.csv", "a") as f:
+                f.write("input/train_v2/")
+                print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
+                      file=f)
 
 print("Checked ships: ", number)
 print("Incorrect ships: ", incorrect)
