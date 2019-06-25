@@ -14,9 +14,8 @@ elif platform == "darwin":
 elif platform == "win32":
     path = str("../input")
 else:
-    print(platform)
+    print("Undefined platform ", platform)
     NameError("Error: System type not defined. Please check platform name")
-
 
 parser = OptionParser()
 
@@ -24,9 +23,7 @@ parser.add_option("-n", "--ships_number", dest="ships_number", help="Number of s
 
 (options, args) = parser.parse_args()
 
-# ../input/train_ship_segmentations_v2.csv for Windows and Kaggle, ./input/train_ship_segmentations_v2.csv for MacOS
 path_to_csv = path + "/train_ship_segmentations_v2.csv"
-print(path_to_csv)
 df = pd.read_csv(path_to_csv, index_col=0).dropna()
 print("Number of ships: ", len(df))
 
@@ -35,13 +32,15 @@ if not options.ships_number:
     number = len(df)
 else:
     if int(options.ships_number) > len(df):
-        number = 0
         parser.error("Error: Number of ships are greater than total number of ships")
     elif int(options.ships_number) == len(df):
         print("Going with full check anyway")
         number = len(df)
+    elif int(options.ships_number) <= 0:
+        parser.error("Error: Zero or negative value was provided")
     else:
         number = int(options.ships_number)
+        print("Checking randomly selected", number, "ships")
 
 # turn rle example into a list of ints
 rle = [int(i) for i in df['EncodedPixels']['55bd28f41.jpg'].split()]
@@ -55,8 +54,8 @@ coordinate = (start % 768, start // 768)
 back = 768 * coordinate[1] + coordinate[0]
 
 pixels = [(pixel_position % 768, pixel_position // 768)
-                            for start, length in pairs
-                            for pixel_position in range(start, start + length)]
+          for start, length in pairs
+          for pixel_position in range(start, start + length)]
 
 
 def rle_to_pixels(rle_code):
@@ -71,7 +70,7 @@ def rle_to_pixels(rle_code):
 
 # An image may have more than one row in the df,
 # Meaning that the image has more than one ship present
-# This part resets index for next ship occurence
+# This part resets index for next ship occurrence
 df = df.reset_index()
 # Counter for ships detected and set incorrectly by rle_to_pixels, TODO: check why
 incorrect = 0
@@ -137,8 +136,8 @@ for i in range(number):
                 print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
                       file=f)
 
-print("Checked ships: ", number)
-print("Incorrect ships: ", incorrect)
-print("Correct ships: ", correct)
-print("Incorrect to correct ratio: ", incorrect/correct)
+print("Checked ships:", number)
+print("Incorrect ships:", incorrect)
+print("Correct ships:", correct)
+print("Incorrect to correct ratio:", incorrect/correct)
 print("Finished")
