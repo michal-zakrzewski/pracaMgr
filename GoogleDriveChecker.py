@@ -21,8 +21,13 @@ with open("Example_file.txt", "w") as f:
 try:
     shutil.copy(path + "/Example_file.txt", "/content/drive/My Drive/pracaMgr/Weights/Example_file.txt")
     os.path.exists("/Example_file.txt")
-    os.path.exists("/content/drive/My Drive/pracaMgr/Weights/Example_file.txt")
-    os.remove("/content/drive/My Drive/pracaMgr/Weights/Example_file.txt")
+    try:
+        os.path.exists("/content/drive/My Drive/pracaMgr/Weights/Example_file.txt")
+        print("Following path exists, file was successfully exported")
+        os.remove("/content/drive/My Drive/pracaMgr/Weights/Example_file.txt")
+    except Exception as e:
+        print("Checking the file out failed!")
+        print(e)
 except Exception as e:
     print('Saving was not possible, sorry')
     print(e)
