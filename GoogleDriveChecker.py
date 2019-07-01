@@ -7,12 +7,12 @@ if platform == "linux" or platform == "linux2":
     from IPython.core.display import display
     path = str("/content/pracaMgr")
 # TODO: Add possibility to upload weights from local to Google Drive
-elif platform == "darwin":
-    path = str("./")
-    from google.colab import drive
-    drive.mount('/content/drive', force_remount=True)
-elif platform == "win32":
-    path = str("../")
+# elif platform == "darwin":
+#     path = str("./")
+#     from google.colab import drive
+#     drive.mount('/content/drive', force_remount=True)
+# elif platform == "win32":
+#     path = str("../")
 
 # Create example file
 with open("Example_file.txt", "w") as f:
@@ -20,11 +20,11 @@ with open("Example_file.txt", "w") as f:
 
 try:
     shutil.copy(path + "/Example_file.txt", "/content/drive/My Drive/pracaMgr/Weights/Example_file.txt")
-    path.exist(path + "Example_file.txt")
-    path.exist("/content/drive/My Drive/pracaMgr/Weights/Example_file.txt")
+    os.path.exists("/Example_file.txt")
+    os.path.exists("/content/drive/My Drive/pracaMgr/Weights/Example_file.txt")
     os.remove("/content/drive/My Drive/pracaMgr/Weights/Example_file.txt")
 except Exception as e:
     print('Saving was not possible, sorry')
     print(e)
 finally:
-    os.remove(path + "/Example_file.txt")
+    os.remove("Example_file.txt")
