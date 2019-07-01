@@ -19,8 +19,10 @@ with open("Example_file.txt", "w") as f:
     print("This is a test file", file=f)
 
 try:
-    shutil.move(path + "/Example_file.txt", "/content/drive/My Drive/pracaMgr/Weights/Example_file.txt")
+    shutil.copy(path + "/Example_file.txt", "/content/drive/My Drive/pracaMgr/Weights/Example_file.txt")
     path.exist(path + "Example_file.txt")
+    path.exist("/content/drive/My Drive/pracaMgr/Weights/Example_file.txt")
+    os.remove("/content/drive/My Drive/pracaMgr/Weights/Example_file.txt")
 except Exception as e:
     print('Saving was not possible, sorry')
     print(e)

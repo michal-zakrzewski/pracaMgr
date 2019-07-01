@@ -308,7 +308,7 @@ for epoch_num in range(num_epochs):
                 best_loss = curr_loss
                 model_all.save_weights(C.model_path)
                 try:
-                    shutil.move(path + "/weights.hdf5", "/content/drive/My Drive/pracaMgr/Weights/weights.hdf5")
+                    shutil.copy(path + "/weights.hdf5", "/content/drive/My Drive/pracaMgr/Weights/weights.hdf5")
                 except:
                     print("Saving was not possible, sorry")
 
