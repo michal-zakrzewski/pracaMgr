@@ -8,3 +8,6 @@ idea/*
 
 #ignore venv dir
 venv/*
+.idea/workspace.xml
+*.xml
+*.iml
