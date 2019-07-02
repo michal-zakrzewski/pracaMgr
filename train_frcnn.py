@@ -291,7 +291,7 @@ for epoch_num in range(num_epochs):
                 print('Elapsed time: {}'.format(time.time() - start_time))
 
             curr_loss = loss_rpn_cls + loss_rpn_regr + loss_class_cls + loss_class_regr
-            print("Current loss value: {}", curr_loss)
+            print("Current loss value: {}", format(curr_loss))
             iter_num = 0
             start_time = time.time()
 
