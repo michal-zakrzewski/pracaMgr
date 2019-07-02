@@ -291,7 +291,7 @@ for epoch_num in range(num_epochs):
                 print('Elapsed time: {}'.format(time.time() - start_time))
 
             curr_loss = loss_rpn_cls + loss_rpn_regr + loss_class_cls + loss_class_regr
-            print("Current loss value: {}", format(curr_loss))
+            print("Current loss value: ", format(curr_loss))
             iter_num = 0
             start_time = time.time()
 
@@ -308,10 +308,17 @@ for epoch_num in range(num_epochs):
                 best_loss = curr_loss
                 model_all.save_weights(C.model_path)
                 try:
-                    shutil.copy(path + "/weights.hdf5", "/content/drive/My Drive/pracaMgr/Weights/weights.hdf5")
+					filename = "weights" + str(curr_loss)[:6] + ".hdf5"
+                    shutil.copy(path + "/weights.hdf5", path + "/" + filename)
+                    os.rename(path + "/" + filename, "/content/drive/My Drive/pracaMgr/Weights/" + filename)
                 except Exception as e:
                     print("Saving was not possible, sorry")
                     print(e)
+				try:
+					os.remove("/content/drive/My Drive/pracaMgr/Weights/weights" + str(best_loss)[:6] + ".hdf5")
+				except OSError as e:
+					print("File removing was not possible")
+					print(e)
 
             break
 
