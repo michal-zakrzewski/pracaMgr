@@ -308,7 +308,7 @@ for epoch_num in range(num_epochs):
                 model_all.save_weights(C.model_path)
                 try:
                     filename = "weights" + str(curr_loss)[:6] + ".hdf5"
-                    shutil.copy(path + "/weights.hdf5", path + "/" + filename)o
+                    shutil.copy(path + "/weights.hdf5", path + "/" + filename)
                     os.rename(path + "/" + filename, "/content/drive/My Drive/pracaMgr/Weights/" + filename)
                 except Exception as e:
                     print("Saving was not possible, sorry")
