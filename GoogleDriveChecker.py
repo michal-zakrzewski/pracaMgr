@@ -14,11 +14,13 @@ elif platform == "darwin":
 elif platform == "win32":
     path = str("../")
 
+working_directory = os.getcwd()
+absolute_path = working_directory + '/Example_file.txt'
+
 # Create example file
-with open("Example_file.txt", "w") as f:
+with open(absolute_path, "w") as f:
     print("This is a test file", file=f)
 
-absolute_path = str(path) + "/Example_file.txt"
 
 # Check if the file was created:
 try:
