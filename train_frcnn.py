@@ -330,21 +330,19 @@ for epoch_num in range(num_epochs):
                       epoch_num)
 
             if curr_loss < best_loss:
+                filename = "weights" + str(curr_loss)[2:6] + ".hdf5"
                 if C.verbose:
                     print('Total loss decreased from {} to {}, saving weights'.format(
                         best_loss, curr_loss))
                 model_all.save_weights(C.model_path)
                 try:
-                    filename = "weights" + str(curr_loss)[:6] + ".hdf5"
-                    shutil.copy(path + "/weights.hdf5", path + "/" + filename)
-                    os.rename(
-                        path + "/" + filename, "/content/drive/My Drive/pracaMgr/Weights/" + filename)
+                    shutil.copy(path + "/weights.hdf5", "/content/drive/My Drive/pracaMgr/Weights/" + filename)
                 except Exception as e:
                     print("Saving was not possible, sorry")
                     print(e)
                 try:
                     os.remove(
-                        "/content/drive/My Drive/pracaMgr/Weights/weights" + str(best_loss)[:6] + ".hdf5")
+                        "/content/drive/My Drive/pracaMgr/Weights/weights" + str(best_loss)[2:6] + ".hdf5")
                 except OSError as e:
                     print("File removing was not possible")
                     print(e)
