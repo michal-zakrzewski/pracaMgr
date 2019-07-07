@@ -13,6 +13,15 @@ from keras.layers import Input
 from keras.models import Model
 from keras_frcnn import roi_helpers
 import keras_frcnn.resnet as nn
+from sys import platform
+
+if platform == "linux" or platform == "linux2":
+    from IPython.core.display import display
+    path = str("/content/pracaMgr/input")
+elif platform == "darwin":
+    path = str("./input")
+elif platform == "win32":
+    path = str("../input")
 
 sys.setrecursionlimit(40000)
 
@@ -253,4 +262,4 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
 
     #cv2.imshow('img', img)
     #cv2.waitKey(50)
-    cv2.imwrite('./results_imgs/{}.png'.format(idx), img)
+    cv2.imwrite('/content/drive/My Drive/pracaMgr/results_imgs/{}.png'.format(idx), img)

@@ -21,7 +21,6 @@ absolute_path = working_directory + '/Example_file.txt'
 with open(absolute_path, "w") as f:
     print("This is a test file", file=f)
 
-
 # Check if the file was created:
 try:
     os.path.exists(absolute_path)

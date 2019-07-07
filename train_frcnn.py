@@ -194,7 +194,7 @@ best_loss = np.Inf
 class_mapping_inv = {v: k for k, v in class_mapping.items()}
 print('Starting training')
 
-if not os.path.exists("/content/drive/My Drive/pracaMgr/Weights/config.pickle"):
+if os.path.exists("/content/drive/My Drive/pracaMgr/Weights/config.pickle"):
     os.remove("/content/drive/My Drive/pracaMgr/Weights/config.pickle")
 
 for epoch_num in range(num_epochs):
