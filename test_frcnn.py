@@ -47,7 +47,7 @@ config_output_filename = options.config_filename
 with open(config_output_filename, 'rb') as f_in:
     C = pickle.load(f_in)
 
-with open("results.csv", "w") as f:
+with open(path + "results.csv", "w") as f:
     f.write('ImageName,IsShip,AmountOfShips\n')
 # with open("ship_detected.csv", "w") as g:
 #     f.write('ImageName,IsShip,AmountOfShips\n')
@@ -253,12 +253,12 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     print('Elapsed time = {}'.format(time.time() - st))
     print(all_dets)
     if len(all_dets) > 0:
-        with open("results.csv", "a") as f:
+        with open(path + "results.csv", "a") as f:
             print(img_name, "1", len(all_dets), sep=',', file=f)
-        with open("ship_detected.csv", "a") as g:
+        with open(path + "ship_detected.csv", "a") as g:
             print(img_name, "1", len(all_dets), sep=',', file=g)
     else:
-        with open("results.csv", "a") as f:
+        with open(path + "results.csv", "a") as f:
             print(img_name, "0", len(all_dets), sep=',', file=f)
 
     #cv2.imshow('img', img)
