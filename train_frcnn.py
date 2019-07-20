@@ -108,7 +108,7 @@ random.shuffle(all_imgs)
 
 num_imgs = len(all_imgs)
 
-train_imgs = [s for s in all_imgs if s['imageset'] == 'trainval']
+train_imgs = [s for s in all_imgs if s['imageset'] == 'train']
 val_imgs = [s for s in all_imgs if s['imageset'] == 'val']
 test_imgs = [s for s in all_imgs if s['imageset'] == 'test']
 
@@ -122,7 +122,7 @@ data_gen_train = data_generators.get_anchor_gt(
 data_gen_val = data_generators.get_anchor_gt(
     val_imgs, classes_count, C, nn.get_img_output_length, K.image_dim_ordering(), mode='val')
 data_gen_test = data_generators.get_anchor_gt(
-    test_imgs, classes_count, C, nn.get_img_output_length, K.image_dim_ordering(), mode='val')
+    test_imgs, classes_count, C, nn.get_img_output_length, K.image_dim_ordering(), mode='test')
 
 if K.image_dim_ordering() == 'th':
     input_shape_img = (3, None, None)
@@ -179,7 +179,7 @@ if not os.path.isdir(log_path):
 callback = TensorBoard(log_path)
 callback.set_model(model_all)
 
-epoch_length = 1000
+epoch_length = 100
 num_epochs = int(options.num_epochs)
 iter_num = 0
 train_step = 0
@@ -293,8 +293,8 @@ for epoch_num in range(num_epochs):
 
         iter_num += 1
 
-        progbar.update(iter_num, [('rpn_cls', np.mean(losses[:iter_num, 0])), ('rpn_regr', np.mean(losses[:iter_num, 1])),
-                                  ('detector_cls', np.mean(losses[:iter_num, 2])), ('detector_regr', np.mean(losses[:iter_num, 3]))])
+        progbar.update(iter_num, [('rpn_cls', losses[iter_num, 0]), ('rpn_regr', losses[iter_num, 1]),
+                                  ('detector_cls', losses[iter_num, 2]), ('detector_regr', losses[iter_num, 3])])
 
         if iter_num == epoch_length:
             loss_rpn_cls = np.mean(losses[:, 0])
