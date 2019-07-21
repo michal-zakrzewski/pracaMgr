@@ -346,7 +346,7 @@ for epoch_num in range(num_epochs):
                 if C.verbose:
                     print('Total loss decreased from {} to {}, saving weights'.format(
                         best_loss, curr_loss))
-                model_all.save_weights(C.model_path)
+                model_all.save_weights(C.model_path, path)
                 try:
                     shutil.copy(path + "/weights.hdf5", "/content/drive/My Drive/pracaMgr/Weights/" + filename)
                 except Exception as e:
