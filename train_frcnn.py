@@ -57,7 +57,7 @@ parser.add_option("--config_filename", dest="config_filename",
                   help="Location to store all the metadata related to the training (to be used when testing).",
                   default="config.pickle")
 parser.add_option("--output_weight_path", dest="output_weight_path",
-                  help="Output path for weights.", default='./input/weights.hdf5')
+                  help="Output path for weights.", default=path + '/weights.hdf5')
 parser.add_option("--input_weight_path",
                   dest="input_weight_path", help="Input path for weights.")
 parser.add_option("--network", dest="network", help="Base network to use. Supports vgg or resnet50.", default='resnet50')
