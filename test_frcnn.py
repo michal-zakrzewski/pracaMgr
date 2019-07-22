@@ -256,12 +256,12 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     print('Elapsed time = {}'.format(time.time() - st))
     print(all_dets)
     if len(all_dets) > 0:
-        with open(path + "results.csv", "a") as f:
+        with open(path + "/results.csv", "a") as f:
             print(img_name, "1", len(all_dets), sep=',', file=f)
-        with open(path + "ship_detected.csv", "a") as g:
+        with open(path + "/ship_detected.csv", "a") as g:
             print(img_name, "1", len(all_dets), sep=',', file=g)
     else:
-        with open(path + "results.csv", "a") as f:
+        with open(path + "/results.csv", "a") as f:
             print(img_name, "0", len(all_dets), sep=',', file=f)
     counter += 1
 
@@ -270,7 +270,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     cv2.imwrite('/content/drive/My Drive/pracaMgr/results_imgs/{}.png'.format(idx), img)
 
     if platform == "linux" or platform == "linux2" and counter == 50:
-        shutil.copy(path + "results.csv", "/content/drive/My Drive/pracaMgr/results" + str(datetime.date.today()) + ".csv")
-        shutil.copy(path + "ship_detected.csv",
+        shutil.copy(path + "/results.csv", "/content/drive/My Drive/pracaMgr/results" + str(datetime.date.today()) + ".csv")
+        shutil.copy(path + "/ship_detected.csv",
                     "/content/drive/My Drive/pracaMgr/ship_detected" + str(datetime.date.today()) + ".csv")
         counter = 0
