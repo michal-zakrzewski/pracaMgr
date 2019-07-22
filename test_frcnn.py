@@ -14,6 +14,8 @@ from keras.models import Model
 from keras_frcnn import roi_helpers
 import keras_frcnn.resnet as nn
 from sys import platform
+import shutil
+import datetime
 
 if platform == "linux" or platform == "linux2":
     from IPython.core.display import display
@@ -47,7 +49,7 @@ config_output_filename = options.config_filename
 with open(config_output_filename, 'rb') as f_in:
     C = pickle.load(f_in)
 
-with open(path + "results.csv", "w") as f:
+with open(path + "/results.csv", "w") as f:
     f.write('ImageName,IsShip,AmountOfShips\n')
 # with open("ship_detected.csv", "w") as g:
 #     f.write('ImageName,IsShip,AmountOfShips\n')
@@ -156,6 +158,7 @@ classes = {}
 bbox_threshold = 0.8
 
 visualise = True
+counter = 0
 
 for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     if not img_name.lower().endswith(('.bmp', '.jpeg', '.jpg', '.png', '.tif', '.tiff')):
@@ -260,7 +263,14 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     else:
         with open(path + "results.csv", "a") as f:
             print(img_name, "0", len(all_dets), sep=',', file=f)
+    counter += 1
 
     #cv2.imshow('img', img)
     #cv2.waitKey(50)
     cv2.imwrite('/content/drive/My Drive/pracaMgr/results_imgs/{}.png'.format(idx), img)
+
+    if platform == "linux" or platform == "linux2" and counter == 50:
+        shutil.copy(path + "results.csv", "/content/drive/My Drive/pracaMgr/results" + str(datetime.date.today()) + ".csv")
+        shutil.copy(path + "ship_detected.csv",
+                    "/content/drive/My Drive/pracaMgr/ship_detected" + str(datetime.date.today()) + ".csv")
+        counter = 0
