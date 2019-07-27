@@ -83,7 +83,7 @@ def identity_block_td(input_tensor, kernel_size, filters, stage, block, trainabl
     x = TimeDistributed(FixedBatchNormalization(axis=bn_axis), name=bn_name_base + '2a')(x)
     x = Activation('relu')(x)
 
-    x = TimeDistributed(Convolution2D(nb_filter2, (kernel_size, kernel_size), trainable=trainable, kernel_initializer='normal',padding='same'), name=conv_name_base + '2b')(x)
+    x = TimeDistributed(Convolution2D(nb_filter2, (kernel_size, kernel_size), trainable=trainable, kernel_initializer='normal', padding='same'), name=conv_name_base + '2b')(x)
     x = TimeDistributed(FixedBatchNormalization(axis=bn_axis), name=bn_name_base + '2b')(x)
     x = Activation('relu')(x)
 

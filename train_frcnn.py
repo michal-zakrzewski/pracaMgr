@@ -331,8 +331,16 @@ for epoch_num in range(num_epochs):
 
             curr_loss = loss_rpn_cls + loss_rpn_regr + loss_class_cls + loss_class_regr
             print("Current loss value: ", format(curr_loss))
+            with open(path + "/losses_values.csv", "a") as f:
+                print(epoch_num + 1, curr_loss, format(time.time() - start_time), sep=',', file=f)
             iter_num = 0
             start_time = time.time()
+
+            try:
+                shutil.copy(path + "/losses_values.csv", "/content/drive/My Drive/pracaMgr/losses_values.csv")
+            except Exception as e:
+                print("Saving was not possible, sorry")
+                print(e)
 
             write_log(callback,
                       ['Elapsed_time', 'mean_overlapping_bboxes', 'mean_rpn_cls_loss', 'mean_rpn_reg_loss',
@@ -342,7 +350,7 @@ for epoch_num in range(num_epochs):
                       epoch_num)
 
             if curr_loss < best_loss:
-                filename = "weights" + str(curr_loss)[2:6] + ".hdf5"
+                filename = "weights" + str(curr_loss)[2:6] + options.network +".hdf5"
                 if C.verbose:
                     print('Total loss decreased from {} to {}, saving weights'.format(
                         best_loss, curr_loss))
@@ -354,7 +362,7 @@ for epoch_num in range(num_epochs):
                     print(e)
                 try:
                     os.remove(
-                        "/content/drive/My Drive/pracaMgr/Weights/weights" + str(best_loss)[2:6] + ".hdf5")
+                        "/content/drive/My Drive/pracaMgr/Weights/weights" + str(best_loss)[2:6] + options.network + ".hdf5")
                 except OSError as e:
                     print("File removing was not possible")
                     print(e)
