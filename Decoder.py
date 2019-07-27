@@ -130,12 +130,12 @@ for i in range(number):
         correct += 1
         if platform == "linux" or platform == "linux2":
             with open("entry_data.csv", "a") as f:
-                f.write("/content/pracaMgr/input/train_v2/")
+                f.write("/content/pracaMgr/input/training_images/")
                 print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
                       file=f)
         else:
             with open("entry_data.csv", "a") as f:
-                f.write("input/train_v2/")
+                f.write("input/training_images/")
                 print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
                       file=f)
         if number < len(df):
