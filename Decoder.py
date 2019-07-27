@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 from optparse import OptionParser
 from sys import platform
+import shutil
+import os
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import PIL
@@ -26,7 +28,8 @@ parser.add_option("-n", "--ships_number", dest="ships_number", help="Number of s
 path_to_csv = path + "/train_ship_segmentations_v2.csv"
 df = pd.read_csv(path_to_csv, index_col=0).dropna()
 print("Number of ships: ", len(df))
-
+if not os.path.exists(path + "/training_images/"):
+    os.mkdir(path + "/training_images/")
 if not options.ships_number:
     print("Going with full check")
     number = len(df)
@@ -135,6 +138,12 @@ for i in range(number):
                 f.write("input/train_v2/")
                 print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
                       file=f)
+        if number < len(df):
+            try:
+                shutil.copy(path + "/train_v2/" + df.loc[row_index, 'ImageId'], path + "/training_images/" + df.loc[row_index, 'ImageId'])
+            except Exception as e:
+                print("Copying file was not possible")
+                print(e)
 
 print("Checked ships:", number)
 print("Incorrect ships:", incorrect)
