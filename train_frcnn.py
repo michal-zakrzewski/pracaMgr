@@ -207,6 +207,12 @@ print('Starting training')
 
 if os.path.exists("/content/drive/My Drive/pracaMgr/Weights/config.pickle"):
     os.remove("/content/drive/My Drive/pracaMgr/Weights/config.pickle")
+if os.path.exists("/content/drive/My Drive/pracaMgr/losses_values.csv"):
+    os.remove("/content/drive/My Drive/pracaMgr/losses_values.csv")
+if os.path.exists(path + "/losses_values.csv"):
+    os.remove(path + "/losses_values.csv")
+with open(path + "/losses_values.csv") as f:
+    f.write('epoch_num,curr_loss,time\n')
 
 for epoch_num in range(num_epochs):
 
