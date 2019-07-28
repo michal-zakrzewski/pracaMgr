@@ -4,6 +4,7 @@ from optparse import OptionParser
 from sys import platform
 import shutil
 import os
+from tqdm import tqdm
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import PIL
@@ -80,7 +81,7 @@ incorrect = 0
 correct = 0
 used_rows = []
 
-for i in range(number):
+for i in tqdm(range(number)):
     if number == len(df):
         row_index = i  # take all rows one-by-one
     else:
@@ -105,10 +106,11 @@ for i in range(number):
     # decoder might makes mistakes - make sure that there's no BB for whole width/height
     if cond1 or cond2 or cond3 or cond4:
         incorrect += 1
-        with open("incorrect_images.csv", "a") as g:
-            g.write("input/train_v2/")
-            print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
-                  file=g)
+        # Following code is not necessary right now
+        # with open("incorrect_images.csv", "a") as g:
+        #     g.write("input/train_v2/")
+        #     print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
+        #           file=g)
 
     else:
         # NOTE: uncomment following part for checking if the Bounding Boxes are correctly selected
@@ -138,12 +140,6 @@ for i in range(number):
                 f.write("input/training_images/")
                 print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
                       file=f)
-        if number < len(df):
-            try:
-                shutil.copy(path + "/train_v2/" + df.loc[row_index, 'ImageId'], path + "/training_images/" + df.loc[row_index, 'ImageId'])
-            except Exception as e:
-                print("Copying file was not possible")
-                print(e)
 
 print("Checked ships:", number)
 print("Incorrect ships:", incorrect)
