@@ -56,7 +56,7 @@ for i in range(number):
 
     if platform == "linux" or platform == "linux2":
         with open("entry_data.csv", "a") as f:
-            f.write("/content/pracaMgr/input/train_v2/")
+            f.write("/content/pracaMgr/input/training_images/")
             print(df.loc[row_index, 'ImageId'], "0,0,767,767,bg", sep=',', file=f)
     else:
         with open("entry_data.csv", "a") as f:
