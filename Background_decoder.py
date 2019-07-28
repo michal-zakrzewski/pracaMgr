@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from optparse import OptionParser
 from sys import platform
+import shutil
 
 if platform == "linux" or platform == "linux2":
     from IPython.core.display import display
@@ -62,6 +63,12 @@ for i in range(number):
         with open("entry_data.csv", "a") as f:
             f.write("input/train_v2/")
             print(df.loc[row_index, 'ImageId'], "0,0,767,767,bg", sep=',', file=f)
+    if number < len(df):
+        try:
+            shutil.copy(path + "/train_v2/" + df.loc[row_index, 'ImageId'], path + "/training_images/" + df.loc[row_index, 'ImageId'])
+        except Exception as e:
+            print("Copying file was not possible")
+            print(e)
 
 print("Checked images:", number)
 print("Finished")
