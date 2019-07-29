@@ -51,6 +51,8 @@ with open(config_output_filename, 'rb') as f_in:
 
 with open(path + "/results.csv", "w") as f:
     f.write('ImageName,IsShip,AmountOfShips\n')
+with open(path + "/submission.csv", "w") as f:
+    f.write('ImageId,EncodedPixels\n')
 with open(path + "/ship_detected.csv", "w") as g:
     g.write('ImageName,IsShip,AmountOfShips\n')
 
@@ -259,17 +261,22 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             print(img_name, "1", len(all_dets), sep=',', file=f)
         with open(path + "/ship_detected.csv", "a") as g:
             print(img_name, "1", len(all_dets), sep=',', file=g)
+        with open(path + "/submission.csv", "a") as f:
+            print(img_name, "1 2", sep=',', file=f)
     else:
         with open(path + "/results.csv", "a") as f:
             print(img_name, "0", len(all_dets), sep=',', file=f)
+        with open(path + "/submission.csv", "a") as f:
+            print(img_name, "", sep=',', file=f)
     counter += 1
 
     #cv2.imshow('img', img)
     #cv2.waitKey(50)
     cv2.imwrite('/content/drive/My Drive/pracaMgr/results_imgs/{}.png'.format(idx), img)
 
-    if platform == "linux" or platform == "linux2" and counter == 50:
+    if platform == "linux" or platform == "linux2" and counter == 20:
         shutil.copy(path + "/results.csv", "/content/drive/My Drive/pracaMgr/results" + str(datetime.date.today()) + ".csv")
+        shutil.copy(path + "/submission.csv", "/content/drive/My Drive/pracaMgr/submission" + str(datetime.date.today()) + ".csv")
         shutil.copy(path + "/ship_detected.csv",
                     "/content/drive/My Drive/pracaMgr/ship_detected" + str(datetime.date.today()) + ".csv")
         counter = 0
