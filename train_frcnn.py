@@ -212,7 +212,7 @@ if os.path.exists("/content/drive/My Drive/pracaMgr/losses_values.csv"):
 if os.path.exists(path + "/losses_values.csv"):
     os.remove(path + "/losses_values.csv")
 with open(path + "/losses_values.csv", "w") as f:
-    f.write('epoch_num,curr_loss,time\n')
+    f.write('epoch_num,curr_loss,prn_loss,time\n')
 
 for epoch_num in range(num_epochs):
 
@@ -338,7 +338,7 @@ for epoch_num in range(num_epochs):
             curr_loss = loss_rpn_cls + loss_rpn_regr + loss_class_cls + loss_class_regr
             print("Current loss value: ", format(curr_loss))
             with open(path + "/losses_values.csv", "a") as f:
-                print(epoch_num + 1, curr_loss, format(time.time() - start_time), sep=',', file=f)
+                print(epoch_num + 1, format(curr_loss), format(loss_rpn_cls), format(time.time() - start_time), sep=',', file=f)
             iter_num = 0
             start_time = time.time()
 
