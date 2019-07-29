@@ -209,7 +209,7 @@ def non_max_suppression_fast(boxes, probs, overlap_thresh=0.9, max_boxes=300):
         area_union = area[i] + area[idxs[:last]] - area_int
 
         # compute the ratio of overlap
-        overlap = area_int/(area_union + 1e-6)
+        overlap = area_int/(area_union + 1e-3)
 
         # delete all indexes from the index list that have
         idxs = np.delete(idxs, np.concatenate(([last],
