@@ -190,7 +190,7 @@ if not os.path.isdir(log_path):
 callback = TensorBoard(log_path)
 callback.set_model(model_all)
 
-epoch_length = 100
+epoch_length = 1000
 num_epochs = int(options.num_epochs)
 iter_num = 0
 train_step = 0
