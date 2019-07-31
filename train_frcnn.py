@@ -119,7 +119,7 @@ random.shuffle(all_imgs)
 
 num_imgs = len(all_imgs)
 
-train_imgs = [s for s in all_imgs if s['imageset'] == 'trainval']
+train_imgs = [s for s in all_imgs if s['imageset'] == 'train']
 val_imgs = [s for s in all_imgs if s['imageset'] == 'val']
 test_imgs = [s for s in all_imgs if s['imageset'] == 'test']
 
