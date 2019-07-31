@@ -190,7 +190,7 @@ if not os.path.isdir(log_path):
 callback = TensorBoard(log_path)
 callback.set_model(model_all)
 
-epoch_length = 1000
+epoch_length = 60000
 num_epochs = int(options.num_epochs)
 iter_num = 0
 train_step = 0
@@ -212,7 +212,7 @@ if os.path.exists("/content/drive/My Drive/pracaMgr/losses_values.csv"):
 if os.path.exists(path + "/losses_values.csv"):
     os.remove(path + "/losses_values.csv")
 with open(path + "/losses_values.csv", "w") as f:
-    f.write('epoch_num,curr_loss,prn_loss,time\n')
+    f.write('epoch_num,curr_loss,rpn_loss,time\n')
 
 for epoch_num in range(num_epochs):
 
