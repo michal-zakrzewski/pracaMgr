@@ -217,7 +217,7 @@ if os.path.exists(path + "/losses_values.csv"):
 with open(path + "/losses_values.csv", "w") as f:
     f.write('epoch_num,curr_loss,rpn_loss,time\n')
 with open(path + "/rpn_loss.csv", "w") as f:
-    f.write('train_step,rpn_cls,rpn_regr,detector_cls,detector_regr\n')
+    f.write('train_step;rpn_cls;rpn_regr;detector_cls;detector_regr\n')
 
 for epoch_num in range(num_epochs):
 
@@ -325,7 +325,7 @@ for epoch_num in range(num_epochs):
         if export_counter == 50:
             try:
                 shutil.copy(path + "/rpn_loss.csv", "/content/drive/My Drive/pracaMgr/rpn_loss.csv")
-                counter = 0
+                export_counter = 0
             except Exception as e:
                 print("Saving rpn_loss.csv was not possible")
                 print(e)
