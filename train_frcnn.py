@@ -53,6 +53,8 @@ parser.add_option("-p", "--path", dest="train_path",
                   help="Path to training data.")
 parser.add_option("--num_epochs", dest="num_epochs",
                   help="Number of epochs.", default=40)
+parser.add_option("--epoch_length", dest="epoch_length",
+                  help="Number of epoch lenght", default=1000)
 parser.add_option("--config_filename", dest="config_filename",
                   help="Location to store all the metadata related to the training (to be used when testing).",
                   default="config.pickle")
@@ -190,7 +192,7 @@ if not os.path.isdir(log_path):
 callback = TensorBoard(log_path)
 callback.set_model(model_all)
 
-epoch_length = 60000
+epoch_length = int(options.epoch_length)
 num_epochs = int(options.num_epochs)
 iter_num = 0
 train_step = 0
