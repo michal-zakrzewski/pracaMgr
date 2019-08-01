@@ -215,6 +215,8 @@ if os.path.exists(path + "/losses_values.csv"):
     os.remove(path + "/losses_values.csv")
 with open(path + "/losses_values.csv", "w") as f:
     f.write('epoch_num,curr_loss,rpn_loss,time\n')
+with open(path + "/rpn_loss.csv", "w") as f:
+    f.write('train_step,rpn_cls,rpn_regr,detector_cls,detector_regr\n')
 
 for epoch_num in range(num_epochs):
 
@@ -312,6 +314,9 @@ for epoch_num in range(num_epochs):
 
         iter_num += 1
 
+        with open(path + "/rpn_loss.csv", "a") as f:
+            print(train_step, np.mean(losses[:iter_num, 0]), np.mean(losses[:iter_num, 1]),
+                  np.mean(losses[:iter_num, 2]), np.mean(losses[:iter_num, 3]), sep=';', file=f)
         progbar.update(iter_num, [('rpn_cls', np.mean(losses[:iter_num, 0])), ('rpn_regr', np.mean(losses[:iter_num, 1])),
                                   ('detector_cls', np.mean(losses[:iter_num, 2])), ('detector_regr', np.mean(losses[:iter_num, 3]))])
 
@@ -347,8 +352,14 @@ for epoch_num in range(num_epochs):
             try:
                 shutil.copy(path + "/losses_values.csv", "/content/drive/My Drive/pracaMgr/losses_values.csv")
             except Exception as e:
-                print("Saving was not possible, sorry")
+                print("Saving losses_values was not possible")
                 print(e)
+            try:
+                shutil.copy(path + "/rpn_loss.csv", "/content/drive/My Drive/pracaMgr/rpn_loss.csv")
+            except Exception as e:
+                print("Saving rpn_loss.csv was not possible")
+                print(e)
+
 
             write_log(callback,
                       ['Elapsed_time', 'mean_overlapping_bboxes', 'mean_rpn_cls_loss', 'mean_rpn_reg_loss',
