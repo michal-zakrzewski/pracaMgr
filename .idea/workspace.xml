@@ -33,11 +33,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/train_frcnn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
-              <caret line="197" column="14" lean-forward="true" selection-start-line="197" selection-start-column="14" selection-end-line="197" selection-end-column="14" />
-              <folding>
-                <element signature="e#24#55#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="-3256">
+              <caret line="13" column="29" selection-start-line="13" selection-start-column="29" selection-end-line="13" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -128,10 +125,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>./inp</find>
-      <find>csv</find>
-      <find>maxpool</find>
-      <find>learning</find>
       <find>conv_block</find>
       <find>nn.</find>
       <find>epoch</find>
@@ -158,6 +151,10 @@
       <find>prematu</find>
       <find>end of</find>
       <find>num_epochs</find>
+      <find>rpn_cls_loss</find>
+      <find>ETA</find>
+      <find>rpn_cls</find>
+      <find>rpn_loss</find>
     </findStrings>
     <replaceStrings>
       <replace>max_x</replace>
@@ -371,21 +368,7 @@
       <workItem from="1560003049316" duration="14427000" />
       <workItem from="1560076139054" duration="6039000" />
       <workItem from="1560238381869" duration="90207000" />
-      <workItem from="1564036378569" duration="18356000" />
-    </task>
-    <task id="LOCAL-00041" summary="Changes in Decoder.py file">
-      <created>1561210620142</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1561210620142</updated>
-    </task>
-    <task id="LOCAL-00042" summary="Changes in Decoder.py file - fix for Google Colab">
-      <created>1561211333905</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1561211333905</updated>
+      <workItem from="1564036378569" duration="19539000" />
     </task>
     <task id="LOCAL-00043" summary="Setting platform checker">
       <created>1561212265663</created>
@@ -716,11 +699,25 @@
       <option name="project" value="LOCAL" />
       <updated>1564581351121</updated>
     </task>
-    <option name="localTasksCounter" value="90" />
+    <task id="LOCAL-00090" summary="Adding tqdm">
+      <created>1564639502342</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1564639502342</updated>
+    </task>
+    <task id="LOCAL-00091" summary="Logging rpn_loss">
+      <created>1564640223908</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1564640223908</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="152995000" />
+    <option name="totallyTimeSpent" value="154178000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -846,16 +843,10 @@
     <MESSAGE value="Results checker" />
     <MESSAGE value="Testing params check" />
     <MESSAGE value="Adding tqdm" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding tqdm" />
+    <MESSAGE value="Logging rpn_loss" />
+    <option name="LAST_COMMIT_MESSAGE" value="Logging rpn_loss" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/.idea/Mgrv01.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="9" lean-forward="true" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Decoder2.py" />
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
@@ -1170,13 +1161,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/input/rpn_loss.csv">
+      <provider selected="true" editor-type-id="csv-text-editor" />
+      <provider editor-type-id="csv-table-editor">
+        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/train_frcnn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="197" column="14" lean-forward="true" selection-start-line="197" selection-start-column="14" selection-end-line="197" selection-end-column="14" />
-          <folding>
-            <element signature="e#24#55#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-3256">
+          <caret line="13" column="29" selection-start-line="13" selection-start-column="29" selection-end-line="13" selection-end-column="29" />
         </state>
       </provider>
     </entry>

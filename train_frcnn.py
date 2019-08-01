@@ -21,7 +21,6 @@ import keras_frcnn.roi_helpers as roi_helpers
 from keras.utils import generic_utils
 from keras.callbacks import TensorBoard
 from keras_frcnn.simple_parser import get_data
-from keras_frcnn import resnet as nn
 from sys import platform
 
 if platform == "linux" or platform == "linux2":
@@ -54,7 +53,7 @@ parser.add_option("-p", "--path", dest="train_path",
 parser.add_option("--num_epochs", dest="num_epochs",
                   help="Number of epochs.", default=40)
 parser.add_option("--epoch_length", dest="epoch_length",
-                  help="Number of epoch lenght", default=1000)
+                  help="Number of length", default=1000)
 parser.add_option("--config_filename", dest="config_filename",
                   help="Location to store all the metadata related to the training (to be used when testing).",
                   default="config.pickle")
@@ -62,7 +61,8 @@ parser.add_option("--output_weight_path", dest="output_weight_path",
                   help="Output path for weights.", default=path + '/weights.hdf5')
 parser.add_option("--input_weight_path",
                   dest="input_weight_path", help="Input path for weights.")
-parser.add_option("--network", dest="network", help="Base network to use. Supports vgg or resnet50.", default='resnet50')
+parser.add_option("--network", dest="network", help="Base network to use. Supports vgg or resnet50.",
+                  default='resnet50')
 
 (options, args) = parser.parse_args()
 
@@ -196,6 +196,7 @@ epoch_length = int(options.epoch_length)
 num_epochs = int(options.num_epochs)
 iter_num = 0
 train_step = 0
+export_counter = 0
 
 losses = np.zeros((epoch_length, 5))
 rpn_accuracy_rpn_monitor = []
@@ -313,12 +314,21 @@ for epoch_num in range(num_epochs):
         losses[iter_num, 4] = loss_class[3]
 
         iter_num += 1
+        export_counter += 1
 
         with open(path + "/rpn_loss.csv", "a") as f:
             print(train_step, np.mean(losses[:iter_num, 0]), np.mean(losses[:iter_num, 1]),
                   np.mean(losses[:iter_num, 2]), np.mean(losses[:iter_num, 3]), sep=';', file=f)
         progbar.update(iter_num, [('rpn_cls', np.mean(losses[:iter_num, 0])), ('rpn_regr', np.mean(losses[:iter_num, 1])),
                                   ('detector_cls', np.mean(losses[:iter_num, 2])), ('detector_regr', np.mean(losses[:iter_num, 3]))])
+
+        if export_counter == 50:
+            try:
+                shutil.copy(path + "/rpn_loss.csv", "/content/drive/My Drive/pracaMgr/rpn_loss.csv")
+                counter = 0
+            except Exception as e:
+                print("Saving rpn_loss.csv was not possible")
+                print(e)
 
         if iter_num == epoch_length:
             loss_rpn_cls = np.mean(losses[:, 0])
@@ -354,12 +364,6 @@ for epoch_num in range(num_epochs):
             except Exception as e:
                 print("Saving losses_values was not possible")
                 print(e)
-            try:
-                shutil.copy(path + "/rpn_loss.csv", "/content/drive/My Drive/pracaMgr/rpn_loss.csv")
-            except Exception as e:
-                print("Saving rpn_loss.csv was not possible")
-                print(e)
-
 
             write_log(callback,
                       ['Elapsed_time', 'mean_overlapping_bboxes', 'mean_rpn_cls_loss', 'mean_rpn_reg_loss',
