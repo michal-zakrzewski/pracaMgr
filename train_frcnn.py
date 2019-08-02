@@ -217,7 +217,7 @@ if os.path.exists(path + "/losses_values.csv"):
 with open(path + "/losses_values.csv", "w") as f:
     f.write('epoch_num,curr_loss,rpn_loss,time\n')
 with open(path + "/rpn_loss.csv", "w") as f:
-    f.write('train_step,rpn_cls,rpn_regr,detector_cls,detector_regr\n')
+    f.write('train_step,rpn_cls,rpn_regr,detector_cls,detector_regr,total\n')
 
 for epoch_num in range(num_epochs):
 
@@ -318,7 +318,9 @@ for epoch_num in range(num_epochs):
 
         with open(path + "/rpn_loss.csv", "a") as f:
             print(train_step, np.mean(losses[:iter_num, 0]), np.mean(losses[:iter_num, 1]),
-                  np.mean(losses[:iter_num, 2]), np.mean(losses[:iter_num, 3]), sep=',', file=f)
+                  np.mean(losses[:iter_num, 2]), np.mean(losses[:iter_num, 3]),
+                  np.mean(losses[:iter_num, 0]) + np.mean(losses[:iter_num, 1]) + np.mean(losses[:iter_num, 2]) + np.mean(losses[:iter_num, 3]),
+                  sep=',', file=f)
         progbar.update(iter_num, [('rpn_cls', np.mean(losses[:iter_num, 0])), ('rpn_regr', np.mean(losses[:iter_num, 1])),
                                   ('detector_cls', np.mean(losses[:iter_num, 2])), ('detector_regr', np.mean(losses[:iter_num, 3]))])
 
