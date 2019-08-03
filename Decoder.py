@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from optparse import OptionParser
 from sys import platform
-import os
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches

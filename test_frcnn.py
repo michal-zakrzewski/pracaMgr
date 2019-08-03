@@ -16,6 +16,9 @@ import keras_frcnn.resnet as nn
 from sys import platform
 import shutil
 import datetime
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+import PIL
 
 if platform == "linux" or platform == "linux2":
     from IPython.core.display import display
@@ -236,13 +239,13 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     for key in bboxes:
         bbox = np.array(bboxes[key])
 
-        new_boxes, new_probs = roi_helpers.non_max_suppression_fast(bbox, np.array(probs[key]), overlap_thresh=0.5)
+        new_boxes, new_probs = roi_helpers.non_max_suppression_fast(bbox, np.array(probs[key]), overlap_thresh=0.1)
         for jk in range(new_boxes.shape[0]):
             (x1, y1, x2, y2) = new_boxes[jk,:]
 
             (real_x1, real_y1, real_x2, real_y2) = get_real_coordinates(ratio, x1, y1, x2, y2)
 
-            cv2.rectangle(img,(real_x1, real_y1), (real_x2, real_y2), (int(class_to_color[key][0]), int(class_to_color[key][1]), int(class_to_color[key][2])),2)
+            cv2.rectangle(img, (real_x1, real_y1), (real_x2, real_y2), (int(class_to_color[key][0]), int(class_to_color[key][1]), int(class_to_color[key][2])),2)
 
             textLabel = '{}: {}'.format(key,int(100*new_probs[jk]))
             all_dets.append((key,100*new_probs[jk]))
@@ -270,9 +273,25 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             print(img_name, "", sep=',', file=f)
     counter += 1
 
-    #cv2.imshow('img', img)
-    #cv2.waitKey(50)
-    cv2.imwrite('/content/drive/My Drive/pracaMgr/results_imgs/{}.png'.format(idx), img)
+    # cv2.imshow('img', img)
+    # cv2.waitKey(50)
+    if platform == "linux" or platform == "linux2":
+        if os.path.exists('/content/drive/My Drive/pracaMgr/results_imgs'):
+            cv2.imwrite('/content/drive/My Drive/pracaMgr/results_imgs/{}.png'.format(idx), img)
+        else:
+            os.mkdir('/content/drive/My Drive/pracaMgr/results_imgs')
+            cv2.imwrite('/content/drive/My Drive/pracaMgr/results_imgs/{}.png'.format(idx), img)
+    else:
+        if os.path.exists(path + '/results_imgs'):
+            cv2.imwrite(path + 'results_imgs/{}.png'.format(idx), img)
+        else:
+            os.mkdir(path + '/results_imgs')
+            try:
+                cv2.imwrite(path + 'results_imgs/{}.png'.format(idx), img)
+            except Exception as e:
+                print("No possibility to save an image!")
+                print(e)
+
 
     if platform == "linux" or platform == "linux2" and counter == 20:
         shutil.copy(path + "/results.csv", "/content/drive/My Drive/pracaMgr/results" + str(datetime.date.today()) + ".csv")
@@ -280,3 +299,5 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
         shutil.copy(path + "/ship_detected.csv",
                     "/content/drive/My Drive/pracaMgr/ship_detected" + str(datetime.date.today()) + ".csv")
         counter = 0
+
+print("Finished")
