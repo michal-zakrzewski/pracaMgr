@@ -164,6 +164,10 @@ bbox_threshold = 0.8
 
 visualise = True
 counter = 0
+if platform == "linux" or platform == "linux2":
+    if not os.path.exists('/content/drive/My Drive/pracaMgr/results_imgs'):
+        os.mkdir('/content/drive/My Drive/pracaMgr/results_imgs')
+
 
 for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     if not img_name.lower().endswith(('.bmp', '.jpeg', '.jpg', '.png', '.tif', '.tiff')):
@@ -266,6 +270,21 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             print(img_name, "1", len(all_dets), sep=',', file=g)
         with open(path + "/submission.csv", "a") as f:
             print(img_name, "1 2", sep=',', file=f)
+
+        print("Adding image with bbox to folder")
+        if platform == "linux" or platform == "linux2":
+            cv2.imwrite('/content/drive/My Drive/pracaMgr/results_imgs/{}.png'.format(idx), img)
+        else:
+            if os.path.exists(path + '/results_imgs'):
+                cv2.imwrite(path + 'results_imgs/{}.png'.format(idx), img)
+            else:
+                os.mkdir(path + '/results_imgs')
+                try:
+                    cv2.imwrite(path + 'results_imgs/{}.png'.format(idx), img)
+                except Exception as e:
+                    print("No possibility to save an image!")
+                    print(e)
+
     else:
         with open(path + "/results.csv", "a") as f:
             print(img_name, "0", len(all_dets), sep=',', file=f)
@@ -275,23 +294,6 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
 
     # cv2.imshow('img', img)
     # cv2.waitKey(50)
-    if platform == "linux" or platform == "linux2":
-        if os.path.exists('/content/drive/My Drive/pracaMgr/results_imgs'):
-            cv2.imwrite('/content/drive/My Drive/pracaMgr/results_imgs/{}.png'.format(idx), img)
-        else:
-            os.mkdir('/content/drive/My Drive/pracaMgr/results_imgs')
-            cv2.imwrite('/content/drive/My Drive/pracaMgr/results_imgs/{}.png'.format(idx), img)
-    else:
-        if os.path.exists(path + '/results_imgs'):
-            cv2.imwrite(path + 'results_imgs/{}.png'.format(idx), img)
-        else:
-            os.mkdir(path + '/results_imgs')
-            try:
-                cv2.imwrite(path + 'results_imgs/{}.png'.format(idx), img)
-            except Exception as e:
-                print("No possibility to save an image!")
-                print(e)
-
 
     if platform == "linux" or platform == "linux2" and counter == 20:
         shutil.copy(path + "/results.csv", "/content/drive/My Drive/pracaMgr/results" + str(datetime.date.today()) + ".csv")
