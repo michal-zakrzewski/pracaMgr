@@ -4,6 +4,7 @@
     <list default="true" id="1d952f90-d518-4ff0-8929-851fca2222d1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keras_frcnn/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/keras_frcnn/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keras_frcnn/roi_helpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/keras_frcnn/roi_helpers.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -33,8 +34,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/train_frcnn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="282">
-              <caret line="61" column="38" selection-start-line="61" selection-start-column="21" selection-end-line="61" selection-end-column="38" />
+            <state relative-caret-position="-241">
+              <caret line="54" column="56" lean-forward="true" selection-start-line="54" selection-start-column="56" selection-end-line="54" selection-end-column="56" />
               <folding>
                 <element signature="e#24#55#0" expanded="true" />
               </folding>
@@ -42,11 +43,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test_frcnn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="849">
-              <caret line="282" selection-start-line="282" selection-end-line="282" />
+            <state relative-caret-position="395">
+              <caret line="176" column="34" lean-forward="true" selection-start-line="176" selection-start-column="34" selection-end-line="176" selection-end-column="34" />
               <folding>
                 <element signature="e#24#55#0" expanded="true" />
               </folding>
@@ -75,11 +76,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/keras_frcnn/config.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="360">
-              <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
+              <caret line="24" column="26" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -111,8 +112,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/keras_frcnn/roi_helpers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="226" column="14" selection-start-line="226" selection-start-column="4" selection-end-line="226" selection-end-column="14" />
+            <state relative-caret-position="314">
+              <caret line="157" column="61" selection-start-line="157" selection-start-column="61" selection-end-line="157" selection-end-column="61" />
             </state>
           </provider>
         </entry>
@@ -156,8 +157,8 @@
       <find>counter</find>
       <find>;</find>
       <find>rpn_loss</find>
-      <find>im_size</find>
       <find>overlap</find>
+      <find>im_size</find>
     </findStrings>
     <replaceStrings>
       <replace>max_x</replace>
@@ -191,11 +192,11 @@
         <option value="$PROJECT_DIR$/Background_decoder.py" />
         <option value="$PROJECT_DIR$/Decoder.py" />
         <option value="$PROJECT_DIR$/keras_frcnn/losses.py" />
-        <option value="$PROJECT_DIR$/keras_frcnn/roi_helpers.py" />
-        <option value="$PROJECT_DIR$/test_frcnn.py" />
         <option value="$PROJECT_DIR$/keras_frcnn/simple_parser.py" />
         <option value="$PROJECT_DIR$/train_frcnn.py" />
+        <option value="$PROJECT_DIR$/keras_frcnn/roi_helpers.py" />
         <option value="$PROJECT_DIR$/keras_frcnn/config.py" />
+        <option value="$PROJECT_DIR$/test_frcnn.py" />
       </list>
     </option>
   </component>
@@ -371,21 +372,7 @@
       <workItem from="1560003049316" duration="14427000" />
       <workItem from="1560076139054" duration="6039000" />
       <workItem from="1560238381869" duration="90207000" />
-      <workItem from="1564036378569" duration="22114000" />
-    </task>
-    <task id="LOCAL-00048" summary="Background images decoder">
-      <created>1561962809041</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1561962809041</updated>
-    </task>
-    <task id="LOCAL-00049" summary="Background images decoder">
-      <created>1561963000538</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1561963000538</updated>
+      <workItem from="1564036378569" duration="23204000" />
     </task>
     <task id="LOCAL-00050" summary="Background images decoder">
       <created>1561965728450</created>
@@ -716,11 +703,25 @@
       <option name="project" value="LOCAL" />
       <updated>1564748825238</updated>
     </task>
-    <option name="localTasksCounter" value="97" />
+    <task id="LOCAL-00097" summary="Changing params">
+      <created>1564771480112</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1564771480112</updated>
+    </task>
+    <task id="LOCAL-00098" summary="Changing params">
+      <created>1564778838760</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1564778838761</updated>
+    </task>
+    <option name="localTasksCounter" value="99" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="156753000" />
+    <option name="totallyTimeSpent" value="157843000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -1052,27 +1053,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/keras_frcnn/roi_helpers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="226" column="14" selection-start-line="226" selection-start-column="4" selection-end-line="226" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Library/Caches/PyCharm2018.3/python_stubs/-1199943126/builtins.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="203">
           <caret line="170" column="4" selection-start-line="170" selection-start-column="4" selection-end-line="170" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test_frcnn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="849">
-          <caret line="282" selection-start-line="282" selection-end-line="282" />
-          <folding>
-            <element signature="e#24#55#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1128,13 +1112,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/keras_frcnn/resnet.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1711">
-          <caret line="243" selection-start-line="243" selection-end-line="243" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/local/lib/python3.7/site-packages/keras/engine/training.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="174">
@@ -1155,16 +1132,6 @@
         <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/train_frcnn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="61" column="38" selection-start-line="61" selection-start-column="21" selection-end-line="61" selection-end-column="38" />
-          <folding>
-            <element signature="e#24#55#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/keras_frcnn/losses.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="229">
@@ -1175,10 +1142,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/keras_frcnn/roi_helpers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="314">
+          <caret line="157" column="61" selection-start-line="157" selection-start-column="61" selection-end-line="157" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/train_frcnn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-241">
+          <caret line="54" column="56" lean-forward="true" selection-start-line="54" selection-start-column="56" selection-end-line="54" selection-end-column="56" />
+          <folding>
+            <element signature="e#24#55#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/keras_frcnn/config.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
-          <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
+          <caret line="24" column="26" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/keras_frcnn/resnet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1711">
+          <caret line="243" selection-start-line="243" selection-end-line="243" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_frcnn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="395">
+          <caret line="176" column="34" lean-forward="true" selection-start-line="176" selection-start-column="34" selection-end-line="176" selection-end-column="34" />
+          <folding>
+            <element signature="e#24#55#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
