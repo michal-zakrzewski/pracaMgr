@@ -16,9 +16,6 @@ import keras_frcnn.resnet as nn
 from sys import platform
 import shutil
 import datetime
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-import PIL
 
 if platform == "linux" or platform == "linux2":
     from IPython.core.display import display
