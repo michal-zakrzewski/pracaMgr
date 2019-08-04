@@ -27,8 +27,6 @@ parser.add_option("-n", "--ships_number", dest="ships_number", help="Number of s
 path_to_csv = path + "/train_ship_segmentations_v2.csv"
 df = pd.read_csv(path_to_csv, index_col=0).dropna()
 print("Number of ships: ", len(df))
-# if not os.path.exists(path + "/training_images/"):
-#     os.mkdir(path + "/training_images/")
 if not options.ships_number:
     print("Going with full check")
     number = len(df)
