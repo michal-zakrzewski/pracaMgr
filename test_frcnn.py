@@ -270,7 +270,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                 encodedPixels += str(nextPixel)
                 encodedPixels += " "
                 encodedPixels += str(thick)
-            encodedPixels += " "
+                encodedPixels += " "
             with open(path + "/submission.csv", "a") as f:
                 print(img_name, encodedPixels, sep=',', file=f)
             print(encodedPixels)
