@@ -250,9 +250,9 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             (real_x1, real_y1, real_x2, real_y2) = get_real_coordinates(ratio, x1, y1, x2, y2)
             encodedPixels = ''
             i = 1
-            firstPixel = real_y1 * 768 + real_x1
-            thick = real_x2 - real_x1
-            lastPixel = real_y2 * 768 + real_x2
+            firstPixel = real_x1 * 768 + real_y1
+            thick = real_y2 - real_y1
+            lastPixel = real_x2 * 768 + real_y2
             encodedPixels += str(firstPixel)
             encodedPixels += " "
             encodedPixels += str(thick)
