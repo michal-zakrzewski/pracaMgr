@@ -236,6 +236,9 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             probs[cls_name].append(np.max(P_cls[0, ii, :]))
 
     all_dets = []
+    firstPixel = 0
+    thick = 0
+    lastPixel = 0
 
     for key in bboxes:
         bbox = np.array(bboxes[key])
@@ -245,6 +248,30 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             (x1, y1, x2, y2) = new_boxes[jk,:]
 
             (real_x1, real_y1, real_x2, real_y2) = get_real_coordinates(ratio, x1, y1, x2, y2)
+            encodedPixels = ''
+            i = 1
+            firstPixel = real_y1 * 768 + real_x1
+            print(firstPixel)
+            thick = real_x2 - real_x1
+            print(thick)
+            lastPixel = real_y2 * 768 + real_x2
+            print(lastPixel)
+            encodedPixels += str(firstPixel)
+            encodedPixels += " "
+            encodedPixels += str(thick)
+            print(type(encodedPixels))
+            while True:
+                nextPixel = firstPixel + 768*i
+                checkLastPixel = nextPixel + thick
+                if lastPixel == checkLastPixel:
+                    break
+                i += 1
+                encodedPixels += str(nextPixel)
+                encodedPixels += " "
+                encodedPixels += str(thick)
+            with open(path + "/submission.csv", "a") as f:
+                print(img_name, encodedPixels, sep=',', file=f)
+            print(encodedPixels)
 
             cv2.rectangle(img, (real_x1, real_y1), (real_x2, real_y2), (int(class_to_color[key][0]), int(class_to_color[key][1]), int(class_to_color[key][2])),2)
 
@@ -255,7 +282,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             textOrg = (real_x1, real_y1-0)
 
             cv2.rectangle(img, (textOrg[0] - 5, textOrg[1]+baseLine - 5), (textOrg[0]+retval[0] + 5, textOrg[1]-retval[1] - 5), (0, 0, 0), 2)
-            cv2.rectangle(img, (textOrg[0] - 5,textOrg[1]+baseLine - 5), (textOrg[0]+retval[0] + 5, textOrg[1]-retval[1] - 5), (255, 255, 255), -1)
+            cv2.rectangle(img, (textOrg[0] - 5, textOrg[1]+baseLine - 5), (textOrg[0]+retval[0] + 5, textOrg[1]-retval[1] - 5), (255, 255, 255), -1)
             cv2.putText(img, textLabel, textOrg, cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 0), 1)
 
     print('Elapsed time = {}'.format(time.time() - st))
@@ -265,10 +292,6 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             print(img_name, "1", len(all_dets), sep=',', file=f)
         with open(path + "/ship_detected.csv", "a") as g:
             print(img_name, "1", len(all_dets), sep=',', file=g)
-        with open(path + "/submission.csv", "a") as f:
-            print(img_name, "1 2", sep=',', file=f)
-
-        print("Adding image with bbox to folder")
         if platform == "linux" or platform == "linux2":
             cv2.imwrite('/content/drive/My Drive/pracaMgr/results_imgs/{}.png'.format(idx), img)
         else:
