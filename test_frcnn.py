@@ -251,16 +251,12 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             encodedPixels = ''
             i = 1
             firstPixel = real_y1 * 768 + real_x1
-            print(firstPixel)
             thick = real_x2 - real_x1
-            print(thick)
             lastPixel = real_y2 * 768 + real_x2
-            print(lastPixel)
             encodedPixels += str(firstPixel)
             encodedPixels += " "
             encodedPixels += str(thick)
             encodedPixels += " "
-            print(type(encodedPixels))
             while True:
                 nextPixel = firstPixel + 768*i
                 checkLastPixel = nextPixel + thick
