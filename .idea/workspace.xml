@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1d952f90-d518-4ff0-8929-851fca2222d1" name="Default Changelist" comment="Incorrect pixels checker">
+    <list default="true" id="1d952f90-d518-4ff0-8929-851fca2222d1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Decoder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Decoder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Decoder2.py" beforeDir="false" afterPath="$PROJECT_DIR$/Decoder2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keras_frcnn/roi_helpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/keras_frcnn/roi_helpers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_frcnn.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_frcnn.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,8 +34,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test_frcnn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1896">
-              <caret line="271" column="32" lean-forward="true" selection-start-line="271" selection-start-column="32" selection-end-line="271" selection-end-column="32" />
+            <state relative-caret-position="65">
+              <caret line="309" column="39" lean-forward="true" selection-start-line="309" selection-start-column="39" selection-end-line="309" selection-end-column="39" />
               <folding>
                 <element signature="e#24#55#0" expanded="true" />
               </folding>
@@ -393,21 +391,7 @@
       <workItem from="1560003049316" duration="14427000" />
       <workItem from="1560076139054" duration="6039000" />
       <workItem from="1560238381869" duration="90207000" />
-      <workItem from="1564036378569" duration="76282000" />
-    </task>
-    <task id="LOCAL-00069" summary="Fixes">
-      <created>1564244476518</created>
-      <option name="number" value="00069" />
-      <option name="presentableId" value="LOCAL-00069" />
-      <option name="project" value="LOCAL" />
-      <updated>1564244476518</updated>
-    </task>
-    <task id="LOCAL-00070" summary="Checking only selected images">
-      <created>1564249910655</created>
-      <option name="number" value="00070" />
-      <option name="presentableId" value="LOCAL-00070" />
-      <option name="project" value="LOCAL" />
-      <updated>1564249910655</updated>
+      <workItem from="1564036378569" duration="76613000" />
     </task>
     <task id="LOCAL-00071" summary="Checking only selected images">
       <created>1564250061989</created>
@@ -738,11 +722,25 @@
       <option name="project" value="LOCAL" />
       <updated>1565271864701</updated>
     </task>
-    <option name="localTasksCounter" value="118" />
+    <task id="LOCAL-00118" summary="Incorrect pixels checker">
+      <created>1565280897275</created>
+      <option name="number" value="00118" />
+      <option name="presentableId" value="LOCAL-00118" />
+      <option name="project" value="LOCAL" />
+      <updated>1565280897275</updated>
+    </task>
+    <task id="LOCAL-00119" summary="Incorrect pixels checker">
+      <created>1565284823893</created>
+      <option name="number" value="00119" />
+      <option name="presentableId" value="LOCAL-00119" />
+      <option name="project" value="LOCAL" />
+      <updated>1565284823893</updated>
+    </task>
+    <option name="localTasksCounter" value="120" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="210921000" />
+    <option name="totallyTimeSpent" value="211252000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -869,9 +867,9 @@
     <MESSAGE value="New Decoder file" />
     <MESSAGE value="Submission csv fix" />
     <MESSAGE value="Reverting params" />
-    <MESSAGE value="Incorrect pixels checker" />
     <MESSAGE value="Incorrect pixels checker fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="Incorrect pixels checker fix" />
+    <MESSAGE value="Incorrect pixels checker" />
+    <option name="LAST_COMMIT_MESSAGE" value="Incorrect pixels checker" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file:///usr/local/lib/python3.7/site-packages/keras/backend/__init__.py">
@@ -1263,8 +1261,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test_frcnn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1896">
-          <caret line="271" column="32" lean-forward="true" selection-start-line="271" selection-start-column="32" selection-end-line="271" selection-end-column="32" />
+        <state relative-caret-position="65">
+          <caret line="309" column="39" lean-forward="true" selection-start-line="309" selection-start-column="39" selection-end-line="309" selection-end-column="39" />
           <folding>
             <element signature="e#24#55#0" expanded="true" />
           </folding>
