@@ -322,10 +322,10 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     # cv2.waitKey(50)
 
     if platform == "linux" or platform == "linux2" and counter == 20:
-        shutil.copy(path + "/results.csv", "/content/drive/My Drive/pracaMgr/results" + str(datetime.date.today()) + format(model_path) +  ".csv")
-        shutil.copy(path + "/submission.csv", "/content/drive/My Drive/pracaMgr/submission" + str(datetime.date.today()) + format(model_path) +  ".csv")
+        shutil.copy(path + "/results.csv", "/content/drive/My Drive/pracaMgr/results" + str(datetime.date.today()) + ".csv")
+        shutil.copy(path + "/submission.csv", "/content/drive/My Drive/pracaMgr/submission" + str(datetime.date.today()) + ".csv")
         shutil.copy(path + "/ship_detected.csv",
-                    "/content/drive/My Drive/pracaMgr/ship_detected" + str(datetime.date.today()) + format(model_path) +  ".csv")
+                    "/content/drive/My Drive/pracaMgr/ship_detected" + str(datetime.date.today()) + ".csv")
         counter = 0
 
 print("Finished")
