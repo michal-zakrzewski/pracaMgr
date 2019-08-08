@@ -275,7 +275,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             while True:
                 nextPixel = firstPixel + 768 * i
                 checkLastPixel = nextPixel + thick
-                if lastPixel == checkLastPixel:
+                if checkLastPixel >= lastPixel:
                     break
                 i += 1
                 encodedPixels += str(nextPixel)
@@ -303,13 +303,13 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     print('Elapsed time = {}'.format(time.time() - st))
     print(all_dets)
     if len(all_dets) > 0:
-        with open(path + "/results.csv", "a") as f:
-            print(img_name, "1", len(all_dets), sep=',', file=f)
-        with open(path + "/ship_detected.csv", "a") as g:
-            print(img_name, "1", len(all_dets), sep=',', file=g)
-        if platform == "linux" or platform == "linux2":
-            cv2.imwrite('/content/drive/My Drive/pracaMgr/results_imgs/{}.png'.format(idx), img)
-        else:
+        # with open(path + "/results.csv", "a") as f:
+        #     print(img_name, "1", len(all_dets), sep=',', file=f)
+        # with open(path + "/ship_detected.csv", "a") as g:
+        #     print(img_name, "1", len(all_dets), sep=',', file=g)
+        # if platform == "linux" or platform == "linux2":
+        #     cv2.imwrite('/content/drive/My Drive/pracaMgr/results_imgs/{}.png'.format(idx), img)
+        # else:
             if os.path.exists(path + '/results_imgs'):
                 cv2.imwrite(path + 'results_imgs/{}.png'.format(idx), img)
             else:
