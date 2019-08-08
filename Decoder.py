@@ -24,7 +24,7 @@ parser.add_option("-n", "--ships_number", dest="ships_number", help="Number of s
 
 (options, args) = parser.parse_args()
 
-path_to_csv = path + "/submission2019-08-07.csv"
+path_to_csv = path + "/train_ship_segmentations_v2.csv"
 df = pd.read_csv(path_to_csv, index_col=0).dropna()
 print("Number of ships: ", len(df))
 if not options.ships_number:
@@ -43,7 +43,7 @@ else:
         print("Checking randomly selected", number, "ships")
 
 # turn rle example into a list of ints
-rle = [int(i) for i in df['EncodedPixels']['0010551d9.jpg'].split()]
+rle = [int(i) for i in df['EncodedPixels']['55bd28f41.jpg'].split()]
 # turn list of ints into a list of (`start`, `length`) `pairs`
 pairs = list(zip(rle[0:-1:2], rle[1::2]))
 
@@ -102,16 +102,16 @@ for i in tqdm(range(number)):
     # decoder might makes mistakes - make sure that there's no BB for whole width/height
     if cond1 or cond2 or cond3 or cond4:
         incorrect += 1
-        #Following code is not necessary right now
-        with open("incorrect_images.csv", "a") as g:
-            g.write("input/train_v2/")
-            print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
-                  file=g)
+        # Following code is not necessary right now
+        # with open("incorrect_images.csv", "a") as g:
+        #     g.write("input/train_v2/")
+        #     print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
+        #           file=g)
 
     else:
         # NOTE: uncomment following part for checking if the Bounding Boxes are correctly selected
 
-        # load_img = lambda filename: np.array(PIL.Image.open(f"./input/test_v2/{filename}"))
+        # load_img = lambda filename: np.array(PIL.Image.open(f"./input/train_v2/{filename}"))
         # im = np.array(load_img(df.loc[row_index, 'ImageId']), dtype=np.uint8)
         # # Create figure and axes
         # fig, ax = plt.subplots(1)
