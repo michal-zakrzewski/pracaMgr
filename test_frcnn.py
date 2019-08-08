@@ -253,6 +253,8 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             firstPixel = real_x1 * 768 + real_y1
             thick = real_y2 - real_y1
             lastPixel = real_x2 * 768 + real_y2
+            if firstPixel == 0:
+                firstPixel = 1
             encodedPixels += str(firstPixel)
             encodedPixels += " "
             encodedPixels += str(thick)
@@ -260,6 +262,13 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             while True:
                 nextPixel = firstPixel + 768*i
                 checkLastPixel = nextPixel + thick
+                if checkLastPixel > 768 * 768 or nextPixel < 1:
+                    print(img_name, " is to big!")
+                    with open(path + "/incorrect_pixels.csv", "a") as f:
+                        print(img_name, real_x1, real_y1, real_x2, real_y2, sep=',', file=f)
+                        print(firstPixel, nextPixel, lastPixel, i, checkLastPixel, encodedPixels, sep=',', file=f)
+                    if platform == "linux" or platform == "linux2":
+                        shutil.copy(path + "/incorrect_pixels.csv", "/content/drive/My Drive/pracaMgr/incorrectpixels.csv")
                 if lastPixel == checkLastPixel:
                     break
                 i += 1
@@ -269,7 +278,6 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                 encodedPixels += " "
             with open(path + "/submission.csv", "a") as f:
                 print(img_name, encodedPixels, sep=',', file=f)
-            print(encodedPixels)
 
             cv2.rectangle(img, (real_x1, real_y1), (real_x2, real_y2), (int(class_to_color[key][0]), int(class_to_color[key][1]), int(class_to_color[key][2])),2)
 
@@ -314,10 +322,10 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     # cv2.waitKey(50)
 
     if platform == "linux" or platform == "linux2" and counter == 20:
-        shutil.copy(path + "/results.csv", "/content/drive/My Drive/pracaMgr/results" + str(datetime.date.today()) + ".csv")
-        shutil.copy(path + "/submission.csv", "/content/drive/My Drive/pracaMgr/submission" + str(datetime.date.today()) + ".csv")
+        shutil.copy(path + "/results.csv", "/content/drive/My Drive/pracaMgr/results" + str(datetime.date.today()) + format(model_path) +  ".csv")
+        shutil.copy(path + "/submission.csv", "/content/drive/My Drive/pracaMgr/submission" + str(datetime.date.today()) + format(model_path) +  ".csv")
         shutil.copy(path + "/ship_detected.csv",
-                    "/content/drive/My Drive/pracaMgr/ship_detected" + str(datetime.date.today()) + ".csv")
+                    "/content/drive/My Drive/pracaMgr/ship_detected" + str(datetime.date.today()) + format(model_path) +  ".csv")
         counter = 0
 
 print("Finished")
