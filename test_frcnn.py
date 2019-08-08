@@ -241,7 +241,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             probs[cls_name].append(np.max(P_cls[0, ii, :]))
 
     all_dets = []
-    firstPixel = 0
+    firstPixel = 1
     thick = 0
     lastPixel = 0
 
@@ -253,7 +253,14 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             (x1, y1, x2, y2) = new_boxes[jk, :]
 
             (real_x1, real_y1, real_x2, real_y2) = get_real_coordinates(ratio, x1, y1, x2, y2)
-            print("===============", real_x1, real_y1, real_x2, real_y2)
+            if real_x1 > 767:
+                real_x1 = 767
+            if real_x2 > 767:
+                real_x2 = 767
+            if real_y1 > 767:
+                real_y1 = 767
+            if real_y2 > 767:
+                real_y2 = 767
             encodedPixels = ''
             i = 1
             firstPixel = real_x1 * 768 + real_y1
@@ -268,14 +275,6 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             while True:
                 nextPixel = firstPixel + 768 * i
                 checkLastPixel = nextPixel + thick
-                # if checkLastPixel > 768 * 768 or nextPixel < 1:
-                    # print(img_name, " is to big!")
-                    # with open(path + "/incorrect_pixels.csv", "a") as f:
-                    #     print(img_name, real_x1, real_y1, real_x2, real_y2, sep=',', file=f)
-                    #     print(firstPixel, nextPixel, lastPixel, i, checkLastPixel, encodedPixels, sep=',', file=f)
-                    # if platform == "linux" or platform == "linux2":
-                    #     shutil.copy(path + "/incorrect_pixels.csv",
-                    #                 "/content/drive/My Drive/pracaMgr/incorrectpixels.csv")
                 if lastPixel == checkLastPixel:
                     break
                 i += 1
