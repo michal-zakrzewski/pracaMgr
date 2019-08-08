@@ -21,11 +21,15 @@ else:
 parser = OptionParser()
 
 parser.add_option("-n", "--ships_number", dest="ships_number", help="Number of ships for detection")
+parser.add_option("-s", "--one_ship", dest="one_ship", help="Retreive images with 1 ship only")
 
 (options, args) = parser.parse_args()
 
 path_to_csv = path + "/train_ship_segmentations_v2.csv"
 df = pd.read_csv(path_to_csv, index_col=0).dropna()
+if options.one_ship:
+    print("Using images with only 1 ship")
+    df = df.loc[~df.index.duplicated(keep=False)]
 print("Number of ships: ", len(df))
 if not options.ships_number:
     print("Going with full check")
