@@ -19,6 +19,7 @@ import datetime
 
 if platform == "linux" or platform == "linux2":
     from IPython.core.display import display
+
     path = str("/content/pracaMgr/input")
 elif platform == "darwin":
     path = str("./input")
@@ -35,14 +36,15 @@ parser.add_option("-n", "--num_rois", dest="num_rois",
 parser.add_option("--config_filename", dest="config_filename",
                   help="Location to read the metadata related to the training (generated when training).",
                   default="config.pickle")
-parser.add_option("--network", dest="network", help="Base network to use. Supports vgg or resnet50.", default='resnet50')
-parser.add_option("--input_weight_path", dest="input_weight_path", help="Input path for weights.", default="./model_frcnn.hdf5")
+parser.add_option("--network", dest="network", help="Base network to use. Supports vgg or resnet50.",
+                  default='resnet50')
+parser.add_option("--input_weight_path", dest="input_weight_path", help="Input path for weights.",
+                  default="./model_frcnn.hdf5")
 
 (options, args) = parser.parse_args()
 
-if not options.test_path:   # if filename is not given
+if not options.test_path:  # if filename is not given
     parser.error('Error: path to test data must be specified. Pass --path to command line')
-
 
 config_output_filename = options.config_filename
 
@@ -63,21 +65,23 @@ C.rot_90 = False
 
 img_path = options.test_path
 
+
 def format_img_size(img, C):
     """ formats the image size based on config """
     img_min_side = float(C.im_size)
-    (height, width ,_) = img.shape
+    (height, width, _) = img.shape
 
     if width <= height:
-        ratio = img_min_side/width
+        ratio = img_min_side / width
         new_height = int(ratio * height)
         new_width = int(img_min_side)
     else:
-        ratio = img_min_side/height
+        ratio = img_min_side / height
         new_width = int(ratio * width)
         new_height = int(img_min_side)
     img = cv2.resize(img, (new_width, new_height), interpolation=cv2.INTER_CUBIC)
     return img, ratio
+
 
 def format_img_channels(img, C):
     """ formats the image channels based on config """
@@ -91,21 +95,23 @@ def format_img_channels(img, C):
     img = np.expand_dims(img, axis=0)
     return img
 
+
 def format_img(img, C):
     """ formats an image for model prediction based on config """
     img, ratio = format_img_size(img, C)
     img = format_img_channels(img, C)
     return img, ratio
 
+
 # Method to transform the coordinates of the bounding box to its original size
 def get_real_coordinates(ratio, x1, y1, x2, y2):
-
     real_x1 = int(round(x1 // ratio))
     real_y1 = int(round(y1 // ratio))
     real_x2 = int(round(x2 // ratio))
     real_y2 = int(round(y2 // ratio))
 
-    return (real_x1, real_y1, real_x2 ,real_y2)
+    return real_x1, real_y1, real_x2, real_y2
+
 
 class_mapping = C.class_mapping
 
@@ -125,7 +131,6 @@ if K.image_dim_ordering() == 'th':
 else:
     input_shape_img = (None, None, 3)
     input_shape_features = (None, None, num_features)
-
 
 img_input = Input(shape=input_shape_img)
 roi_input = Input(shape=(C.num_rois, 4))
@@ -165,13 +170,12 @@ if platform == "linux" or platform == "linux2":
     if not os.path.exists('/content/drive/My Drive/pracaMgr/results_imgs'):
         os.mkdir('/content/drive/My Drive/pracaMgr/results_imgs')
 
-
 for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     if not img_name.lower().endswith(('.bmp', '.jpeg', '.jpg', '.png', '.tif', '.tiff')):
         continue
     print(img_name)
     st = time.time()
-    filepath = os.path.join(img_path,img_name)
+    filepath = os.path.join(img_path, img_name)
 
     img = cv2.imread(filepath)
 
@@ -193,15 +197,15 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     bboxes = {}
     probs = {}
 
-    for jk in range(R.shape[0]//C.num_rois + 1):
-        ROIs = np.expand_dims(R[C.num_rois*jk:C.num_rois*(jk+1), :], axis=0)
+    for jk in range(R.shape[0] // C.num_rois + 1):
+        ROIs = np.expand_dims(R[C.num_rois * jk:C.num_rois * (jk + 1), :], axis=0)
         if ROIs.shape[1] == 0:
             break
 
-        if jk == R.shape[0]//C.num_rois:
-            #pad R
+        if jk == R.shape[0] // C.num_rois:
+            # pad R
             curr_shape = ROIs.shape
-            target_shape = (curr_shape[0],C.num_rois,curr_shape[2])
+            target_shape = (curr_shape[0], C.num_rois, curr_shape[2])
             ROIs_padded = np.zeros(target_shape).astype(ROIs.dtype)
             ROIs_padded[:, :curr_shape[1], :] = ROIs
             ROIs_padded[0, curr_shape[1]:, :] = ROIs[0, 0, :]
@@ -224,7 +228,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
 
             cls_num = np.argmax(P_cls[0, ii, :])
             try:
-                (tx, ty, tw, th) = P_regr[0, ii, 4*cls_num:4*(cls_num+1)]
+                (tx, ty, tw, th) = P_regr[0, ii, 4 * cls_num:4 * (cls_num + 1)]
                 tx /= C.classifier_regr_std[0]
                 ty /= C.classifier_regr_std[1]
                 tw /= C.classifier_regr_std[2]
@@ -232,7 +236,8 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                 x, y, w, h = roi_helpers.apply_regr(x, y, w, h, tx, ty, tw, th)
             except:
                 pass
-            bboxes[cls_name].append([C.rpn_stride*x, C.rpn_stride*y, C.rpn_stride*(x+w), C.rpn_stride*(y+h)])
+            bboxes[cls_name].append(
+                [C.rpn_stride * x, C.rpn_stride * y, C.rpn_stride * (x + w), C.rpn_stride * (y + h)])
             probs[cls_name].append(np.max(P_cls[0, ii, :]))
 
     all_dets = []
@@ -245,9 +250,10 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
 
         new_boxes, new_probs = roi_helpers.non_max_suppression_fast(bbox, np.array(probs[key]), overlap_thresh=0.1)
         for jk in range(new_boxes.shape[0]):
-            (x1, y1, x2, y2) = new_boxes[jk,:]
+            (x1, y1, x2, y2) = new_boxes[jk, :]
 
             (real_x1, real_y1, real_x2, real_y2) = get_real_coordinates(ratio, x1, y1, x2, y2)
+            print("===============", real_x1, real_y1, real_x2, real_y2)
             encodedPixels = ''
             i = 1
             firstPixel = real_x1 * 768 + real_y1
@@ -260,15 +266,16 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             encodedPixels += str(thick)
             encodedPixels += " "
             while True:
-                nextPixel = firstPixel + 768*i
+                nextPixel = firstPixel + 768 * i
                 checkLastPixel = nextPixel + thick
-                if checkLastPixel > 768 * 768 or nextPixel < 1:
-                    print(img_name, " is to big!")
-                    with open(path + "/incorrect_pixels.csv", "a") as f:
-                        print(img_name, real_x1, real_y1, real_x2, real_y2, sep=',', file=f)
-                        print(firstPixel, nextPixel, lastPixel, i, checkLastPixel, encodedPixels, sep=',', file=f)
-                    if platform == "linux" or platform == "linux2":
-                        shutil.copy(path + "/incorrect_pixels.csv", "/content/drive/My Drive/pracaMgr/incorrectpixels.csv")
+                # if checkLastPixel > 768 * 768 or nextPixel < 1:
+                    # print(img_name, " is to big!")
+                    # with open(path + "/incorrect_pixels.csv", "a") as f:
+                    #     print(img_name, real_x1, real_y1, real_x2, real_y2, sep=',', file=f)
+                    #     print(firstPixel, nextPixel, lastPixel, i, checkLastPixel, encodedPixels, sep=',', file=f)
+                    # if platform == "linux" or platform == "linux2":
+                    #     shutil.copy(path + "/incorrect_pixels.csv",
+                    #                 "/content/drive/My Drive/pracaMgr/incorrectpixels.csv")
                 if lastPixel == checkLastPixel:
                     break
                 i += 1
@@ -279,16 +286,19 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             with open(path + "/submission.csv", "a") as f:
                 print(img_name, encodedPixels, sep=',', file=f)
 
-            cv2.rectangle(img, (real_x1, real_y1), (real_x2, real_y2), (int(class_to_color[key][0]), int(class_to_color[key][1]), int(class_to_color[key][2])),2)
+            cv2.rectangle(img, (real_x1, real_y1), (real_x2, real_y2),
+                          (int(class_to_color[key][0]), int(class_to_color[key][1]), int(class_to_color[key][2])), 2)
 
-            textLabel = '{}: {}'.format(key,int(100*new_probs[jk]))
-            all_dets.append((key,100*new_probs[jk]))
+            textLabel = '{}: {}'.format(key, int(100 * new_probs[jk]))
+            all_dets.append((key, 100 * new_probs[jk]))
 
-            (retval,baseLine) = cv2.getTextSize(textLabel,cv2.FONT_HERSHEY_COMPLEX,1,1)
-            textOrg = (real_x1, real_y1-0)
+            (retval, baseLine) = cv2.getTextSize(textLabel, cv2.FONT_HERSHEY_COMPLEX, 1, 1)
+            textOrg = (real_x1, real_y1 - 0)
 
-            cv2.rectangle(img, (textOrg[0] - 5, textOrg[1]+baseLine - 5), (textOrg[0]+retval[0] + 5, textOrg[1]-retval[1] - 5), (0, 0, 0), 2)
-            cv2.rectangle(img, (textOrg[0] - 5, textOrg[1]+baseLine - 5), (textOrg[0]+retval[0] + 5, textOrg[1]-retval[1] - 5), (255, 255, 255), -1)
+            cv2.rectangle(img, (textOrg[0] - 5, textOrg[1] + baseLine - 5),
+                          (textOrg[0] + retval[0] + 5, textOrg[1] - retval[1] - 5), (0, 0, 0), 2)
+            cv2.rectangle(img, (textOrg[0] - 5, textOrg[1] + baseLine - 5),
+                          (textOrg[0] + retval[0] + 5, textOrg[1] - retval[1] - 5), (255, 255, 255), -1)
             cv2.putText(img, textLabel, textOrg, cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 0), 1)
 
     print('Elapsed time = {}'.format(time.time() - st))
@@ -322,8 +332,10 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     # cv2.waitKey(50)
 
     if platform == "linux" or platform == "linux2" and counter == 20:
-        shutil.copy(path + "/results.csv", "/content/drive/My Drive/pracaMgr/results" + str(datetime.date.today()) + ".csv")
-        shutil.copy(path + "/submission.csv", "/content/drive/My Drive/pracaMgr/submission" + str(datetime.date.today()) + ".csv")
+        shutil.copy(path + "/results.csv",
+                    "/content/drive/My Drive/pracaMgr/results" + str(datetime.date.today()) + ".csv")
+        shutil.copy(path + "/submission.csv",
+                    "/content/drive/My Drive/pracaMgr/submission" + str(datetime.date.today()) + ".csv")
         shutil.copy(path + "/ship_detected.csv",
                     "/content/drive/My Drive/pracaMgr/ship_detected" + str(datetime.date.today()) + ".csv")
         counter = 0
