@@ -320,11 +320,11 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                     print("No possibility to save an image!")
                     print(e)
 
-    # else:
+    else:
+        with open(path + "/submission.csv", "a") as f:
+            print(img_name, "", sep=',', file=f)
     #     with open(path + "/results.csv", "a") as f:
     #         print(img_name, "0", len(all_dets), sep=',', file=f)
-    #     with open(path + "/submission.csv", "a") as f:
-    #         print(img_name, "", sep=',', file=f)
     counter += 1
 
     # cv2.imshow('img', img)
