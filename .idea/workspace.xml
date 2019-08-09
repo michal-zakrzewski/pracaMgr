@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1d952f90-d518-4ff0-8929-851fca2222d1" name="Default Changelist" comment="" />
+    <list default="true" id="1d952f90-d518-4ff0-8929-851fca2222d1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_frcnn.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_frcnn.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,11 +31,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test_frcnn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret line="330" column="21" lean-forward="true" selection-start-line="330" selection-start-column="21" selection-end-line="330" selection-end-column="21" />
+            <state relative-caret-position="545">
+              <caret line="341" column="17" selection-start-line="341" selection-start-column="17" selection-end-line="341" selection-end-column="17" />
               <folding>
                 <element signature="e#24#55#0" expanded="true" />
               </folding>
@@ -72,10 +75,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Decoder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="620">
+            <state relative-caret-position="95">
               <caret line="113" selection-start-line="113" selection-end-line="125" selection-end-column="20" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
@@ -184,9 +187,9 @@
         <option value="$PROJECT_DIR$/Decoder3.py" />
         <option value="$PROJECT_DIR$/keras_frcnn/roi_helpers.py" />
         <option value="$PROJECT_DIR$/keras_frcnn/config.py" />
-        <option value="$PROJECT_DIR$/test_frcnn.py" />
         <option value="$PROJECT_DIR$/Decoder2.py" />
         <option value="$PROJECT_DIR$/Decoder.py" />
+        <option value="$PROJECT_DIR$/test_frcnn.py" />
       </list>
     </option>
   </component>
@@ -400,28 +403,7 @@
       <workItem from="1560003049316" duration="14427000" />
       <workItem from="1560076139054" duration="6039000" />
       <workItem from="1560238381869" duration="90207000" />
-      <workItem from="1564036378569" duration="76925000" />
-    </task>
-    <task id="LOCAL-00073" summary="Checking params">
-      <created>1564308154001</created>
-      <option name="number" value="00073" />
-      <option name="presentableId" value="LOCAL-00073" />
-      <option name="project" value="LOCAL" />
-      <updated>1564308154001</updated>
-    </task>
-    <task id="LOCAL-00074" summary="Checking params">
-      <created>1564319043222</created>
-      <option name="number" value="00074" />
-      <option name="presentableId" value="LOCAL-00074" />
-      <option name="project" value="LOCAL" />
-      <updated>1564319043222</updated>
-    </task>
-    <task id="LOCAL-00075" summary="Checking params">
-      <created>1564323885341</created>
-      <option name="number" value="00075" />
-      <option name="presentableId" value="LOCAL-00075" />
-      <option name="project" value="LOCAL" />
-      <updated>1564323885341</updated>
+      <workItem from="1564036378569" duration="77332000" />
     </task>
     <task id="LOCAL-00076" summary="Checking params">
       <created>1564327494437</created>
@@ -745,11 +727,32 @@
       <option name="project" value="LOCAL" />
       <updated>1565288717162</updated>
     </task>
-    <option name="localTasksCounter" value="122" />
+    <task id="LOCAL-00122" summary="Fixing decoders">
+      <created>1565324653106</created>
+      <option name="number" value="00122" />
+      <option name="presentableId" value="LOCAL-00122" />
+      <option name="project" value="LOCAL" />
+      <updated>1565324653106</updated>
+    </task>
+    <task id="LOCAL-00123" summary="Fixing decoders">
+      <created>1565324735460</created>
+      <option name="number" value="00123" />
+      <option name="presentableId" value="LOCAL-00123" />
+      <option name="project" value="LOCAL" />
+      <updated>1565324735460</updated>
+    </task>
+    <task id="LOCAL-00124" summary="Sending submission file to GD fix">
+      <created>1565325000667</created>
+      <option name="number" value="00124" />
+      <option name="presentableId" value="LOCAL-00124" />
+      <option name="project" value="LOCAL" />
+      <updated>1565325000667</updated>
+    </task>
+    <option name="localTasksCounter" value="125" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="211564000" />
+    <option name="totallyTimeSpent" value="211971000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -853,7 +856,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Setting platform checker" />
     <MESSAGE value="Adding Google Drive connection checker" />
     <MESSAGE value="Fixing moving weights to Drive" />
     <MESSAGE value="Background images decoder" />
@@ -878,7 +880,8 @@
     <MESSAGE value="Incorrect pixels checker fix" />
     <MESSAGE value="Incorrect pixels checker" />
     <MESSAGE value="Fixing decoders" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixing decoders" />
+    <MESSAGE value="Sending submission file to GD fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="Sending submission file to GD fix" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file:///usr/local/lib/python3.7/site-packages/keras/backend/__init__.py">
@@ -1241,16 +1244,6 @@
         <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_frcnn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="330" column="21" lean-forward="true" selection-start-line="330" selection-start-column="21" selection-end-line="330" selection-end-column="21" />
-          <folding>
-            <element signature="e#24#55#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/keras_frcnn/config.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="474">
@@ -1270,10 +1263,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Decoder.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="620">
+        <state relative-caret-position="95">
           <caret line="113" selection-start-line="113" selection-end-line="125" selection-end-column="20" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_frcnn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="545">
+          <caret line="341" column="17" selection-start-line="341" selection-start-column="17" selection-end-line="341" selection-end-column="17" />
+          <folding>
+            <element signature="e#24#55#0" expanded="true" />
           </folding>
         </state>
       </provider>
