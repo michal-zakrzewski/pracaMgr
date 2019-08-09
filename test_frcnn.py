@@ -339,7 +339,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
         #             "/content/drive/My Drive/pracaMgr/ship_detected" + str(datetime.date.today()) + ".csv")
         counter = 0
 
-if platform == "linux" or platform == "linux2"
+if platform == "linux" or platform == "linux2":
     shutil.copy(path + "/submission.csv",
                 "/content/drive/My Drive/pracaMgr/submission" + str(datetime.date.today()) + ".csv")
 print("Finished")
