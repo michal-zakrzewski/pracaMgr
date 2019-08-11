@@ -7,7 +7,6 @@ import sys
 import pickle
 from optparse import OptionParser
 import time
-from keras_frcnn import config
 from keras import backend as K
 from keras.layers import Input
 from keras.models import Model

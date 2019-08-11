@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="1d952f90-d518-4ff0-8929-851fca2222d1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keras_frcnn/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/keras_frcnn/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keras_frcnn/roi_helpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/keras_frcnn/roi_helpers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_frcnn.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_frcnn.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,8 +35,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test_frcnn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="903">
-              <caret line="164" column="20" selection-start-line="164" selection-start-column="20" selection-end-line="164" selection-end-column="20" />
+            <state relative-caret-position="359">
+              <caret line="188" column="24" lean-forward="true" selection-start-line="188" selection-start-column="24" selection-end-line="188" selection-end-column="24" />
               <folding>
                 <element signature="e#24#55#0" expanded="true" />
               </folding>
@@ -87,7 +88,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/keras_frcnn/config.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="188">
@@ -96,11 +97,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/keras_frcnn/roi_helpers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="159" column="49" lean-forward="true" selection-start-line="159" selection-start-column="49" selection-end-line="159" selection-end-column="49" />
+            <state relative-caret-position="216">
+              <caret line="226" column="103" selection-start-line="226" selection-start-column="103" selection-end-line="226" selection-end-column="103" />
             </state>
           </provider>
         </entry>
@@ -116,7 +117,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>train</find>
       <find>val</find>
       <find>parsing ann</find>
       <find>rpn</find>
@@ -146,6 +146,7 @@
       <find>bboxes</find>
       <find>weigh</find>
       <find>bbox</find>
+      <find>confi</find>
     </findStrings>
     <replaceStrings>
       <replace>max_x</replace>
@@ -185,11 +186,11 @@
         <option value="$PROJECT_DIR$/train_frcnn.py" />
         <option value="$PROJECT_DIR$/aaa.csv" />
         <option value="$PROJECT_DIR$/Decoder3.py" />
-        <option value="$PROJECT_DIR$/keras_frcnn/roi_helpers.py" />
         <option value="$PROJECT_DIR$/Decoder2.py" />
         <option value="$PROJECT_DIR$/Decoder.py" />
-        <option value="$PROJECT_DIR$/test_frcnn.py" />
         <option value="$PROJECT_DIR$/keras_frcnn/config.py" />
+        <option value="$PROJECT_DIR$/test_frcnn.py" />
+        <option value="$PROJECT_DIR$/keras_frcnn/roi_helpers.py" />
       </list>
     </option>
   </component>
@@ -403,21 +404,7 @@
       <workItem from="1560003049316" duration="14427000" />
       <workItem from="1560076139054" duration="6039000" />
       <workItem from="1560238381869" duration="90207000" />
-      <workItem from="1564036378569" duration="79178000" />
-    </task>
-    <task id="LOCAL-00081" summary="Results checker">
-      <created>1564375430549</created>
-      <option name="number" value="00081" />
-      <option name="presentableId" value="LOCAL-00081" />
-      <option name="project" value="LOCAL" />
-      <updated>1564375430550</updated>
-    </task>
-    <task id="LOCAL-00082" summary="Testing params check">
-      <created>1564377492679</created>
-      <option name="number" value="00082" />
-      <option name="presentableId" value="LOCAL-00082" />
-      <option name="project" value="LOCAL" />
-      <updated>1564377492679</updated>
+      <workItem from="1564036378569" duration="79536000" />
     </task>
     <task id="LOCAL-00083" summary="Testing params check">
       <created>1564391509202</created>
@@ -748,11 +735,25 @@
       <option name="project" value="LOCAL" />
       <updated>1565460180294</updated>
     </task>
-    <option name="localTasksCounter" value="130" />
+    <task id="LOCAL-00130" summary="Checking params">
+      <created>1565505746197</created>
+      <option name="number" value="00130" />
+      <option name="presentableId" value="LOCAL-00130" />
+      <option name="project" value="LOCAL" />
+      <updated>1565505746197</updated>
+    </task>
+    <task id="LOCAL-00131" summary="Checking params">
+      <created>1565506373258</created>
+      <option name="number" value="00131" />
+      <option name="presentableId" value="LOCAL-00131" />
+      <option name="project" value="LOCAL" />
+      <updated>1565506373258</updated>
+    </task>
+    <option name="localTasksCounter" value="132" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="213817000" />
+    <option name="totallyTimeSpent" value="214175000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -1214,13 +1215,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/keras_frcnn/roi_helpers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="159" column="49" lean-forward="true" selection-start-line="159" selection-start-column="49" selection-end-line="159" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Library/Caches/PyCharm2018.3/python_stubs/-1199943126/numpy/core/_multiarray_umath.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
@@ -1264,20 +1258,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/keras_frcnn/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/test_frcnn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="903">
-          <caret line="164" column="20" selection-start-line="164" selection-start-column="20" selection-end-line="164" selection-end-column="20" />
+        <state relative-caret-position="359">
+          <caret line="188" column="24" lean-forward="true" selection-start-line="188" selection-start-column="24" selection-end-line="188" selection-end-column="24" />
           <folding>
             <element signature="e#24#55#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/keras_frcnn/config.py">
+    <entry file="file://$PROJECT_DIR$/keras_frcnn/roi_helpers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
+        <state relative-caret-position="216">
+          <caret line="226" column="103" selection-start-line="226" selection-start-column="103" selection-end-line="226" selection-end-column="103" />
         </state>
       </provider>
     </entry>
