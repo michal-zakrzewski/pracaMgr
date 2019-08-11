@@ -215,7 +215,7 @@ if os.path.exists("/content/drive/My Drive/pracaMgr/losses_values.csv"):
 if os.path.exists(path + "/losses_values.csv"):
     os.remove(path + "/losses_values.csv")
 with open(path + "/losses_values.csv", "w") as f:
-    f.write('epoch_num,curr_loss,rpn_loss,time\n')
+    f.write('epoch_num,curr_loss,loss_rpn_regr,rpn_loss,time\n')
 with open(path + "/rpn_loss.csv", "w") as f:
     f.write('train_step,rpn_cls,rpn_regr,detector_cls,detector_regr,total\n')
 
@@ -357,7 +357,8 @@ for epoch_num in range(num_epochs):
             curr_loss = loss_rpn_cls + loss_rpn_regr + loss_class_cls + loss_class_regr
             print("Current loss value: ", format(curr_loss))
             with open(path + "/losses_values.csv", "a") as f:
-                print(epoch_num + 1, format(curr_loss), format(loss_rpn_cls), format(time.time() - start_time), sep=',', file=f)
+                print(epoch_num + 1, format(curr_loss), format(loss_rpn_regr), format(loss_rpn_cls),
+                      format(time.time() - start_time), sep=',', file=f)
             iter_num = 0
             start_time = time.time()
 
