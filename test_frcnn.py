@@ -161,7 +161,7 @@ all_imgs = []
 
 classes = {}
 
-bbox_threshold = 0.8
+bbox_threshold = 0.1
 
 visualise = True
 counter = 0
