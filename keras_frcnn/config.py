@@ -29,7 +29,7 @@ class Config:
         self.img_scaling_factor = 1.0
 
         # number of ROIs at once
-        self.num_rois = 300
+        self.num_rois = 400
 
         # stride at the RPN (this depends on the network configuration)
         self.rpn_stride = 16
@@ -41,8 +41,8 @@ class Config:
         self.classifier_regr_std = [8.0, 8.0, 4.0, 4.0]
 
         # overlaps for RPN
-        self.rpn_min_overlap = 0.3
-        self.rpn_max_overlap = 0.7
+        self.rpn_min_overlap = 0.4
+        self.rpn_max_overlap = 0.6
 
         # overlaps for classifier ROIs
         self.classifier_min_overlap = 0.1
