@@ -302,19 +302,15 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     print('Elapsed time = {}'.format(time.time() - st))
     print(all_dets)
     if len(all_dets) > 0:
-        # with open(path + "/results.csv", "a") as f:
-        #     print(img_name, "1", len(all_dets), sep=',', file=f)
-        # with open(path + "/ship_detected.csv", "a") as g:
-        #     print(img_name, "1", len(all_dets), sep=',', file=g)
         if platform == "linux" or platform == "linux2":
-            cv2.imwrite('/content/drive/My Drive/pracaMgr/results_imgs/{}.png'.format(idx), img)
+            cv2.imwrite('/content/drive/My Drive/pracaMgr/results_imgs/{}.png'.format(img_name), img)
         else:
             if os.path.exists(path + '/results_imgs'):
-                cv2.imwrite(path + 'results_imgs/{}.png'.format(idx), img)
+                cv2.imwrite(path + 'results_imgs/{}.png'.format(img_name), img)
             else:
                 os.mkdir(path + '/results_imgs')
                 try:
-                    cv2.imwrite(path + 'results_imgs/{}.png'.format(idx), img)
+                    cv2.imwrite(path + 'results_imgs/{}.png'.format(img_name), img)
                 except Exception as e:
                     print("No possibility to save an image!")
                     print(e)
@@ -322,20 +318,14 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     else:
         with open(path + "/submission.csv", "a") as f:
             print(img_name, "", sep=',', file=f)
-    #     with open(path + "/results.csv", "a") as f:
-    #         print(img_name, "0", len(all_dets), sep=',', file=f)
     counter += 1
 
     # cv2.imshow('img', img)
     # cv2.waitKey(50)
 
     if platform == "linux" or platform == "linux2" and counter == 20:
-        # shutil.copy(path + "/results.csv",
-        #             "/content/drive/My Drive/pracaMgr/results" + str(datetime.date.today()) + ".csv")
         shutil.copy(path + "/submission.csv",
                     "/content/drive/My Drive/pracaMgr/submission.csv")
-        # shutil.copy(path + "/ship_detected.csv",
-        #             "/content/drive/My Drive/pracaMgr/ship_detected" + str(datetime.date.today()) + ".csv")
         counter = 0
 
 print("Finished")
