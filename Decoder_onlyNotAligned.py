@@ -77,7 +77,7 @@ def checker(rle_code):
         angle = d / c
     except ZeroDivisionError:
         return True
-    if angle > 0.2 or angle < 5.1:
+    if 0.2 <= angle <= 5.1:
         return True
     else:
         return False
