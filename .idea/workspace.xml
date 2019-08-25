@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1d952f90-d518-4ff0-8929-851fca2222d1" name="Default Changelist" comment="Cleaning detectors">
-      <change afterPath="$PROJECT_DIR$/Decoder_onlyNotAligned.py" afterDir="false" />
+    <list default="true" id="1d952f90-d518-4ff0-8929-851fca2222d1" name="Default Changelist" comment="Checking if img names can be saved in folder">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Decoder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Decoder_allShips.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Decoder2.py" beforeDir="false" afterPath="$PROJECT_DIR$/Decoder_onlyAligned.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -66,11 +63,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test_frcnn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-42">
-              <caret line="47" column="20" selection-start-line="47" selection-start-column="20" selection-end-line="47" selection-end-column="20" />
+            <state relative-caret-position="-1652">
+              <caret line="171" column="51" selection-start-line="171" selection-start-column="51" selection-end-line="171" selection-end-column="51" />
               <folding>
                 <element signature="e#24#55#0" expanded="true" />
               </folding>
@@ -78,10 +75,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Decoder_onlyNotAligned.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="325">
+            <state relative-caret-position="369">
               <caret line="152" column="13" lean-forward="true" selection-start-line="152" selection-start-column="13" selection-end-line="152" selection-end-column="13" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
@@ -134,10 +131,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>num_epochs</find>
-      <find>rpn_cls_loss</find>
-      <find>ETA</find>
-      <find>rpn_cls</find>
       <find>counter</find>
       <find>;</find>
       <find>rpn_loss</find>
@@ -164,6 +157,10 @@
       <find>tres</find>
       <find>threshold</find>
       <find>incorrect_images</find>
+      <find>img</find>
+      <find>all_dets</find>
+      <find>img_name</find>
+      <find>idx</find>
     </findStrings>
     <replaceStrings>
       <replace>max_x</replace>
@@ -204,12 +201,12 @@
         <option value="$PROJECT_DIR$/Decoder2.py" />
         <option value="$PROJECT_DIR$/Decoder.py" />
         <option value="$PROJECT_DIR$/keras_frcnn/roi_helpers.py" />
-        <option value="$PROJECT_DIR$/test_frcnn.py" />
         <option value="$PROJECT_DIR$/keras_frcnn/config.py" />
         <option value="$PROJECT_DIR$/train_frcnn.py" />
         <option value="$PROJECT_DIR$/Decoder3.py" />
         <option value="$PROJECT_DIR$/Decoder_onlyAligned.py" />
         <option value="$PROJECT_DIR$/Decoder_onlyNotAligned.py" />
+        <option value="$PROJECT_DIR$/test_frcnn.py" />
       </list>
     </option>
   </component>
@@ -241,7 +238,8 @@
             <path>
               <item name="pracaMgr" type="b2602c69:ProjectViewProjectNode" />
               <item name="pracaMgr" type="462c0819:PsiDirectoryNode" />
-              <item name="keras_frcnn" type="462c0819:PsiDirectoryNode" />
+              <item name="input" type="462c0819:PsiDirectoryNode" />
+              <item name="results_imgs" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -418,21 +416,7 @@
       <workItem from="1560076139054" duration="6039000" />
       <workItem from="1560238381869" duration="90207000" />
       <workItem from="1564036378569" duration="81495000" />
-      <workItem from="1565763693244" duration="5971000" />
-    </task>
-    <task id="LOCAL-00089" summary="Adding tqdm">
-      <created>1564581351121</created>
-      <option name="number" value="00089" />
-      <option name="presentableId" value="LOCAL-00089" />
-      <option name="project" value="LOCAL" />
-      <updated>1564581351121</updated>
-    </task>
-    <task id="LOCAL-00090" summary="Adding tqdm">
-      <created>1564639502342</created>
-      <option name="number" value="00090" />
-      <option name="presentableId" value="LOCAL-00090" />
-      <option name="project" value="LOCAL" />
-      <updated>1564639502342</updated>
+      <workItem from="1565763693244" duration="7021000" />
     </task>
     <task id="LOCAL-00091" summary="Logging rpn_loss">
       <created>1564640223908</created>
@@ -763,11 +747,34 @@
       <option name="project" value="LOCAL" />
       <updated>1566725027427</updated>
     </task>
-    <option name="localTasksCounter" value="138" />
+    <task id="LOCAL-00138" summary="Cleaning detectors">
+      <created>1566731893867</created>
+      <option name="number" value="00138" />
+      <option name="presentableId" value="LOCAL-00138" />
+      <option name="project" value="LOCAL" />
+      <updated>1566731893867</updated>
+    </task>
+    <task id="LOCAL-00139" summary="Checking if img names can be saved in folder">
+      <created>1566733690472</created>
+      <option name="number" value="00139" />
+      <option name="presentableId" value="LOCAL-00139" />
+      <option name="project" value="LOCAL" />
+      <updated>1566733690472</updated>
+    </task>
+    <option name="localTasksCounter" value="140" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="222105000" />
+    <option name="totallyTimeSpent" value="223155000" />
+  </component>
+  <component name="TodoView" selected-index="1">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -782,12 +789,12 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info active="true" anchor="bottom" id="TODO" order="6" visible="true" weight="0.32959184" />
+      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.4981685" weight="0.32959184" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.327551" />
+      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.498779" weight="0.327551" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.502442" side_tool="true" weight="0.3122449" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.498779" weight="0.2887755" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.501221" side_tool="true" weight="0.32959184" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.497558" visible="true" weight="0.2887755" />
       <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.497558" weight="0.3122449" />
       <window_info anchor="bottom" id="Messages" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -871,7 +878,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Config.pickle copying file fix" />
     <MESSAGE value="Saving weights fix" />
     <MESSAGE value="Saving Weights fix" />
     <MESSAGE value="Saving results to Google Drive" />
@@ -896,7 +902,8 @@
     <MESSAGE value="Checking weights load" />
     <MESSAGE value="Reverting Checking weights load" />
     <MESSAGE value="Cleaning detectors" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cleaning detectors" />
+    <MESSAGE value="Checking if img names can be saved in folder" />
+    <option name="LAST_COMMIT_MESSAGE" value="Checking if img names can be saved in folder" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file:///usr/local/lib/python3.7/site-packages/keras/backend/common.py">
@@ -1209,16 +1216,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_frcnn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-42">
-          <caret line="47" column="20" selection-start-line="47" selection-start-column="20" selection-end-line="47" selection-end-column="20" />
-          <folding>
-            <element signature="e#24#55#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/local/lib/python3.7/site-packages/keras/layers/convolutional.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="409">
@@ -1265,10 +1262,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Decoder_onlyNotAligned.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
+        <state relative-caret-position="369">
           <caret line="152" column="13" lean-forward="true" selection-start-line="152" selection-start-column="13" selection-end-line="152" selection-end-column="13" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_frcnn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1652">
+          <caret line="171" column="51" selection-start-line="171" selection-start-column="51" selection-end-line="171" selection-end-column="51" />
+          <folding>
+            <element signature="e#24#55#0" expanded="true" />
           </folding>
         </state>
       </provider>

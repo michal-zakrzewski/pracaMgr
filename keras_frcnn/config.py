@@ -42,7 +42,7 @@ class Config:
 
         # overlaps for RPN
         self.rpn_min_overlap = 0.4
-        self.rpn_max_overlap = 0.6
+        self.rpn_max_overlap = 0.5
 
         # overlaps for classifier ROIs
         self.classifier_min_overlap = 0.1

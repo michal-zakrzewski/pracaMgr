@@ -50,12 +50,8 @@ config_output_filename = options.config_filename
 with open(config_output_filename, 'rb') as f_in:
     C = pickle.load(f_in)
 
-with open(path + "/results.csv", "w") as f:
-    f.write('ImageName,IsShip,AmountOfShips\n')
 with open(path + "/submission.csv", "w") as f:
     f.write('ImageId,EncodedPixels\n')
-with open(path + "/ship_detected.csv", "w") as g:
-    g.write('ImageName,IsShip,AmountOfShips\n')
 
 # turn off any data augmentation at test time
 C.use_horizontal_flips = False
