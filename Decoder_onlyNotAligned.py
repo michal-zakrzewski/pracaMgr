@@ -44,7 +44,7 @@ else:
         parser.error("Error: Zero or negative value was provided")
     else:
         number = int(options.ships_number)
-        print("Checking randomly selected", number, "ships")
+        print("Checking randomly selected", number, "not aligned ships")
 
 # turn rle example into a list of ints
 rle = [int(i) for i in df['EncodedPixels']['55bd28f41.jpg'].split()]
@@ -77,7 +77,7 @@ def checker(rle_code):
         angle = d / c
     except ZeroDivisionError:
         return True
-    if angle < 0.2 or angle > 5.1:
+    if angle > 0.2 or angle < 5.1:
         return True
     else:
         return False
@@ -98,10 +98,10 @@ def rle_to_pixels(rle_code):
 # Meaning that the image has more than one ship present
 # This part resets index for next ship occurrence
 df = df.reset_index()
-# Counter for ships detected and set incorrectly by rle_to_pixels, TODO: check why
+# Counter for ships detected and set incorrectly by rle_to_pixels
 incorrect = 0
 correct = 0
-notAllignedships = 0
+notAlignedShips = 0
 used_rows = []
 
 for i in tqdm(range(number)):
@@ -122,52 +122,44 @@ for i in tqdm(range(number)):
         y_min = min(table_y)
         x_max = max(table_x)
         y_max = max(table_y)
-        cond1 = x_min == 0 and x_max == 767
-        cond2 = x_max == 0 and x_min == 767
-        cond3 = y_min == 0 and y_max == 767
-        cond4 = y_max == 0 and y_min == 767
 
-        # decoder might makes mistakes - make sure that there's no BB for whole width/height
-        if cond1 or cond2 or cond3 or cond4:
-            incorrect += 1
         # Following code is not necessary right now
         # with open("incorrect_images.csv", "a") as g:
         #     g.write("input/train_v2/")
         #     print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
         #           file=g)
 
-        else:
-            # NOTE: uncomment following part for checking if the Bounding Boxes are correctly selected
-            # load_img = lambda filename: np.array(PIL.Image.open(f"./input/train_v2/{filename}"))
-            # im = np.array(load_img(df.loc[row_index, 'ImageId']), dtype=np.uint8)
-            # # Create figure and axes
-            # fig, ax = plt.subplots(1)
-            # # Display the image
-            # ax.imshow(im)
-            # # Create a Rectangle patch
-            # rect = patches.Rectangle((x_min, y_min), x_max-x_min, y_max-y_min, linewidth=1,
-            #                          edgecolor='r', facecolor='none')
-            # # Add the patch to the Axes
-            # ax.add_patch(rect)
-            # ax.set_title(df.loc[row_index, 'ImageId'])
-            # plt.show()
+        # NOTE: uncomment following part for checking if the Bounding Boxes are correctly selected
+        # load_img = lambda filename: np.array(PIL.Image.open(f"./input/train_v2/{filename}"))
+        # im = np.array(load_img(df.loc[row_index, 'ImageId']), dtype=np.uint8)
+        # # Create figure and axes
+        # fig, ax = plt.subplots(1)
+        # # Display the image
+        # ax.imshow(im)
+        # # Create a Rectangle patch
+        # rect = patches.Rectangle((x_min, y_min), x_max-x_min, y_max-y_min, linewidth=1,
+        #                          edgecolor='r', facecolor='none')
+        # # Add the patch to the Axes
+        # ax.add_patch(rect)
+        # ax.set_title(df.loc[row_index, 'ImageId'])
+        # plt.show()
 
-            correct += 1
-            if platform == "linux" or platform == "linux2":
-                with open("entry_data.csv", "a") as f:
-                    f.write("/content/pracaMgr/input/train_v2/")
-                    print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
-                          file=f)
-            else:
-                with open("entry_data.csv", "a") as f:
-                    f.write("input/train_v2/")
-                    print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
-                          file=f)
+        correct += 1
+        if platform == "linux" or platform == "linux2":
+            with open("entry_data.csv", "a") as f:
+                f.write("/content/pracaMgr/input/train_v2/")
+                print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
+                      file=f)
+        else:
+            with open("entry_data.csv", "a") as f:
+                f.write("input/train_v2/")
+                print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
+                      file=f)
     else:
-        notAllignedships += 1
+        notAlignedShips += 1
 
 print("Checked ships:", number)
 print("Incorrect ships:", incorrect)
 print("Correct ships:", correct)
-print("Not alligned ships:", notAllignedships)
+print("Not aligned ships:", notAlignedShips)
 print("Finished")
