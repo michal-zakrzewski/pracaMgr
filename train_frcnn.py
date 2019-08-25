@@ -164,16 +164,16 @@ model_classifier = Model([img_input, roi_input], classifier)
 # this is a model that holds both the RPN and the classifier, used to load/save weights for the models
 model_all = Model([img_input, roi_input], rpn[:2] + classifier)
 
-# try:
+try:
     # load_weights by name
     # some keras application model does not containing name
     # for this kinds of model, we need to re-construct model with naming
-print('loading weights from {}'.format(C.base_net_weights))
-model_rpn.load_weights(C.base_net_weights, by_name=True)
-model_classifier.load_weights(C.base_net_weights, by_name=True)
-# except:
-#     print('Could not load pretrained model weights. Weights can be found in the keras application folder \
-#         https://github.com/fchollet/keras/tree/master/keras/applications')
+    print('loading weights from {}'.format(C.base_net_weights))
+    model_rpn.load_weights(C.base_net_weights, by_name=True)
+    model_classifier.load_weights(C.base_net_weights, by_name=True)
+except:
+    print('Could not load pretrained model weights. Weights can be found in the keras application folder \
+        https://github.com/fchollet/keras/tree/master/keras/applications')
 
 optimizer = Adam(lr=1e-5)
 optimizer_classifier = Adam(lr=1e-5)
