@@ -391,9 +391,9 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.Decoder" />
-      <item itemvalue="Python.ExampleFile" />
       <item itemvalue="Python.ShipDetector" />
+      <item itemvalue="Python.ExampleFile" />
+      <item itemvalue="Python.Decoder" />
       <item itemvalue="Python.test_frcnn" />
     </list>
     <recent_temporary>
