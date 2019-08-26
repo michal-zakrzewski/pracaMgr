@@ -398,6 +398,8 @@
         <item itemvalue="Python.test_frcnn" />
         <item itemvalue="Python.Decoder" />
         <item itemvalue="Python.ExampleFile" />
+        <item itemvalue="Python.test_frcnn" />
+        <item itemvalue="Python.Decoder" />
       </list>
     </recent_temporary>
   </component>
