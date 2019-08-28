@@ -119,10 +119,20 @@ def overlap_checker(x1, y1, x2, y2, old_x1, old_x2, old_y1, old_y2):
             if not old_y1 <= y1 <= old_y2:
                 if not old_x1 <= x2 <= old_x2:
                     if not old_y1 <= y2 <= old_y2:
-                        return False
+                        if x1 < old_x1 and y1 < old_y1 and x2 > old_x2 and y2 > old_y2:
+                            return False
+                        else:
+                            return True
+                    else:
+                        return True
+                else:
+                    return True
+            else:
+                return True
+        else:
+            return True
     except TypeError:
         return False
-    return True
 
 
 class_mapping = C.class_mapping
@@ -181,6 +191,8 @@ counter = 0
 if platform == "linux" or platform == "linux2":
     if not os.path.exists('/content/drive/My Drive/pracaMgr/results_imgs'):
         os.mkdir('/content/drive/My Drive/pracaMgr/results_imgs')
+    if not os.path.exists('/content/drive/My Drive/pracaMgr/moreShipsImages'):
+        os.mkdir('/content/drive/My Drive/pracaMgr/moreShipsImages')
 
 for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     if not img_name.lower().endswith(('.bmp', '.jpeg', '.jpg', '.png', '.tif', '.tiff')):
@@ -347,6 +359,12 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     if len(all_dets) > 1:
         with open(path + "/moreShips.csv", "a") as f:
             print(img_name, len(all_dets), sep=',', file=f)
+        if platform == "linux" or platform == "linux2":
+            try:
+                cv2.imwrite('/content/drive/My Drive/pracaMgr/moreShipsImages/{}'.format(img_name), img)
+            except Exception as e:
+                print("No possibility to save an image!")
+                print(e)
 
     counter += 1
 
