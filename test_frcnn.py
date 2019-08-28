@@ -119,9 +119,9 @@ def overlap_checker(x1, y1, x2, y2, old_x1, old_x2, old_y1, old_y2):
             if not (x1 < old_x1 and y1 < old_y1 and x2 > old_x2 and y2 > old_y2):
                 if not (old_x1 < x1 and old_y1 < y1 and old_x2 > x2 and old_y2 > y2):
                     return False
+        return True
     except TypeError:
         return False
-    return True
 
 
 class_mapping = C.class_mapping
@@ -205,7 +205,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     # get the feature maps and output from the RPN
     [Y1, Y2, F] = model_rpn.predict(X)
 
-    R = roi_helpers.rpn_to_roi(Y1, Y2, C, K.image_dim_ordering(), overlap_thresh=0.7)
+    R = roi_helpers.rpn_to_roi(Y1, Y2, C, K.image_dim_ordering(), overlap_thresh=0.8)
 
     # convert from (x1,y1,x2,y2) to (x,y,w,h)
     R[:, 2] -= R[:, 0]
@@ -266,7 +266,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     for key in bboxes:
         bbox = np.array(bboxes[key])
 
-        new_boxes, new_probs = roi_helpers.non_max_suppression_fast(bbox, np.array(probs[key]), overlap_thresh=0.8)
+        new_boxes, new_probs = roi_helpers.non_max_suppression_fast(bbox, np.array(probs[key]), overlap_thresh=0.9)
         for jk in range(new_boxes.shape[0]):
             (x1, y1, x2, y2) = new_boxes[jk, :]
 
