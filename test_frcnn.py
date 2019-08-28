@@ -115,24 +115,13 @@ def get_real_coordinates(ratio, x1, y1, x2, y2):
 # Following function returns true if the rectangles are overlaping
 def overlap_checker(x1, y1, x2, y2, old_x1, old_x2, old_y1, old_y2):
     try:
-        if not old_x1 <= x1 <= old_x2:
-            if not old_y1 <= y1 <= old_y2:
-                if not old_x1 <= x2 <= old_x2:
-                    if not old_y1 <= y2 <= old_y2:
-                        if x1 < old_x1 and y1 < old_y1 and x2 > old_x2 and y2 > old_y2:
-                            return False
-                        else:
-                            return True
-                    else:
-                        return True
-                else:
-                    return True
-            else:
-                return True
-        else:
-            return True
+        if not old_x1 <= x1 <= old_x2 or not old_y1 <= y1 <= old_y2:
+            if not (x1 < old_x1 and y1 < old_y1 and x2 > old_x2 and y2 > old_y2):
+                if not (old_x1 < x1 and old_y1 < y1 and old_x2 > x2 and old_y2 > y2):
+                    return False
     except TypeError:
         return False
+    return True
 
 
 class_mapping = C.class_mapping
@@ -201,6 +190,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     old_x2 = None
     old_y1 = None
     old_y2 = None
+    saveValue = False
     print(img_name)
     st = time.time()
     filepath = os.path.join(img_path, img_name)
@@ -290,8 +280,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             if real_y2 > 767:
                 real_y2 = 767
             if overlap_checker(real_x1, real_y1, real_x2, real_y2, old_x1, old_x2, old_y1, old_y2):
-                with open(path + "/possibleCollisions.csv", "a") as f:
-                    print(img_name, len(all_dets), sep=',', file=f)
+                saveValue = True
             old_x1 = real_x1
             old_x2 = real_x2
             old_y1 = real_y1
@@ -370,6 +359,9 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
 
     # cv2.imshow('img', img)
     # cv2.waitKey(50)
+    if saveValue:
+        with open(path + "/possibleCollisions.csv", "a") as f:
+            print(img_name, len(all_dets), sep=',', file=f)
 
     if platform == "linux" or platform == "linux2" and counter == 20:
         shutil.copy(path + "/submission.csv",
