@@ -57,6 +57,10 @@ parser.add_option("--epoch_length", dest="epoch_length",
 parser.add_option("--config_filename", dest="config_filename",
                   help="Location to store all the metadata related to the training (to be used when testing).",
                   default="config.pickle")
+parser.add_option("--hf", dest="horizontal_flips", help="Augment with horizontal flips in training. (Default=false).", action="store_true", default=False)
+parser.add_option("--vf", dest="vertical_flips", help="Augment with vertical flips in training. (Default=false).", action="store_true", default=False)
+parser.add_option("--rot", "--rot_90", dest="rot_90", help="Augment with 90 degree rotations in training. (Default=false).",
+                  action="store_true", default=False)
 parser.add_option("--output_weight_path", dest="output_weight_path",
                   help="Output path for weights.", default=path + '/weights.hdf5')
 parser.add_option("--input_weight_path",
@@ -86,6 +90,11 @@ elif options.network == 'resnet50':
 else:
     print('Not a valid model')
     raise ValueError
+
+# turn off any data augmentation at test time
+C.use_horizontal_flips = False
+C.use_vertical_flips = False
+C.rot_90 = False
 
 # check if weight path was passed via command line
 if options.input_weight_path:
@@ -247,7 +256,7 @@ for epoch_num in range(num_epochs):
         P_rpn = model_rpn.predict_on_batch(X)
 
         R = roi_helpers.rpn_to_roi(P_rpn[0], P_rpn[1], C, K.image_dim_ordering(
-        ), use_regr=True, overlap_thresh=0.6, max_boxes=300)
+        ), use_regr=True, overlap_thresh=0.7, max_boxes=300)
         # note: calc_iou converts from (x1,y1,x2,y2) to (x,y,w,h) format
         X2, Y1, Y2, IouS = roi_helpers.calc_iou(R, img_data, C, class_mapping)
 
