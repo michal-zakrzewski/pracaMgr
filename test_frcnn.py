@@ -290,7 +290,6 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             firstPixel = real_x1 * 768 + real_y1
             thick = real_y2 - real_y1
             lastPixel = real_x2 * 768 + real_y2
-            print (real_x1, real_y1, real_x2, real_y2)
             if firstPixel == 0:
                 firstPixel = 1
             encodedPixels += str(firstPixel)
@@ -317,7 +316,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             all_dets.append((key, 100 * new_probs[jk]))
 
             (retval, baseLine) = cv2.getTextSize(textLabel, cv2.FONT_HERSHEY_COMPLEX, 1, 1)
-            textOrg = (real_x1, real_y1 + 80)
+            textOrg = (real_x1, real_y1 -50)
 
             cv2.rectangle(img, (textOrg[0] - 5, textOrg[1] + baseLine - 5),
                           (textOrg[0] + retval[0] + 5, textOrg[1] - retval[1] - 5), (0, 0, 0), 2)
@@ -326,6 +325,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             cv2.putText(img, textLabel, textOrg, cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 0), 1)
 
     print('Elapsed time = {}'.format(time.time() - st))
+    print (real_x1, real_y1, real_x2, real_y2)
     print(all_dets)
     if len(all_dets) > 0:
         if platform == "linux" or platform == "linux2":
