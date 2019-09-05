@@ -290,6 +290,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             firstPixel = real_x1 * 768 + real_y1
             thick = real_y2 - real_y1
             lastPixel = real_x2 * 768 + real_y2
+            print (real_x1, real_y1, real_x2, real_y2)
             if firstPixel == 0:
                 firstPixel = 1
             encodedPixels += str(firstPixel)
@@ -316,7 +317,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             all_dets.append((key, 100 * new_probs[jk]))
 
             (retval, baseLine) = cv2.getTextSize(textLabel, cv2.FONT_HERSHEY_COMPLEX, 1, 1)
-            textOrg = (real_x2, real_y2 + 10)
+            textOrg = (real_x1, real_y1 + 80)
 
             cv2.rectangle(img, (textOrg[0] - 5, textOrg[1] + baseLine - 5),
                           (textOrg[0] + retval[0] + 5, textOrg[1] - retval[1] - 5), (0, 0, 0), 2)
