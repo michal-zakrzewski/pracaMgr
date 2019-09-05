@@ -104,8 +104,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test_frcnn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="166">
-              <caret line="274" column="29" lean-forward="true" selection-start-line="274" selection-start-column="29" selection-end-line="274" selection-end-column="29" />
+            <state relative-caret-position="-49">
+              <caret line="290" column="58" lean-forward="true" selection-start-line="290" selection-start-column="58" selection-end-line="290" selection-end-column="58" />
               <folding>
                 <element signature="e#24#55#0" expanded="true" />
               </folding>
@@ -462,28 +462,7 @@
       <workItem from="1560238381869" duration="90207000" />
       <workItem from="1564036378569" duration="81495000" />
       <workItem from="1565763693244" duration="10176000" />
-      <workItem from="1567352438148" duration="9901000" />
-    </task>
-    <task id="LOCAL-00110" summary="Submission csv fix">
-      <created>1565175908646</created>
-      <option name="number" value="00110" />
-      <option name="presentableId" value="LOCAL-00110" />
-      <option name="project" value="LOCAL" />
-      <updated>1565175908647</updated>
-    </task>
-    <task id="LOCAL-00111" summary="Submission csv fix">
-      <created>1565176142831</created>
-      <option name="number" value="00111" />
-      <option name="presentableId" value="LOCAL-00111" />
-      <option name="project" value="LOCAL" />
-      <updated>1565176142831</updated>
-    </task>
-    <task id="LOCAL-00112" summary="Reverting params">
-      <created>1565185881908</created>
-      <option name="number" value="00112" />
-      <option name="presentableId" value="LOCAL-00112" />
-      <option name="project" value="LOCAL" />
-      <updated>1565185881909</updated>
+      <workItem from="1567352438148" duration="10514000" />
     </task>
     <task id="LOCAL-00113" summary="Incorrect pixels checker">
       <created>1565249358783</created>
@@ -807,11 +786,32 @@
       <option name="project" value="LOCAL" />
       <updated>1567691182905</updated>
     </task>
-    <option name="localTasksCounter" value="159" />
+    <task id="LOCAL-00159" summary="Checking params">
+      <created>1567691524393</created>
+      <option name="number" value="00159" />
+      <option name="presentableId" value="LOCAL-00159" />
+      <option name="project" value="LOCAL" />
+      <updated>1567691524393</updated>
+    </task>
+    <task id="LOCAL-00160" summary="Checking params">
+      <created>1567691645295</created>
+      <option name="number" value="00160" />
+      <option name="presentableId" value="LOCAL-00160" />
+      <option name="project" value="LOCAL" />
+      <updated>1567691645295</updated>
+    </task>
+    <task id="LOCAL-00161" summary="Checking params">
+      <created>1567691900198</created>
+      <option name="number" value="00161" />
+      <option name="presentableId" value="LOCAL-00161" />
+      <option name="project" value="LOCAL" />
+      <updated>1567691900198</updated>
+    </task>
+    <option name="localTasksCounter" value="162" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="253570000" />
+    <option name="totallyTimeSpent" value="254183000" />
   </component>
   <component name="TodoView" selected-index="1">
     <todo-panel id="selected-file">
@@ -1305,8 +1305,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test_frcnn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="274" column="29" lean-forward="true" selection-start-line="274" selection-start-column="29" selection-end-line="274" selection-end-column="29" />
+        <state relative-caret-position="-49">
+          <caret line="290" column="58" lean-forward="true" selection-start-line="290" selection-start-column="58" selection-end-line="290" selection-end-column="58" />
           <folding>
             <element signature="e#24#55#0" expanded="true" />
           </folding>
