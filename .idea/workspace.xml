@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1d952f90-d518-4ff0-8929-851fca2222d1" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/Decoder_manyShips.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test_frcnn.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_frcnn.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -105,8 +104,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test_frcnn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="586">
-              <caret line="345" column="35" lean-forward="true" selection-start-line="345" selection-start-column="35" selection-end-line="345" selection-end-column="35" />
+            <state relative-caret-position="308">
+              <caret line="318" column="45" selection-start-line="318" selection-start-column="45" selection-end-line="318" selection-end-column="45" />
               <folding>
                 <element signature="e#24#55#0" expanded="true" />
               </folding>
@@ -463,14 +462,7 @@
       <workItem from="1560238381869" duration="90207000" />
       <workItem from="1564036378569" duration="81495000" />
       <workItem from="1565763693244" duration="10176000" />
-      <workItem from="1567352438148" duration="8668000" />
-    </task>
-    <task id="LOCAL-00104" summary="New Decoder file">
-      <created>1564931795027</created>
-      <option name="number" value="00104" />
-      <option name="presentableId" value="LOCAL-00104" />
-      <option name="project" value="LOCAL" />
-      <updated>1564931795027</updated>
+      <workItem from="1567352438148" duration="9124000" />
     </task>
     <task id="LOCAL-00105" summary="Reverting params">
       <created>1564931853543</created>
@@ -808,11 +800,18 @@
       <option name="project" value="LOCAL" />
       <updated>1567070288652</updated>
     </task>
-    <option name="localTasksCounter" value="153" />
+    <task id="LOCAL-00153" summary="Checking params">
+      <created>1567689410384</created>
+      <option name="number" value="00153" />
+      <option name="presentableId" value="LOCAL-00153" />
+      <option name="project" value="LOCAL" />
+      <updated>1567689410385</updated>
+    </task>
+    <option name="localTasksCounter" value="154" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="252337000" />
+    <option name="totallyTimeSpent" value="252793000" />
   </component>
   <component name="TodoView" selected-index="1">
     <todo-panel id="selected-file">
@@ -948,9 +947,9 @@
     <MESSAGE value="Reverting to Relu" />
     <MESSAGE value="Checking params on Selu" />
     <MESSAGE value="Adding conflicts checker" />
-    <MESSAGE value="Checking params" />
     <MESSAGE value="Adding rotations in trainings" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding rotations in trainings" />
+    <MESSAGE value="Checking params" />
+    <option name="LAST_COMMIT_MESSAGE" value="Checking params" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1306,8 +1305,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test_frcnn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="586">
-          <caret line="345" column="35" lean-forward="true" selection-start-line="345" selection-start-column="35" selection-end-line="345" selection-end-column="35" />
+        <state relative-caret-position="308">
+          <caret line="318" column="45" selection-start-line="318" selection-start-column="45" selection-end-line="318" selection-end-column="45" />
           <folding>
             <element signature="e#24#55#0" expanded="true" />
           </folding>
