@@ -325,7 +325,6 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             cv2.putText(img, textLabel, textOrg, cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 0), 1)
 
     print('Elapsed time = {}'.format(time.time() - st))
-    print (real_x1, real_y1, real_x2, real_y2)
     print(all_dets)
     if len(all_dets) > 0:
         if platform == "linux" or platform == "linux2":
