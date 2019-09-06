@@ -173,7 +173,7 @@ all_imgs = []
 
 classes = {}
 
-bbox_threshold = 0.8
+bbox_threshold = 0.7
 
 visualise = True
 counter = 0
@@ -205,7 +205,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     # get the feature maps and output from the RPN
     [Y1, Y2, F] = model_rpn.predict(X)
 
-    R = roi_helpers.rpn_to_roi(Y1, Y2, C, K.image_dim_ordering(), overlap_thresh=0.7)
+    R = roi_helpers.rpn_to_roi(Y1, Y2, C, K.image_dim_ordering(), overlap_thresh=0.5)
 
     # convert from (x1,y1,x2,y2) to (x,y,w,h)
     R[:, 2] -= R[:, 0]
@@ -287,8 +287,6 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             old_y2 = real_y2
             encodedPixels = ''
             i = 1
-            with open(path + "/submission.csv", "a") as f:
-                print(img_name, real_x1, real_y1, real_x2, real_y2, sep=',', file=f)
             firstPixel = real_x1 * 768 + real_y1
             thick = real_y2 - real_y1
             lastPixel = real_x2 * 768 + real_y2
