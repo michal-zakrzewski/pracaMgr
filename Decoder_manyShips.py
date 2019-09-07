@@ -25,8 +25,7 @@ parser.add_option("-n", "--ships_number", dest="ships_number", help="Number of s
 (options, args) = parser.parse_args()
 
 path_to_csv = path + "/train_ship_segmentations_v2.csv"
-df2 = pd.read_csv(path_to_csv, index_col=0).dropna()
-df = pd.DataFrame(df2)
+df = pd.read_csv(path_to_csv, sep='\s*,\s*', engine = 'python', index_col=0).dropna()
 
 ids = df.groupby('ImageId').aggregate('count')
 ids = ids[ids.EncodedPixels >= 3].index.tolist()
