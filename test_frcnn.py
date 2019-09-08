@@ -163,12 +163,8 @@ model_classifier = Model([feature_map_input, roi_input], classifier)
 
 model_path = options.input_weight_path
 print('Loading weights from {}'.format(model_path))
-try:
-    model_rpn.load_weights(model_path, by_name=True)
-    model_classifier.load_weights(model_path, by_name=True)
-except Exception:
-    model_rpn.load_weights(model_path, reshape=True)
-    model_classifier.load_weights(model_path, reshape=True)
+model_rpn.load_weights(model_path, by_name=True)
+model_classifier.load_weights(model_path, by_name=True)
 
 
 model_rpn.compile(optimizer='sgd', loss='mse')
