@@ -22,6 +22,7 @@ from keras.utils import generic_utils
 from keras.callbacks import TensorBoard
 from keras_frcnn.simple_parser import get_data
 from sys import platform
+from keras_frcnn import resnet as nn
 
 if platform == "linux" or platform == "linux2":
     from IPython.core.display import display
@@ -65,8 +66,6 @@ parser.add_option("--output_weight_path", dest="output_weight_path",
                   help="Output path for weights.", default=path + '/weights.hdf5')
 parser.add_option("--input_weight_path",
                   dest="input_weight_path", help="Input path for weights.")
-parser.add_option("--network", dest="network", help="Base network to use. Supports vgg or resnet50.",
-                  default='resnet50')
 
 (options, args) = parser.parse_args()
 
@@ -79,17 +78,6 @@ C = config.Config()
 
 C.model_path = options.output_weight_path
 C.num_rois = 32
-if options.network == 'vgg':
-    C.network = 'vgg'
-    print('Using VGG')
-    from keras_frcnn import vgg as nn
-elif options.network == 'resnet50':
-    from keras_frcnn import resnet as nn
-    print('Using resnet50')
-    C.network = 'resnet50'
-else:
-    print('Not a valid model')
-    raise ValueError
 
 # turn off any data augmentation at test time
 C.use_horizontal_flips = False
@@ -385,7 +373,7 @@ for epoch_num in range(num_epochs):
                       epoch_num)
 
             if curr_loss < best_loss:
-                filename = "weights" + str(curr_loss)[2:6] + options.network +".hdf5"
+                filename = "weights" + str(curr_loss)[2:6] +".hdf5"
                 if C.verbose:
                     print('Total loss decreased from {} to {}, saving weights'.format(
                         best_loss, curr_loss))
@@ -397,7 +385,7 @@ for epoch_num in range(num_epochs):
                     print(e)
                 try:
                     os.remove(
-                        "/content/drive/My Drive/pracaMgr/Weights/weights" + str(best_loss)[2:6] + options.network + ".hdf5")
+                        "/content/drive/My Drive/pracaMgr/Weights/weights" + str(best_loss)[2:6] + ".hdf5")
                 except OSError as e:
                     print("File removing was not possible")
                     print(e)

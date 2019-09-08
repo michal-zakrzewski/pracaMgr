@@ -35,8 +35,6 @@ parser.add_option("-n", "--num_rois", dest="num_rois",
 parser.add_option("--config_filename", dest="config_filename",
                   help="Location to read the metadata related to the training (generated when training).",
                   default="config.pickle")
-parser.add_option("--network", dest="network", help="Base network to use. Supports vgg or resnet50.",
-                  default='resnet50')
 parser.add_option("--input_weight_path", dest="input_weight_path", help="Input path for weights.",
                   default="./model_frcnn.hdf5")
 
@@ -147,7 +145,7 @@ img_input = Input(shape=input_shape_img)
 roi_input = Input(shape=(C.num_rois, 4))
 feature_map_input = Input(shape=input_shape_features)
 
-# define the base network (resnet here, can be VGG, Inception, etc)
+# define the base network
 shared_layers = nn.nn_base(img_input, trainable=True)
 
 # define the RPN, built on the base layers
