@@ -244,7 +244,7 @@ for epoch_num in range(num_epochs):
         P_rpn = model_rpn.predict_on_batch(X)
 
         R = roi_helpers.rpn_to_roi(P_rpn[0], P_rpn[1], C, K.image_dim_ordering(
-        ), use_regr=True, overlap_thresh=0.7, max_boxes=300)
+        ), use_regr=True, overlap_thresh=0.6, max_boxes=400)
         # note: calc_iou converts from (x1,y1,x2,y2) to (x,y,w,h) format
         X2, Y1, Y2, IouS = roi_helpers.calc_iou(R, img_data, C, class_mapping)
 
