@@ -35,8 +35,6 @@ parser.add_option("-n", "--num_rois", dest="num_rois",
 parser.add_option("--config_filename", dest="config_filename",
                   help="Location to read the metadata related to the training (generated when training).",
                   default="config.pickle")
-parser.add_option("--network", dest="network", help="Base network to use. Supports vgg or resnet50.",
-                  default='resnet50')
 parser.add_option("--input_weight_path", dest="input_weight_path", help="Input path for weights.",
                   default="./model_frcnn.hdf5")
 
@@ -52,6 +50,10 @@ with open(config_output_filename, 'rb') as f_in:
 
 with open(path + "/submission.csv", "w") as f:
     f.write('ImageId,EncodedPixels\n')
+with open(path + "/moreShips.csv", "w") as f:
+    f.write('ImageId,numberOfShips\n')
+with open(path + "/possibleCollisions.csv", "w") as f:
+    f.write('ImageId,numberOfShips\n')
 
 # turn off any data augmentation at test time
 C.use_horizontal_flips = False
@@ -108,6 +110,18 @@ def get_real_coordinates(ratio, x1, y1, x2, y2):
     return real_x1, real_y1, real_x2, real_y2
 
 
+# Following function returns true if the rectangles are overlaping
+def overlap_checker(x1, y1, x2, y2, old_x1, old_x2, old_y1, old_y2):
+    try:
+        if not old_x1 <= x1 <= old_x2 or not old_y1 <= y1 <= old_y2:
+            if not (x1 < old_x1 and y1 < old_y1 and x2 > old_x2 and y2 > old_y2):
+                if not (old_x1 < x1 and old_y1 < y1 and old_x2 > x2 and old_y2 > y2):
+                    return False
+        return True
+    except TypeError:
+        return False
+
+
 class_mapping = C.class_mapping
 
 if 'bg' not in class_mapping:
@@ -131,7 +145,7 @@ img_input = Input(shape=input_shape_img)
 roi_input = Input(shape=(C.num_rois, 4))
 feature_map_input = Input(shape=input_shape_features)
 
-# define the base network (resnet here, can be VGG, Inception, etc)
+# define the base network
 shared_layers = nn.nn_base(img_input, trainable=True)
 
 # define the RPN, built on the base layers
@@ -150,6 +164,7 @@ print('Loading weights from {}'.format(model_path))
 model_rpn.load_weights(model_path, by_name=True)
 model_classifier.load_weights(model_path, by_name=True)
 
+
 model_rpn.compile(optimizer='sgd', loss='mse')
 model_classifier.compile(optimizer='sgd', loss='mse')
 
@@ -164,10 +179,17 @@ counter = 0
 if platform == "linux" or platform == "linux2":
     if not os.path.exists('/content/drive/My Drive/pracaMgr/results_imgs'):
         os.mkdir('/content/drive/My Drive/pracaMgr/results_imgs')
+    if not os.path.exists('/content/drive/My Drive/pracaMgr/moreShipsImages'):
+        os.mkdir('/content/drive/My Drive/pracaMgr/moreShipsImages')
 
 for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     if not img_name.lower().endswith(('.bmp', '.jpeg', '.jpg', '.png', '.tif', '.tiff')):
         continue
+    old_x1 = None
+    old_x2 = None
+    old_y1 = None
+    old_y2 = None
+    saveValue = False
     print(img_name)
     st = time.time()
     filepath = os.path.join(img_path, img_name)
@@ -182,7 +204,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     # get the feature maps and output from the RPN
     [Y1, Y2, F] = model_rpn.predict(X)
 
-    R = roi_helpers.rpn_to_roi(Y1, Y2, C, K.image_dim_ordering(), overlap_thresh=0.8)
+    R = roi_helpers.rpn_to_roi(Y1, Y2, C, K.image_dim_ordering(), overlap_thresh=0.5)
 
     # convert from (x1,y1,x2,y2) to (x,y,w,h)
     R[:, 2] -= R[:, 0]
@@ -243,7 +265,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     for key in bboxes:
         bbox = np.array(bboxes[key])
 
-        new_boxes, new_probs = roi_helpers.non_max_suppression_fast(bbox, np.array(probs[key]), overlap_thresh=0.5)
+        new_boxes, new_probs = roi_helpers.non_max_suppression_fast(bbox, np.array(probs[key]), overlap_thresh=0.8)
         for jk in range(new_boxes.shape[0]):
             (x1, y1, x2, y2) = new_boxes[jk, :]
 
@@ -256,6 +278,12 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                 real_y1 = 767
             if real_y2 > 767:
                 real_y2 = 767
+            if overlap_checker(real_x1, real_y1, real_x2, real_y2, old_x1, old_x2, old_y1, old_y2):
+                saveValue = True
+            old_x1 = real_x1
+            old_x2 = real_x2
+            old_y1 = real_y1
+            old_y2 = real_y2
             encodedPixels = ''
             i = 1
             firstPixel = real_x1 * 768 + real_y1
@@ -283,11 +311,11 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             cv2.rectangle(img, (real_x1, real_y1), (real_x2, real_y2),
                           (int(class_to_color[key][0]), int(class_to_color[key][1]), int(class_to_color[key][2])), 2)
 
-            textLabel = '{}: {}'.format(key, int(100 * new_probs[jk]))
+            textLabel = '{}%'.format(int(100 * new_probs[jk]))
             all_dets.append((key, 100 * new_probs[jk]))
 
             (retval, baseLine) = cv2.getTextSize(textLabel, cv2.FONT_HERSHEY_COMPLEX, 1, 1)
-            textOrg = (real_x1, real_y1 - 0)
+            textOrg = (real_x1, real_y1 + 10)
 
             cv2.rectangle(img, (textOrg[0] - 5, textOrg[1] + baseLine - 5),
                           (textOrg[0] + retval[0] + 5, textOrg[1] - retval[1] - 5), (0, 0, 0), 2)
@@ -299,32 +327,55 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     print(all_dets)
     if len(all_dets) > 0:
         if platform == "linux" or platform == "linux2":
-            cv2.imwrite('/content/drive/My Drive/pracaMgr/results_imgs/{}.png'.format(img_name), img)
+            try:
+                cv2.imwrite('/content/drive/My Drive/pracaMgr/results_imgs/{}'.format(img_name), img)
+            except Exception as e:
+                print("No possibility to save an image!")
+                print(e)
         else:
-            if os.path.exists(path + '/results_imgs'):
-                cv2.imwrite(path + 'results_imgs/{}.png'.format(img_name), img)
-            else:
+            if not os.path.exists(path + '/results_imgs'):
                 os.mkdir(path + '/results_imgs')
-                try:
-                    cv2.imwrite(path + 'results_imgs/{}.png'.format(img_name), img)
-                except Exception as e:
-                    print("No possibility to save an image!")
-                    print(e)
+            try:
+                cv2.imwrite(path + 'results_imgs/{}.png'.format(img_name), img)
+            except Exception as e:
+                print("No possibility to save an image!")
+                print(e)
 
     else:
         with open(path + "/submission.csv", "a") as f:
             print(img_name, "", sep=',', file=f)
+    if len(all_dets) > 1:
+        with open(path + "/moreShips.csv", "a") as f:
+            print(img_name, len(all_dets), sep=',', file=f)
+        if platform == "linux" or platform == "linux2":
+            try:
+                cv2.imwrite('/content/drive/My Drive/pracaMgr/moreShipsImages/{}'.format(img_name), img)
+            except Exception as e:
+                print("No possibility to save an image!")
+                print(e)
+
     counter += 1
 
     # cv2.imshow('img', img)
     # cv2.waitKey(50)
+    if saveValue:
+        with open(path + "/possibleCollisions.csv", "a") as f:
+            print(img_name, len(all_dets), sep=',', file=f)
 
     if platform == "linux" or platform == "linux2" and counter == 20:
         shutil.copy(path + "/submission.csv",
                     "/content/drive/My Drive/pracaMgr/submission.csv")
+        shutil.copy(path + "/moreShips.csv",
+                    "/content/drive/My Drive/pracaMgr/moreShips.csv")
+        shutil.copy(path + "/possibleCollisions.csv",
+                    "/content/drive/My Drive/pracaMgr/possibleCollisions.csv")
         counter = 0
 
-print("Finished")
 if platform == "linux" or platform == "linux2":
     shutil.copy(path + "/submission.csv",
                 "/content/drive/My Drive/pracaMgr/submission" + str(datetime.date.today()) + "final.csv")
+    shutil.copy(path + "/moreShips.csv",
+                "/content/drive/My Drive/pracaMgr/moreShips" + str(datetime.date.today()) + "final.csv")
+    shutil.copy(path + "/possibleCollisions.csv",
+                "/content/drive/My Drive/pracaMgr/possibleCollisions" + str(datetime.date.today()) + "final.csv")
+print("Finished")

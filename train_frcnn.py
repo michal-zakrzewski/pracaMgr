@@ -22,6 +22,7 @@ from keras.utils import generic_utils
 from keras.callbacks import TensorBoard
 from keras_frcnn.simple_parser import get_data
 from sys import platform
+from keras_frcnn import resnet as nn
 
 if platform == "linux" or platform == "linux2":
     from IPython.core.display import display
@@ -57,12 +58,14 @@ parser.add_option("--epoch_length", dest="epoch_length",
 parser.add_option("--config_filename", dest="config_filename",
                   help="Location to store all the metadata related to the training (to be used when testing).",
                   default="config.pickle")
+parser.add_option("--hf", dest="horizontal_flips", help="Augment with horizontal flips in training. (Default=false).", action="store_true", default=False)
+parser.add_option("--vf", dest="vertical_flips", help="Augment with vertical flips in training. (Default=false).", action="store_true", default=False)
+parser.add_option("--rot", "--rot_90", dest="rot_90", help="Augment with 90 degree rotations in training. (Default=false).",
+                  action="store_true", default=False)
 parser.add_option("--output_weight_path", dest="output_weight_path",
                   help="Output path for weights.", default=path + '/weights.hdf5')
 parser.add_option("--input_weight_path",
                   dest="input_weight_path", help="Input path for weights.")
-parser.add_option("--network", dest="network", help="Base network to use. Supports vgg or resnet50.",
-                  default='resnet50')
 
 (options, args) = parser.parse_args()
 
@@ -75,17 +78,11 @@ C = config.Config()
 
 C.model_path = options.output_weight_path
 C.num_rois = 32
-if options.network == 'vgg':
-    C.network = 'vgg'
-    print('Using VGG')
-    from keras_frcnn import vgg as nn
-elif options.network == 'resnet50':
-    from keras_frcnn import resnet as nn
-    print('Using resnet50')
-    C.network = 'resnet50'
-else:
-    print('Not a valid model')
-    raise ValueError
+
+# turn off any data augmentation at test time
+C.use_horizontal_flips = False
+C.use_vertical_flips = False
+C.rot_90 = False
 
 # check if weight path was passed via command line
 if options.input_weight_path:
@@ -247,7 +244,7 @@ for epoch_num in range(num_epochs):
         P_rpn = model_rpn.predict_on_batch(X)
 
         R = roi_helpers.rpn_to_roi(P_rpn[0], P_rpn[1], C, K.image_dim_ordering(
-        ), use_regr=True, overlap_thresh=0.6, max_boxes=300)
+        ), use_regr=True, overlap_thresh=0.6, max_boxes=400)
         # note: calc_iou converts from (x1,y1,x2,y2) to (x,y,w,h) format
         X2, Y1, Y2, IouS = roi_helpers.calc_iou(R, img_data, C, class_mapping)
 
@@ -376,7 +373,7 @@ for epoch_num in range(num_epochs):
                       epoch_num)
 
             if curr_loss < best_loss:
-                filename = "weights" + str(curr_loss)[2:6] + options.network +".hdf5"
+                filename = "weights" + str(curr_loss)[2:6] +".hdf5"
                 if C.verbose:
                     print('Total loss decreased from {} to {}, saving weights'.format(
                         best_loss, curr_loss))
@@ -388,7 +385,7 @@ for epoch_num in range(num_epochs):
                     print(e)
                 try:
                     os.remove(
-                        "/content/drive/My Drive/pracaMgr/Weights/weights" + str(best_loss)[2:6] + options.network + ".hdf5")
+                        "/content/drive/My Drive/pracaMgr/Weights/weights" + str(best_loss)[2:6] + ".hdf5")
                 except OSError as e:
                     print("File removing was not possible")
                     print(e)
