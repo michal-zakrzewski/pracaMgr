@@ -137,7 +137,7 @@ for i in tqdm(range(number)):
             cond3 = y_min == 0 and y_max == 767
             cond4 = y_max == 0 and y_min == 767
             if cond1 or cond2 or cond3 or cond4:
-                incorrect2 += 1
+                incorrect += 1
             else:
 
                 # # NOTE: uncomment following part for checking if the Bounding Boxes are correctly selected
