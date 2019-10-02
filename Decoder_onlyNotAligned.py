@@ -9,6 +9,7 @@ import PIL
 
 if platform == "linux" or platform == "linux2":
     from IPython.core.display import display
+
     path = str("/content/pracaMgr/input")
 elif platform == "darwin":
     path = str("./input")
@@ -135,39 +136,46 @@ for i in tqdm(range(number)):
             y_min = min(table_y)
             x_max = max(table_x)
             y_max = max(table_y)
-
-            # Following code is not necessary right now
-            # with open("incorrect_images.csv", "a") as g:
-            #     g.write("input/train_v2/")
-            #     print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
-            #           file=g)
-
-            # NOTE: uncomment following part for checking if the Bounding Boxes are correctly selected
-            # load_img = lambda filename: np.array(PIL.Image.open(f"./input/train_v2/{filename}"))
-            # im = np.array(load_img(df.loc[row_index, 'ImageId']), dtype=np.uint8)
-            # # Create figure and axes
-            # fig, ax = plt.subplots(1)
-            # # Display the image
-            # ax.imshow(im)
-            # # Create a Rectangle patch
-            # rect = patches.Rectangle((x_min, y_min), x_max-x_min, y_max-y_min, linewidth=1,
-            #                          edgecolor='r', facecolor='none')
-            # # Add the patch to the Axes
-            # ax.add_patch(rect)
-            # ax.set_title(df.loc[row_index, 'ImageId'])
-            # plt.show()
-
-            correct += 1
-            if platform == "linux" or platform == "linux2":
-                with open("entry_data.csv", "a") as f:
-                    f.write("/content/pracaMgr/input/train_v2/")
-                    print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
-                          file=f)
+            cond1 = x_min == 0 and x_max == 767
+            cond2 = x_max == 0 and x_min == 767
+            cond3 = y_min == 0 and y_max == 767
+            cond4 = y_max == 0 and y_min == 767
+            if cond1 or cond2 or cond3 or cond4:
+                incorrect += 1
             else:
-                with open("entry_data.csv", "a") as f:
-                    f.write("input/train_v2/")
-                    print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
-                          file=f)
+
+                # Following code is not necessary right now
+                # with open("incorrect_images.csv", "a") as g:
+                #     g.write("input/train_v2/")
+                #     print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
+                #           file=g)
+
+                # NOTE: uncomment following part for checking if the Bounding Boxes are correctly selected
+                # load_img = lambda filename: np.array(PIL.Image.open(f"./input/train_v2/{filename}"))
+                # im = np.array(load_img(df.loc[row_index, 'ImageId']), dtype=np.uint8)
+                # # Create figure and axes
+                # fig, ax = plt.subplots(1)
+                # # Display the image
+                # ax.imshow(im)
+                # # Create a Rectangle patch
+                # rect = patches.Rectangle((x_min, y_min), x_max-x_min, y_max-y_min, linewidth=1,
+                #                          edgecolor='r', facecolor='none')
+                # # Add the patch to the Axes
+                # ax.add_patch(rect)
+                # ax.set_title(df.loc[row_index, 'ImageId'])
+                # plt.show()
+
+                correct += 1
+                if platform == "linux" or platform == "linux2":
+                    with open("entry_data.csv", "a") as f:
+                        f.write("/content/pracaMgr/input/train_v2/")
+                        print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
+                              file=f)
+                else:
+                    with open("entry_data.csv", "a") as f:
+                        f.write("input/train_v2/")
+                        print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
+                              file=f)
         else:
             notAlignedShips += 1
     else:
