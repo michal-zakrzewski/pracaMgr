@@ -3,6 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="1d952f90-d518-4ff0-8929-851fca2222d1" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/Decoder_Unet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decoder_allShips.py" beforeDir="false" afterPath="$PROJECT_DIR$/Decoder_allShips.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decoder_onlyAligned.py" beforeDir="false" afterPath="$PROJECT_DIR$/Decoder_onlyAligned.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Decoder_onlyNotAligned.py" beforeDir="false" afterPath="$PROJECT_DIR$/Decoder_onlyNotAligned.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train_frcnn.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_frcnn.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,8 +39,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/train_frcnn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2595">
-              <caret line="173" column="7" selection-start-line="173" selection-start-column="7" selection-end-line="173" selection-end-column="7" />
+            <state relative-caret-position="5358">
+              <caret line="404" column="26" selection-start-line="404" selection-start-column="26" selection-end-line="404" selection-end-column="26" />
               <folding>
                 <element signature="e#24#55#0" expanded="true" />
               </folding>
@@ -44,45 +49,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/keras_frcnn/RoiPoolingConv.py">
+        <entry file="file://$PROJECT_DIR$/Decoder_allShips.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <folding>
-                <element signature="e#0#39#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/keras_frcnn/simple_parser.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="750">
-              <caret line="50" column="33" selection-start-line="50" selection-start-column="33" selection-end-line="50" selection-end-column="33" />
-              <folding>
-                <element signature="e#0#10#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/keras_frcnn/resnet.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="810">
-              <caret line="54" column="24" selection-start-line="54" selection-start-column="20" selection-end-line="54" selection-end-column="24" />
-              <folding>
-                <element signature="e#197#234#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Decoder_onlyNotAligned.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1125">
-              <caret line="75" column="8" selection-start-line="75" selection-start-column="8" selection-end-line="75" selection-end-column="8" />
+            <state relative-caret-position="311">
+              <caret line="65" column="24" lean-forward="true" selection-start-line="65" selection-start-column="24" selection-end-line="65" selection-end-column="24" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -91,12 +61,57 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test_frcnn.py">
+        <entry file="file://$PROJECT_DIR$/Decoder_onlyNotAligned.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3675">
-              <caret line="245" column="114" selection-start-line="245" selection-start-column="114" selection-end-line="245" selection-end-column="114" />
+            <state relative-caret-position="313">
+              <caret line="73" column="19" selection-start-line="73" selection-start-column="19" selection-end-line="73" selection-end-column="19" />
               <folding>
-                <element signature="e#24#55#0" expanded="true" />
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Decoder_onlyAligned.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="68" column="9" lean-forward="true" selection-start-line="68" selection-start-column="9" selection-end-line="68" selection-end-column="9" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/keras_frcnn/resnet.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1230">
+              <caret line="82" column="67" selection-start-line="82" selection-start-column="67" selection-end-line="82" selection-end-column="67" />
+              <folding>
+                <element signature="e#197#234#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/keras_frcnn/FixedBatchNormalization.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="7" column="8" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/keras_frcnn/data_generators.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="211">
+              <caret line="62" column="8" selection-start-line="62" selection-start-column="8" selection-end-line="62" selection-end-column="8" />
+              <folding>
+                <element signature="e#0#38#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -105,8 +120,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/keras_frcnn/roi_helpers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3390">
-              <caret line="226" column="103" selection-start-line="226" selection-start-column="103" selection-end-line="226" selection-end-column="103" />
+            <state relative-caret-position="-2">
+              <caret line="207" lean-forward="true" selection-start-line="207" selection-end-line="207" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -131,9 +149,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>rot</find>
-      <find>exc</find>
-      <find>get_data</find>
       <find>a</find>
       <find>return t</find>
       <find>x</find>
@@ -161,6 +176,9 @@
       <find>Activation</find>
       <find>LeakyReLU(alpha=0.1)</find>
       <find>leaky</find>
+      <find>skip</find>
+      <find>model</find>
+      <find>notAlignedShips</find>
     </findStrings>
     <replaceStrings>
       <replace>max_x</replace>
@@ -199,7 +217,6 @@
         <option value="$PROJECT_DIR$/results.csv" />
         <option value="$PROJECT_DIR$/Decoder_new.py" />
         <option value="$PROJECT_DIR$/GoogleDriveChecker.py" />
-        <option value="$PROJECT_DIR$/entry_data.csv" />
         <option value="$PROJECT_DIR$/keras_frcnn/vgg.py" />
         <option value="$PROJECT_DIR$/Background_decoder.py" />
         <option value="$PROJECT_DIR$/keras_frcnn/losses.py" />
@@ -207,20 +224,22 @@
         <option value="$PROJECT_DIR$/aaa.csv" />
         <option value="$PROJECT_DIR$/Decoder2.py" />
         <option value="$PROJECT_DIR$/Decoder.py" />
-        <option value="$PROJECT_DIR$/train_frcnn.py" />
         <option value="$PROJECT_DIR$/Decoder3.py" />
-        <option value="$PROJECT_DIR$/Decoder_onlyAligned.py" />
         <option value="$PROJECT_DIR$/keras_frcnn/config.py" />
-        <option value="$PROJECT_DIR$/keras_frcnn/roi_helpers.py" />
         <option value="$PROJECT_DIR$/test_frcnn.py" />
-        <option value="$PROJECT_DIR$/Decoder_onlyNotAligned.py" />
         <option value="$PROJECT_DIR$/keras_frcnn/resnet.py" />
+        <option value="$PROJECT_DIR$/entry_data.csv" />
+        <option value="$PROJECT_DIR$/train_frcnn.py" />
+        <option value="$PROJECT_DIR$/keras_frcnn/roi_helpers.py" />
+        <option value="$PROJECT_DIR$/Decoder_allShips.py" />
+        <option value="$PROJECT_DIR$/Decoder_onlyNotAligned.py" />
+        <option value="$PROJECT_DIR$/Decoder_onlyAligned.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
-    <option name="width" value="2560" />
-    <option name="height" value="1440" />
+  <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="width" value="1680" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="false" id="Update" />
@@ -234,7 +253,27 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="ProjectPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="pracaMgr" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pracaMgr" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pracaMgr" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pracaMgr" type="462c0819:PsiDirectoryNode" />
+              <item name="input" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pracaMgr" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pracaMgr" type="462c0819:PsiDirectoryNode" />
+              <item name="keras_frcnn" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -409,20 +448,8 @@
       <workItem from="1560238381869" duration="90207000" />
       <workItem from="1564036378569" duration="81495000" />
       <workItem from="1565763693244" duration="10176000" />
-    </task>
-    <task id="LOCAL-00097" summary="Changing params">
-      <created>1564771480112</created>
-      <option name="number" value="00097" />
-      <option name="presentableId" value="LOCAL-00097" />
-      <option name="project" value="LOCAL" />
-      <updated>1564771480112</updated>
-    </task>
-    <task id="LOCAL-00098" summary="Changing params">
-      <created>1564778838760</created>
-      <option name="number" value="00098" />
-      <option name="presentableId" value="LOCAL-00098" />
-      <option name="project" value="LOCAL" />
-      <updated>1564778838761</updated>
+      <workItem from="1568479990370" duration="587000" />
+      <workItem from="1568534341881" duration="6309000" />
     </task>
     <task id="LOCAL-00099" summary="Changing params">
       <created>1564827227460</created>
@@ -753,11 +780,25 @@
       <option name="project" value="LOCAL" />
       <updated>1566801730873</updated>
     </task>
-    <option name="localTasksCounter" value="146" />
+    <task id="LOCAL-00146" summary="Reverting to Relu">
+      <created>1568480116160</created>
+      <option name="number" value="00146" />
+      <option name="presentableId" value="LOCAL-00146" />
+      <option name="project" value="LOCAL" />
+      <updated>1568480116160</updated>
+    </task>
+    <task id="LOCAL-00147" summary="Checking params">
+      <created>1568488672320</created>
+      <option name="number" value="00147" />
+      <option name="presentableId" value="LOCAL-00147" />
+      <option name="project" value="LOCAL" />
+      <updated>1568488672320</updated>
+    </task>
+    <option name="localTasksCounter" value="148" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="226317000" />
+    <option name="totallyTimeSpent" value="233213000" />
   </component>
   <component name="TodoView" selected-index="1">
     <todo-panel id="selected-file">
@@ -770,8 +811,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17704518" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18070818" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -785,7 +827,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.498779" weight="0.327551" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.501221" side_tool="true" weight="0.32959184" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.497558" visible="true" weight="0.2887755" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.497558" visible="true" weight="0.30816326" />
       <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.497558" weight="0.3122449" />
       <window_info anchor="bottom" id="Messages" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -891,39 +933,13 @@
     <MESSAGE value="Reverting Checking weights load" />
     <MESSAGE value="Cleaning detectors" />
     <MESSAGE value="Checking if img names can be saved in folder" />
-    <MESSAGE value="Checking params" />
     <MESSAGE value="Leaky Relu check" />
     <MESSAGE value="Reverting to Relu" />
-    <option name="LAST_COMMIT_MESSAGE" value="Reverting to Relu" />
+    <MESSAGE value="Checking params" />
+    <option name="LAST_COMMIT_MESSAGE" value="Checking params" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/logs/events.out.tfevents.1563626682.PLAMWS0024.local" />
-    <entry file="file:///usr/local/Cellar/python/3.7.3/Frameworks/Python.framework/Versions/3.7/lib/python3.7/shutil.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="75" column="4" selection-start-line="75" selection-start-column="4" selection-end-line="75" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/local/lib/python3.7/site-packages/keras/layers/wrappers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="551">
-          <caret line="135" column="8" selection-start-line="135" selection-start-column="8" selection-end-line="135" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/logs/events.out.tfevents.1563644718.PLAMWS0024.local" />
-    <entry file="file://$PROJECT_DIR$/input/losses_values.csv" />
-    <entry file="file://$PROJECT_DIR$/keras_frcnn/vgg.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="89" column="4" selection-start-line="89" selection-start-column="4" selection-end-line="89" selection-end-column="4" />
-          <folding>
-            <element signature="e#170#207#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/keras_frcnn/vgg.py" />
     <entry file="file:///usr/local/lib/python3.7/site-packages/keras/engine/topology.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="203">
@@ -1064,62 +1080,22 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/input/submission.csv">
-      <provider editor-type-id="csv-table-editor">
-        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
-      </provider>
       <provider selected="true" editor-type-id="csv-text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/entry_data.csv">
       <provider editor-type-id="csv-table-editor">
         <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
-      </provider>
-      <provider selected="true" editor-type-id="csv-text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="49" lean-forward="true" selection-start-line="22" selection-start-column="49" selection-end-line="22" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/local/lib/python3.7/site-packages/keras/layers/convolutional.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="409">
-          <caret line="1885" selection-start-line="1885" selection-end-line="1885" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Decoder_allShips.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="43" selection-start-line="43" selection-end-line="43" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Decoder_onlyAligned.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1290">
-          <caret line="93" column="53" selection-start-line="93" selection-start-column="53" selection-end-line="93" selection-end-column="53" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/keras_frcnn/data_generators.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4290">
-          <caret line="286" column="16" selection-start-line="286" selection-start-column="16" selection-end-line="286" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
       </provider>
     </entry>
     <entry file="file:///usr/local/lib/python3.7/site-packages/keras/layers/core.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
           <caret line="283" column="8" selection-start-line="283" selection-start-column="8" selection-end-line="283" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Decoder_Unet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="8" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="8" />
         </state>
       </provider>
     </entry>
@@ -1134,38 +1110,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/keras_frcnn/simple_parser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="750">
-          <caret line="50" column="33" selection-start-line="50" selection-start-column="33" selection-end-line="50" selection-end-column="33" />
+        <state relative-caret-position="375">
+          <caret line="27" column="60" selection-start-line="27" selection-start-column="60" selection-end-line="27" selection-end-column="60" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Decoder_onlyNotAligned.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1125">
-          <caret line="75" column="8" selection-start-line="75" selection-start-column="8" selection-end-line="75" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test_frcnn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3675">
-          <caret line="245" column="114" selection-start-line="245" selection-start-column="114" selection-end-line="245" selection-end-column="114" />
+        <state relative-caret-position="3270">
+          <caret line="233" selection-start-line="233" selection-end-line="233" />
           <folding>
             <element signature="e#24#55#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/keras_frcnn/roi_helpers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3390">
-          <caret line="226" column="103" selection-start-line="226" selection-start-column="103" selection-end-line="226" selection-end-column="103" />
         </state>
       </provider>
     </entry>
@@ -1176,30 +1135,115 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/train_frcnn.py">
+    <entry file="file://$PROJECT_DIR$/keras_frcnn/data_generators.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2595">
-          <caret line="173" column="7" selection-start-line="173" selection-start-column="7" selection-end-line="173" selection-end-column="7" />
+        <state relative-caret-position="211">
+          <caret line="62" column="8" selection-start-line="62" selection-start-column="8" selection-end-line="62" selection-end-column="8" />
           <folding>
-            <element signature="e#24#55#0" expanded="true" />
+            <element signature="e#0#38#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file:///usr/local/lib/python3.7/site-packages/keras/layers/convolutional.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="379">
+          <caret line="2587" selection-start-line="2587" selection-end-line="2587" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/keras_frcnn/FixedBatchNormalization.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="7" column="8" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/input/model_all.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/input/model_classifier.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/input/model_rpn.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/keras_frcnn/resnet.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="810">
-          <caret line="54" column="24" selection-start-line="54" selection-start-column="20" selection-end-line="54" selection-end-column="24" />
+        <state relative-caret-position="1230">
+          <caret line="82" column="67" selection-start-line="82" selection-start-column="67" selection-end-line="82" selection-end-column="67" />
           <folding>
             <element signature="e#197#234#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Decoder_Unet.py">
+    <entry file="file://$PROJECT_DIR$/keras_frcnn/roi_helpers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="8" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="8" />
+        <state relative-caret-position="-2">
+          <caret line="207" lean-forward="true" selection-start-line="207" selection-end-line="207" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/train_frcnn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5358">
+          <caret line="404" column="26" selection-start-line="404" selection-start-column="26" selection-end-line="404" selection-end-column="26" />
+          <folding>
+            <element signature="e#24#55#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/entry_data.csv">
+      <provider selected="true" editor-type-id="csv-text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+      <provider editor-type-id="csv-table-editor">
+        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Decoder_manyShips.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1188">
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Decoder_allShips.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="311">
+          <caret line="65" column="24" lean-forward="true" selection-start-line="65" selection-start-column="24" selection-end-line="65" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Decoder_onlyNotAligned.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="73" column="19" selection-start-line="73" selection-start-column="19" selection-end-line="73" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Decoder_onlyAligned.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="68" column="9" lean-forward="true" selection-start-line="68" selection-start-column="9" selection-end-line="68" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
