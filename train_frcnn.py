@@ -55,6 +55,8 @@ parser.add_option("--num_epochs", dest="num_epochs",
                   help="Number of epochs.", default=40)
 parser.add_option("--epoch_length", dest="epoch_length",
                   help="Number of length", default=1000)
+parser.add_option("--num_rois", dest="num_rois",
+                  help="Number of RoIs", default=32)
 parser.add_option("--config_filename", dest="config_filename",
                   help="Location to store all the metadata related to the training (to be used when testing).",
                   default="config.pickle")
@@ -77,7 +79,7 @@ if not options.train_path:   # if filename is not given
 C = config.Config()
 
 C.model_path = options.output_weight_path
-C.num_rois = 64
+C.num_rois = int(options.num_rois)
 
 # turn off any data augmentation at test time
 C.use_horizontal_flips = False
