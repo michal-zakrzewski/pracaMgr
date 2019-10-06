@@ -391,14 +391,14 @@ for epoch_num in range(num_epochs):
                     print(e)
                 best_loss = curr_loss
 
-                # if platform == "linux" or platform == "linux2":
-                #     if not os.path.exists("/content/drive/My Drive/pracaMgr/Weights/config.pickle"):
-                #         if os.path.exists("/content/config.pickle"):
-                #             shutil.copy("/content/config.pickle", "/content/drive/My Drive/pracaMgr/Weights/config.pickle")
-                #         elif os.path.exists("/content/pracaMgr/config.pickle"):
-                #             shutil.copy("/content/pracaMgr/config.pickle", "/content/drive/My Drive/pracaMgr/Weights/config.pickle")
-                #         elif os.path.exists("/content/pracaMgr/input/config.pickle"):
-                #             shutil.copy("/content/pracaMgr/input/config.pickle", "/content/drive/My Drive/pracaMgr/Weights/config.pickle")
+                if platform == "linux" or platform == "linux2":
+                    if not os.path.exists("/content/drive/My Drive/pracaMgr/Weights/config.pickle"):
+                        if os.path.exists("/content/config.pickle"):
+                            shutil.copy("/content/config.pickle", "/content/drive/My Drive/pracaMgr/Weights/config.pickle")
+                        elif os.path.exists("/content/pracaMgr/config.pickle"):
+                            shutil.copy("/content/pracaMgr/config.pickle", "/content/drive/My Drive/pracaMgr/Weights/config.pickle")
+                        elif os.path.exists("/content/pracaMgr/input/config.pickle"):
+                            shutil.copy("/content/pracaMgr/input/config.pickle", "/content/drive/My Drive/pracaMgr/Weights/config.pickle")
 
             break
 
