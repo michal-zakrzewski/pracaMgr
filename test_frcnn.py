@@ -172,7 +172,7 @@ all_imgs = []
 
 classes = {}
 
-bbox_threshold = 0.8
+bbox_threshold = 0.85
 
 visualise = True
 counter = 0
@@ -265,7 +265,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     for key in bboxes:
         bbox = np.array(bboxes[key])
 
-        new_boxes, new_probs = roi_helpers.non_max_suppression_fast(bbox, np.array(probs[key]), overlap_thresh=0.8)
+        new_boxes, new_probs = roi_helpers.non_max_suppression_fast(bbox, np.array(probs[key]), overlap_thresh=0.85)
         for jk in range(new_boxes.shape[0]):
             (x1, y1, x2, y2) = new_boxes[jk, :]
 
@@ -311,11 +311,11 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             cv2.rectangle(img, (real_x1, real_y1), (real_x2, real_y2),
                           (int(class_to_color[key][0]), int(class_to_color[key][1]), int(class_to_color[key][2])), 2)
 
-            textLabel = '{}%'.format(int(100 * new_probs[jk]))
+            textLabel = 'ship: {}%'.format(int(100 * new_probs[jk]))
             all_dets.append((key, 100 * new_probs[jk]))
 
             (retval, baseLine) = cv2.getTextSize(textLabel, cv2.FONT_HERSHEY_COMPLEX, 1, 1)
-            textOrg = (real_x1, real_y1 + 10)
+            textOrg = (real_x1, real_y1)
 
             cv2.rectangle(img, (textOrg[0] - 5, textOrg[1] + baseLine - 5),
                           (textOrg[0] + retval[0] + 5, textOrg[1] - retval[1] - 5), (0, 0, 0), 2)
