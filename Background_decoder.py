@@ -3,6 +3,7 @@ import pandas as pd
 from optparse import OptionParser
 from sys import platform
 from tqdm import tqdm
+import random
 
 if platform == "linux" or platform == "linux2":
     from IPython.core.display import display
@@ -55,14 +56,25 @@ for i in tqdm(range(number)):
                 used_rows.append(row_index)
                 break
 
+    size = random.randrange(1, 10)
+    x_min = random.randrange(2, 500)
+    x_max = x_min + 20 * size
+    y_min = x_min + 15 * size
+    size = random.randrange(1, 10)
+    y_max = y_min + 15 * size
+    if x_max > 767:
+        x_max = 767
+    if y_max > 767:
+        y_max = 767
+
     if platform == "linux" or platform == "linux2":
         with open("entry_data.csv", "a") as f:
             f.write("/content/pracaMgr/input/train_v2/")
-            print(df.loc[row_index, 'ImageId'], "0,0,767,767,bg", sep=',', file=f)
+            print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "bg", sep=',', file=f)
     else:
         with open("entry_data.csv", "a") as f:
             f.write("input/train_v2/")
-            print(df.loc[row_index, 'ImageId'], "0,0,767,767,bg", sep=',', file=f)
+            print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "bg", sep=',', file=f)
 
 print("Checked images:", number)
 print("Finished")
