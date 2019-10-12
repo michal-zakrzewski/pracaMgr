@@ -58,14 +58,10 @@ for i in tqdm(range(number)):
 
     size = random.randrange(1, 10)
     x_min = random.randrange(2, 500)
-    x_max = x_min + 20 * size
-    y_min = x_min + 15 * size
+    x_max = x_min + 5 * size
+    y_min = x_min + 5 * size
     size = random.randrange(1, 10)
-    y_max = y_min + 15 * size
-    if x_max > 767:
-        x_max = 767
-    if y_max > 767:
-        y_max = 767
+    y_max = y_min + 5 * size
 
     if platform == "linux" or platform == "linux2":
         with open("entry_data.csv", "a") as f:
