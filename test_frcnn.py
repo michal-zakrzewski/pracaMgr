@@ -172,10 +172,11 @@ all_imgs = []
 
 classes = {}
 
-bbox_threshold = 0.85
+bbox_threshold = 0.8
 
 visualise = True
 counter = 0
+foundCounter = 0
 if platform == "linux" or platform == "linux2":
     if not os.path.exists('/content/drive/My Drive/pracaMgr/results_imgs'):
         os.mkdir('/content/drive/My Drive/pracaMgr/results_imgs')
@@ -265,7 +266,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     for key in bboxes:
         bbox = np.array(bboxes[key])
 
-        new_boxes, new_probs = roi_helpers.non_max_suppression_fast(bbox, np.array(probs[key]), overlap_thresh=0.85)
+        new_boxes, new_probs = roi_helpers.non_max_suppression_fast(bbox, np.array(probs[key]), overlap_thresh=0.8)
         for jk in range(new_boxes.shape[0]):
             (x1, y1, x2, y2) = new_boxes[jk, :]
 
@@ -355,6 +356,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                 print(e)
 
     counter += 1
+    foundCounter += 1
 
     # cv2.imshow('img', img)
     # cv2.waitKey(50)
@@ -379,3 +381,4 @@ if platform == "linux" or platform == "linux2":
     shutil.copy(path + "/possibleCollisions.csv",
                 "/content/drive/My Drive/pracaMgr/possibleCollisions" + str(datetime.date.today()) + "final.csv")
 print("Finished")
+print("Found " . foundCounter . " ships")
