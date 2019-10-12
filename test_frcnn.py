@@ -381,4 +381,4 @@ if platform == "linux" or platform == "linux2":
     shutil.copy(path + "/possibleCollisions.csv",
                 "/content/drive/My Drive/pracaMgr/possibleCollisions" + str(datetime.date.today()) + "final.csv")
 print("Finished")
-print("Found " . foundCounter . " ships")
+print("Found " + foundCounter + " ships")
