@@ -271,6 +271,10 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             (x1, y1, x2, y2) = new_boxes[jk, :]
 
             (real_x1, real_y1, real_x2, real_y2) = get_real_coordinates(ratio, x1, y1, x2, y2)
+            real_x1 = real_x1 + 1
+            real_y1 = real_y1 + 1
+            real_x2 = real_x2 - 1
+            real_y2 = real_y2 - 1
             if real_x1 > 767:
                 real_x1 = 767
             if real_x2 > 767:
