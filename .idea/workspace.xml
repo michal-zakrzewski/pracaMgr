@@ -4,7 +4,7 @@
     <list default="true" id="1d952f90-d518-4ff0-8929-851fca2222d1" name="Default Changelist" comment="New Background decoder">
       <change afterPath="$PROJECT_DIR$/Decoder_Unet.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Background_decoder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Background_decoder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_frcnn.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_frcnn.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,7 +36,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Decoder_onlyNotAligned.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="256">
+            <state relative-caret-position="2430">
               <caret line="169" column="58" selection-start-line="169" selection-start-column="58" selection-end-line="169" selection-end-column="58" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
@@ -48,17 +48,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Decoder_onlyAligned.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="21" lean-forward="true" selection-start-line="4" selection-start-column="21" selection-end-line="7" selection-end-column="10" />
+            <state relative-caret-position="303">
+              <caret line="123" column="21" lean-forward="true" selection-start-line="123" selection-start-column="21" selection-end-line="123" selection-end-column="21" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test_frcnn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1814">
-              <caret line="224" column="52" selection-start-line="224" selection-start-column="45" selection-end-line="224" selection-end-column="52" />
+            <state relative-caret-position="378">
+              <caret line="295" column="24" selection-start-line="295" selection-start-column="24" selection-end-line="295" selection-end-column="24" />
               <folding>
                 <element signature="e#24#55#0" expanded="true" />
               </folding>
@@ -66,11 +69,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Background_decoder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+            <state relative-caret-position="75">
+              <caret line="5" column="13" lean-forward="true" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -82,7 +85,7 @@
         <entry file="file://$PROJECT_DIR$/entry_data.csv">
           <provider selected="true" editor-type-id="csv-text-editor">
             <state relative-caret-position="150">
-              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+              <caret line="10" selection-start-line="10" selection-end-line="10" />
             </state>
           </provider>
           <provider editor-type-id="csv-table-editor">
@@ -244,20 +247,20 @@
         <option value="$PROJECT_DIR$/Decoder_onlyNotAligned.py" />
         <option value="$PROJECT_DIR$/Decoder_onlyAligned.py" />
         <option value="$PROJECT_DIR$/train_frcnn.py" />
-        <option value="$PROJECT_DIR$/test_frcnn.py" />
         <option value="$PROJECT_DIR$/Background_decoder.py" />
+        <option value="$PROJECT_DIR$/test_frcnn.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="2560" />
-    <option name="height" value="1440" />
+    <option name="width" value="1680" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="false" id="Update" />
   </component>
   <component name="ProjectReloadState">
-    <option name="STATE" value="1" />
+    <option name="STATE" value="2" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -428,9 +431,9 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.ShipDetector" />
       <item itemvalue="Python.Decoder" />
       <item itemvalue="Python.ExampleFile" />
+      <item itemvalue="Python.ShipDetector" />
       <item itemvalue="Python.test_frcnn" />
     </list>
     <recent_temporary>
@@ -462,14 +465,9 @@
       <workItem from="1565763693244" duration="10176000" />
       <workItem from="1568479990370" duration="587000" />
       <workItem from="1568534341881" duration="8835000" />
-      <workItem from="1570430589970" duration="2287000" />
-    </task>
-    <task id="LOCAL-00104" summary="New Decoder file">
-      <created>1564931795027</created>
-      <option name="number" value="00104" />
-      <option name="presentableId" value="LOCAL-00104" />
-      <option name="project" value="LOCAL" />
-      <updated>1564931795027</updated>
+      <workItem from="1570430589970" duration="2864000" />
+      <workItem from="1570623473233" duration="1488000" />
+      <workItem from="1571724323670" duration="2177000" />
     </task>
     <task id="LOCAL-00105" summary="Reverting params">
       <created>1564931853543</created>
@@ -807,11 +805,18 @@
       <option name="project" value="LOCAL" />
       <updated>1570431668320</updated>
     </task>
-    <option name="localTasksCounter" value="153" />
+    <task id="LOCAL-00153" summary="New Background decoder">
+      <created>1570517460510</created>
+      <option name="number" value="00153" />
+      <option name="presentableId" value="LOCAL-00153" />
+      <option name="project" value="LOCAL" />
+      <updated>1570517460510</updated>
+    </task>
+    <option name="localTasksCounter" value="154" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="238026000" />
+    <option name="totallyTimeSpent" value="242268000" />
   </component>
   <component name="TodoView" selected-index="1">
     <todo-panel id="selected-file">
@@ -826,7 +831,7 @@
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18253969" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18620269" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -840,7 +845,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.498779" weight="0.327551" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.501221" side_tool="true" weight="0.32959184" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.497558" visible="true" weight="0.30816326" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.497558" visible="true" weight="0.29387754" />
       <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.497558" weight="0.3122449" />
       <window_info anchor="bottom" id="Messages" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -924,7 +929,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fixes" />
     <MESSAGE value="Checking only selected images" />
     <MESSAGE value="Adding progressbar" />
     <MESSAGE value="Results checker" />
@@ -949,7 +953,8 @@
     <MESSAGE value="Reverting to Relu" />
     <MESSAGE value="Checking params" />
     <MESSAGE value="Adding size checker" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding size checker" />
+    <MESSAGE value="New Background decoder" />
+    <option name="LAST_COMMIT_MESSAGE" value="New Background decoder" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/keras_frcnn/vgg.py" />
@@ -1166,6 +1171,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Decoder_onlyNotAligned.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2430">
+          <caret line="169" column="58" selection-start-line="169" selection-start-column="58" selection-end-line="169" selection-end-column="58" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/entry_data.csv">
+      <provider selected="true" editor-type-id="csv-text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+      <provider editor-type-id="csv-table-editor">
+        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/keras_frcnn/resnet.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1095">
@@ -1173,6 +1198,13 @@
           <folding>
             <element signature="e#197#234#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/keras_frcnn/FixedBatchNormalization.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="7" column="8" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
         </state>
       </provider>
     </entry>
@@ -1203,56 +1235,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/keras_frcnn/FixedBatchNormalization.py">
+    <entry file="file://$PROJECT_DIR$/Background_decoder.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
-          <caret line="7" column="8" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Decoder_onlyNotAligned.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="169" column="58" selection-start-line="169" selection-start-column="58" selection-end-line="169" selection-end-column="58" />
+          <caret line="5" column="13" lean-forward="true" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/entry_data.csv">
-      <provider selected="true" editor-type-id="csv-text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
-        </state>
-      </provider>
-      <provider editor-type-id="csv-table-editor">
-        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test_frcnn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1814">
-          <caret line="224" column="52" selection-start-line="224" selection-start-column="45" selection-end-line="224" selection-end-column="52" />
-          <folding>
-            <element signature="e#24#55#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Decoder_onlyAligned.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="21" lean-forward="true" selection-start-line="4" selection-start-column="21" selection-end-line="7" selection-end-column="10" />
+        <state relative-caret-position="303">
+          <caret line="123" column="21" lean-forward="true" selection-start-line="123" selection-start-column="21" selection-end-line="123" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Background_decoder.py">
+    <entry file="file://$PROJECT_DIR$/test_frcnn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        <state relative-caret-position="378">
+          <caret line="295" column="24" selection-start-line="295" selection-start-column="24" selection-end-line="295" selection-end-column="24" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#24#55#0" expanded="true" />
           </folding>
         </state>
       </provider>

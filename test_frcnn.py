@@ -271,10 +271,20 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             (x1, y1, x2, y2) = new_boxes[jk, :]
 
             (real_x1, real_y1, real_x2, real_y2) = get_real_coordinates(ratio, x1, y1, x2, y2)
-            real_x1 = real_x1 + 1
-            real_y1 = real_y1 + 1
-            real_x2 = real_x2 - 1
-            real_y2 = real_y2 - 1
+            # Downsize BBox by 1 pixel to prevent overlapping
+            if abs(real_x2-real_x1) >= 3 and abs(real_y2 - real_y1) >= 3:
+                if real_x1 < real_x2:
+                    real_x1 += 1
+                    real_x2 -= 1
+                else:
+                    real_x2 += 1
+                    real_x1 -= 1
+                if real_y1 < real_y2:
+                    real_y1 += 1
+                    real_y2 -= 1
+                else:
+                    real_y1 -= 1
+                    real_y2 += 1
             if real_x1 > 767:
                 real_x1 = 767
             if real_x2 > 767:
@@ -283,6 +293,14 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                 real_y1 = 767
             if real_y2 > 767:
                 real_y2 = 767
+            if real_x1 < 0:
+                real_x1 = 0
+            if real_x2 < 0:
+                real_x2 = 0
+            if real_y1 < 0:
+                real_y1 = 0
+            if real_y2 < 0:
+                real_y2 = 0
             if overlap_checker(real_x1, real_y1, real_x2, real_y2, old_x1, old_x2, old_y1, old_y2):
                 saveValue = True
             old_x1 = real_x1
