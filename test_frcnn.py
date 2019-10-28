@@ -285,6 +285,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                 else:
                     real_y1 -= 1
                     real_y2 += 1
+            # Make sure that no pixel is out of bound
             if real_x1 > 767:
                 real_x1 = 767
             if real_x2 > 767:
