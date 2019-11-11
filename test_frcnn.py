@@ -113,7 +113,7 @@ def get_real_coordinates(ratio, x1, y1, x2, y2):
 # Following function returns true if the rectangles are overlaping
 def overlap_checker(x1, y1, x2, y2, old_x1, old_x2, old_y1, old_y2):
     try:
-        if not old_x1 <= x1 <= old_x2 or not old_y1 <= y1 <= old_y2 or not old_x1 <= x2 <= old_x2 or not old_y1 <= y2 <= old_y2:
+        if not ((old_x1 <= x1 <= old_x2 or old_x1 <= x2 <= old_x2) and (old_y1 <= y1 <= old_y2 or old_y1 <= y2 <= old_y2)):
             if not (x1 < old_x1 and y1 < old_y1 and x2 > old_x2 and y2 > old_y2):
                  if not (old_x1 < x1 and old_y1 < y1 and old_x2 > x2 and old_y2 > y2):
                     return False
@@ -384,7 +384,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
 
     # cv2.imshow('img', img)
     # cv2.waitKey(50)
-    if saveValue:
+    if saveValue and len(all_dets) > 1:
         with open(path + "/possibleCollisions.csv", "a") as f:
             print(img_name, len(all_dets), sep=',', file=f)
 
