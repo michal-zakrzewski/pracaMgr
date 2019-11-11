@@ -304,6 +304,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                 real_y2 = 0
             if overlap_checker(real_x1, real_y1, real_x2, real_y2, old_x1, old_x2, old_y1, old_y2):
                 saveValue = True
+                continue
             old_x1 = real_x1
             old_x2 = real_x2
             old_y1 = real_y1
