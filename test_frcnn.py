@@ -113,11 +113,10 @@ def get_real_coordinates(ratio, x1, y1, x2, y2):
 # Following function returns true if the rectangles are overlaping
 def overlap_checker(x1, y1, x2, y2, old_x1, old_x2, old_y1, old_y2):
     try:
-        if not old_x1 <= x1 <= old_x2 or not old_y1 <= y1 <= old_y2:
-            if not (old_x1 <= x2 <= old_x2 or not old_y1 <= y2 <= old_y2):
-                if not (x1 < old_x1 and y1 < old_y1 and x2 > old_x2 and y2 > old_y2):
-                    if not (old_x1 < x1 and old_y1 < y1 and old_x2 > x2 and old_y2 > y2):
-                        return False
+        if not old_x1 <= x1 <= old_x2 or not old_y1 <= y1 <= old_y2 or old_x1 <= x2 <= old_x2 or not old_y1 <= y2 <= old_y2:
+            if not (x1 < old_x1 and y1 < old_y1 and x2 > old_x2 and y2 > old_y2):
+                 if not (old_x1 < x1 and old_y1 < y1 and old_x2 > x2 and old_y2 > y2):
+                    return False
         return True
     except TypeError:
         return False
