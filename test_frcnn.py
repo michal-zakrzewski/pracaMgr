@@ -112,13 +112,25 @@ def get_real_coordinates(ratio, x1, y1, x2, y2):
 
 # Following function returns true if the rectangles are overlaping
 def overlap_checker(x1, y1, x2, y2, all_coord):
-    try:
-        if not (all_coord[0::4] <= x1 <= all_coord[2::4] or all_coord[0::4] <= x2 <= all_coord[2::4] or all_coord[1::4] <= y1 <= all_coord[3::4] or all_coord[1::4] <= y2 <= all_coord[3::4]):
-            if not (x1 < all_coord[0::4] and y1 < all_coord[1::4] and x2 > all_coord[2::4] and y2 > all_coord[3::4]):
-                 if not (all_coord[0::4] < x1 and all_coord[1::4] < y1 and all_coord[2::4] > x2 and all_coord[3::4] > y2):
-                    return False
-        return True
-    except TypeError:
+    i = 0
+    start = 0
+    for i in range(int(len(a)/4)):
+        b = a[start:start + 4]
+        start += 4
+        try:
+            if not (max(b[0], b[2]) <= min(x1, x2) or max(x1, x2) <= min(b[0], b[2]) or max(b[1], b[3]) <= min(y1, y2) or max(y1, y2) <= min(b[1], b[3])):
+                if not (x1 < all_coord[0::4] and y1 < all_coord[1::4] and x2 > all_coord[2::4] and y2 > all_coord[3::4]):
+                    if not (all_coord[0::4] < x1 and all_coord[1::4] < y1 and all_coord[2::4] > x2 and all_coord[3::4] > y2):
+                        overlaps = False
+                    else:
+                        return True
+                else:
+                    return True
+            else:
+                return True
+        except TypeError:
+            overlaps = False
+    if not overlaps:
         return False
 
 
@@ -304,7 +316,6 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                     saveValue = True
                     continue
             all_coordinates = all_coordinates + tuple([real_x1, real_y1, real_x2, real_y2])
-            print(x1, y1, x2, y2)
             print(all_coordinates)
             encodedPixels = ''
             i = 1
