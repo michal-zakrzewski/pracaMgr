@@ -299,11 +299,11 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                 real_y1 = 0
             if real_y2 < 0:
                 real_y2 = 0
-            if overlap_checker(real_x1, real_y1, real_x2, real_y2, all_coordinates):
-                saveValue = True
-                continue
-            old_coordinates = [real_x1, real_y1, real_x2, real_y2]
-            all_coordinates = all_coordinates + old_coordinates
+            if all_coordinates is not None:
+                if overlap_checker(real_x1, real_y1, real_x2, real_y2, all_coordinates):
+                    saveValue = True
+                    continue
+            all_coordinates = all_coordinates + [real_x1, real_y1, real_x2, real_y2]
             encodedPixels = ''
             i = 1
             firstPixel = real_x1 * 768 + real_y1
