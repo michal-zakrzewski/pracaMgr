@@ -113,9 +113,9 @@ def get_real_coordinates(ratio, x1, y1, x2, y2):
 # Following function returns true if the rectangles are overlaping
 def overlap_checker(x1, y1, x2, y2, all_coord):
     try:
-        if not (all_coord[0::4] <= x1 <= all_coord[1::4] or all_coord[0::4] <= x2 <= all_coord[1::4] or all_coord[2::4] <= y1 <= all_coord[3::4] or all_coord[2::4] <= y2 <= all_coord[3::4]):
-            if not (x1 < all_coord[0::4] and y1 < all_coord[2::4] and x2 > all_coord[1::4] and y2 > all_coord[3::4]):
-                 if not (all_coord[0::4] < x1 and all_coord[2::4] < y1 and all_coord[1::4] > x2 and all_coord[3::4] > y2):
+        if not (all_coord[0::4] <= x1 <= all_coord[2::4] or all_coord[0::4] <= x2 <= all_coord[2::4] or all_coord[1::4] <= y1 <= all_coord[3::4] or all_coord[1::4] <= y2 <= all_coord[3::4]):
+            if not (x1 < all_coord[0::4] and y1 < all_coord[1::4] and x2 > all_coord[2::4] and y2 > all_coord[3::4]):
+                 if not (all_coord[0::4] < x1 and all_coord[1::4] < y1 and all_coord[2::4] > x2 and all_coord[3::4] > y2):
                     return False
         return True
     except TypeError:
@@ -337,11 +337,11 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             (retval, baseLine) = cv2.getTextSize(textLabel, cv2.FONT_HERSHEY_COMPLEX, 1, 1)
             textOrg = (real_x1, real_y1)
 
-            cv2.rectangle(img, (textOrg[0] - 5, textOrg[1] + baseLine - 5),
-                          (textOrg[0] + retval[0] + 5, textOrg[1] - retval[1] - 5), (0, 0, 0), 2)
-            cv2.rectangle(img, (textOrg[0] - 5, textOrg[1] + baseLine - 5),
-                          (textOrg[0] + retval[0] + 5, textOrg[1] - retval[1] - 5), (255, 255, 255), -1)
-            cv2.putText(img, textLabel, textOrg, cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 0), 1)
+            # cv2.rectangle(img, (textOrg[0] - 5, textOrg[1] + baseLine - 5),
+            #              (textOrg[0] + retval[0] + 5, textOrg[1] - retval[1] - 5), (0, 0, 0), 2)
+            # cv2.rectangle(img, (textOrg[0] - 5, textOrg[1] + baseLine - 5),
+            #              (textOrg[0] + retval[0] + 5, textOrg[1] - retval[1] - 5), (255, 255, 255), -1)
+            # cv2.putText(img, textLabel, textOrg, cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 0), 1)
 
     print('Elapsed time = {}'.format(time.time() - st))
     print(all_dets)
