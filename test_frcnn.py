@@ -120,8 +120,8 @@ def overlap_checker(x1, y1, x2, y2, all_coord):
         start += 4
         try:
             if (max(b[0], b[2]) <= min(x1, x2) or max(x1, x2) <= min(b[0], b[2]) or max(b[1], b[3]) <= min(y1, y2) or max(y1, y2) <= min(b[1], b[3])):
-                if not (min(x1, x2) <= min(b[0], b[2]) and min(y1, y2) <= min(b[1], b[3]) and max(x1, x2) => max(b[0], b[2]) and max(y1, y2) => max(b[1], b[3])):
-                    if not (min(b[0], b[2]) <= min(x1, x2) and min(b[1], b[3]) <= min(y1, y2) and max(b[0], b[2]) => max(x1, x2) and max(b[1], b[3]) => max(y1, y2)):
+                if not (min(x1, x2) <= min(b[0], b[2]) and min(y1, y2) <= min(b[1], b[3]) and max(x1, x2) >= max(b[0], b[2]) and max(y1, y2) >= max(b[1], b[3])):
+                    if not (min(b[0], b[2]) <= min(x1, x2) and min(b[1], b[3]) <= min(y1, y2) and max(b[0], b[2]) >= max(x1, x2) and max(b[1], b[3]) >= max(y1, y2)):
                         overlaps = False
                     else:
                         return True
