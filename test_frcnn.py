@@ -112,6 +112,7 @@ def get_real_coordinates(ratio, x1, y1, x2, y2):
 
 # Following function returns true if the rectangles are overlaping
 def overlap_checker(x1, y1, x2, y2, all_coord):
+    overlaps = False
     i = 0
     start = 0
     for i in range(int(len(all_coord)/4)):
