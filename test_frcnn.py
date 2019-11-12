@@ -304,6 +304,8 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                     saveValue = True
                     continue
             all_coordinates = all_coordinates + tuple([real_x1, real_y1, real_x2, real_y2])
+            print(x1, y1, x2, y2)
+            print(all_coordinates)
             encodedPixels = ''
             i = 1
             firstPixel = real_x1 * 768 + real_y1
