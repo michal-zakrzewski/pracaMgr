@@ -111,11 +111,11 @@ def get_real_coordinates(ratio, x1, y1, x2, y2):
 
 
 # Following function returns true if the rectangles are overlaping
-def overlap_checker(x1, y1, x2, y2, old_x1, old_x2, old_y1, old_y2):
+def overlap_checker(x1, y1, x2, y2, all_coord):
     try:
-        if not (old_x1 <= x1 <= old_x2 or old_x1 <= x2 <= old_x2 or old_y1 <= y1 <= old_y2 or old_y1 <= y2 <= old_y2):
-            if not (x1 < old_x1 and y1 < old_y1 and x2 > old_x2 and y2 > old_y2):
-                 if not (old_x1 < x1 and old_y1 < y1 and old_x2 > x2 and old_y2 > y2):
+        if not (all_coord[0::4] <= x1 <= all_coord[1::4] or all_coord[0::4] <= x2 <= all_coord[1::4] or all_coord[2::4] <= y1 <= all_coord[3::4] or all_coord[2::4] <= y2 <= all_coord[3::4]):
+            if not (x1 < all_coord[0::4] and y1 < all_coord[2::4] and x2 > all_coord[1::4] and y2 > all_coord[3::4]):
+                 if not (all_coord[0::4] < x1 and all_coord[2::4] < y1 and all_coord[1::4] > x2 and all_coord[3::4] > y2):
                     return False
         return True
     except TypeError:
@@ -186,10 +186,7 @@ if platform == "linux" or platform == "linux2":
 for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     if not img_name.lower().endswith(('.bmp', '.jpeg', '.jpg', '.png', '.tif', '.tiff')):
         continue
-    old_x1 = None
-    old_x2 = None
-    old_y1 = None
-    old_y2 = None
+    all_coordinates = None
     saveValue = False
     print(img_name)
     st = time.time()
@@ -302,13 +299,11 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                 real_y1 = 0
             if real_y2 < 0:
                 real_y2 = 0
-            if overlap_checker(real_x1, real_y1, real_x2, real_y2, old_x1, old_x2, old_y1, old_y2):
+            if overlap_checker(real_x1, real_y1, real_x2, real_y2, all_coordinates):
                 saveValue = True
                 continue
-            old_x1 = real_x1
-            old_x2 = real_x2
-            old_y1 = real_y1
-            old_y2 = real_y2
+            old_coordinates = [real_x1, real_y1, real_x2, real_y2]
+            all_coordinates = all_coordinates + old_coordinates
             encodedPixels = ''
             i = 1
             firstPixel = real_x1 * 768 + real_y1
