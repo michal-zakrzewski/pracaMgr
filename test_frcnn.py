@@ -186,7 +186,7 @@ if platform == "linux" or platform == "linux2":
 for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     if not img_name.lower().endswith(('.bmp', '.jpeg', '.jpg', '.png', '.tif', '.tiff')):
         continue
-    all_coordinates = None
+    all_coordinates = tuple()
     saveValue = False
     print(img_name)
     st = time.time()
