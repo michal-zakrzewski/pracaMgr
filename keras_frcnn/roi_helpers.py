@@ -171,6 +171,8 @@ def non_max_suppression_fast(boxes, probs, overlap_thresh=0.9, max_boxes=300):
         np.testing.assert_array_less(x1, x2)
     except AssertionError as e:
         print("Incorrect x arrays orders!")
+        x1 = None
+        x2 = None
         x1 = boxes[:, 2]
         x2 = boxes[:, 0]
         np.testing.assert_array_less(x1, x2)
@@ -178,6 +180,8 @@ def non_max_suppression_fast(boxes, probs, overlap_thresh=0.9, max_boxes=300):
         np.testing.assert_array_less(y1, y2)
     except AssertionError as e:
         print("Incorrect y arrays orders!")
+        y1 = None
+        y2 = None
         y1 = boxes[:, 3]
         y2 = boxes[:, 1]
         np.testing.assert_array_less(y1, y2)
