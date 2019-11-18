@@ -55,6 +55,8 @@ parser.add_option("--num_epochs", dest="num_epochs",
                   help="Number of epochs.", default=40)
 parser.add_option("--epoch_length", dest="epoch_length",
                   help="Number of length", default=1000)
+parser.add_option("--num_rois", dest="num_rois",
+                  help="Number of RoIs", default=32)
 parser.add_option("--config_filename", dest="config_filename",
                   help="Location to store all the metadata related to the training (to be used when testing).",
                   default="config.pickle")
@@ -77,7 +79,7 @@ if not options.train_path:   # if filename is not given
 C = config.Config()
 
 C.model_path = options.output_weight_path
-C.num_rois = 32
+C.num_rois = int(options.num_rois)
 
 # turn off any data augmentation at test time
 C.use_horizontal_flips = False
@@ -172,8 +174,8 @@ except:
     print('Could not load pretrained model weights. Weights can be found in the keras application folder \
         https://github.com/fchollet/keras/tree/master/keras/applications')
 
-optimizer = Adam(lr=1e-5)
-optimizer_classifier = Adam(lr=1e-5)
+optimizer = Adam(lr=1e-6)
+optimizer_classifier = Adam(lr=1e-6)
 model_rpn.compile(optimizer=optimizer, loss=[losses.rpn_loss_cls(
     num_anchors), losses.rpn_loss_regr(num_anchors)])
 model_classifier.compile(optimizer=optimizer_classifier, loss=[losses.class_loss_cls, losses.class_loss_regr(
@@ -244,7 +246,7 @@ for epoch_num in range(num_epochs):
         P_rpn = model_rpn.predict_on_batch(X)
 
         R = roi_helpers.rpn_to_roi(P_rpn[0], P_rpn[1], C, K.image_dim_ordering(
-        ), use_regr=True, overlap_thresh=0.6, max_boxes=400)
+        ), use_regr=True, overlap_thresh=0.7, max_boxes=300)
         # note: calc_iou converts from (x1,y1,x2,y2) to (x,y,w,h) format
         X2, Y1, Y2, IouS = roi_helpers.calc_iou(R, img_data, C, class_mapping)
 

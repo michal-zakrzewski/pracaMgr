@@ -111,14 +111,27 @@ def get_real_coordinates(ratio, x1, y1, x2, y2):
 
 
 # Following function returns true if the rectangles are overlaping
-def overlap_checker(x1, y1, x2, y2, old_x1, old_x2, old_y1, old_y2):
-    try:
-        if not old_x1 <= x1 <= old_x2 or not old_y1 <= y1 <= old_y2:
-            if not (x1 < old_x1 and y1 < old_y1 and x2 > old_x2 and y2 > old_y2):
-                if not (old_x1 < x1 and old_y1 < y1 and old_x2 > x2 and old_y2 > y2):
-                    return False
-        return True
-    except TypeError:
+def overlap_checker(x1, y1, x2, y2, all_coord):
+    overlaps = False
+    i = 0
+    start = 0
+    for i in range(int(len(all_coord)/4)):
+        b = all_coord[start:start + 4]
+        start += 4
+        try:
+            if (max(b[0], b[2]) <= min(x1, x2) or max(x1, x2) <= min(b[0], b[2]) or max(b[1], b[3]) <= min(y1, y2) or max(y1, y2) <= min(b[1], b[3])):
+                if not (min(x1, x2) <= min(b[0], b[2]) and min(y1, y2) <= min(b[1], b[3]) and max(x1, x2) >= max(b[0], b[2]) and max(y1, y2) >= max(b[1], b[3])):
+                    if not (min(b[0], b[2]) <= min(x1, x2) and min(b[1], b[3]) <= min(y1, y2) and max(b[0], b[2]) >= max(x1, x2) and max(b[1], b[3]) >= max(y1, y2)):
+                        overlaps = False
+                    else:
+                        return True
+                else:
+                    return True
+            else:
+                return True
+        except TypeError:
+            overlaps = False
+    if not overlaps:
         return False
 
 
@@ -176,6 +189,7 @@ bbox_threshold = 0.8
 
 visualise = True
 counter = 0
+foundCounter = 0
 if platform == "linux" or platform == "linux2":
     if not os.path.exists('/content/drive/My Drive/pracaMgr/results_imgs'):
         os.mkdir('/content/drive/My Drive/pracaMgr/results_imgs')
@@ -185,10 +199,7 @@ if platform == "linux" or platform == "linux2":
 for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     if not img_name.lower().endswith(('.bmp', '.jpeg', '.jpg', '.png', '.tif', '.tiff')):
         continue
-    old_x1 = None
-    old_x2 = None
-    old_y1 = None
-    old_y2 = None
+    all_coordinates = tuple()
     saveValue = False
     print(img_name)
     st = time.time()
@@ -270,6 +281,21 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             (x1, y1, x2, y2) = new_boxes[jk, :]
 
             (real_x1, real_y1, real_x2, real_y2) = get_real_coordinates(ratio, x1, y1, x2, y2)
+            # Downsize BBox by 1 pixel to prevent overlapping
+            if abs(real_x2-real_x1) >= 3 and abs(real_y2 - real_y1) >= 3:
+                if real_x1 < real_x2:
+                    real_x1 += 1
+                    real_x2 -= 1
+                else:
+                    real_x2 += 1
+                    real_x1 -= 1
+                if real_y1 < real_y2:
+                    real_y1 += 1
+                    real_y2 -= 1
+                else:
+                    real_y1 -= 1
+                    real_y2 += 1
+            # Make sure that no pixel is out of bound
             if real_x1 > 767:
                 real_x1 = 767
             if real_x2 > 767:
@@ -278,12 +304,19 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                 real_y1 = 767
             if real_y2 > 767:
                 real_y2 = 767
-            if overlap_checker(real_x1, real_y1, real_x2, real_y2, old_x1, old_x2, old_y1, old_y2):
-                saveValue = True
-            old_x1 = real_x1
-            old_x2 = real_x2
-            old_y1 = real_y1
-            old_y2 = real_y2
+            if real_x1 < 0:
+                real_x1 = 0
+            if real_x2 < 0:
+                real_x2 = 0
+            if real_y1 < 0:
+                real_y1 = 0
+            if real_y2 < 0:
+                real_y2 = 0
+            if all_coordinates:
+                if overlap_checker(real_x1, real_y1, real_x2, real_y2, all_coordinates):
+                    saveValue = True
+                    continue
+            all_coordinates = all_coordinates + tuple([real_x1, real_y1, real_x2, real_y2])
             encodedPixels = ''
             i = 1
             firstPixel = real_x1 * 768 + real_y1
@@ -311,17 +344,17 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             cv2.rectangle(img, (real_x1, real_y1), (real_x2, real_y2),
                           (int(class_to_color[key][0]), int(class_to_color[key][1]), int(class_to_color[key][2])), 2)
 
-            textLabel = '{}%'.format(int(100 * new_probs[jk]))
+            textLabel = 'ship: {}%'.format(int(100 * new_probs[jk]))
             all_dets.append((key, 100 * new_probs[jk]))
 
             (retval, baseLine) = cv2.getTextSize(textLabel, cv2.FONT_HERSHEY_COMPLEX, 1, 1)
-            textOrg = (real_x1, real_y1 + 10)
+            textOrg = (real_x1, real_y1)
 
-            cv2.rectangle(img, (textOrg[0] - 5, textOrg[1] + baseLine - 5),
-                          (textOrg[0] + retval[0] + 5, textOrg[1] - retval[1] - 5), (0, 0, 0), 2)
-            cv2.rectangle(img, (textOrg[0] - 5, textOrg[1] + baseLine - 5),
-                          (textOrg[0] + retval[0] + 5, textOrg[1] - retval[1] - 5), (255, 255, 255), -1)
-            cv2.putText(img, textLabel, textOrg, cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 0), 1)
+            # cv2.rectangle(img, (textOrg[0] - 5, textOrg[1] + baseLine - 5),
+            #              (textOrg[0] + retval[0] + 5, textOrg[1] - retval[1] - 5), (0, 0, 0), 2)
+            # cv2.rectangle(img, (textOrg[0] - 5, textOrg[1] + baseLine - 5),
+            #              (textOrg[0] + retval[0] + 5, textOrg[1] - retval[1] - 5), (255, 255, 255), -1)
+            # cv2.putText(img, textLabel, textOrg, cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 0), 1)
 
     print('Elapsed time = {}'.format(time.time() - st))
     print(all_dets)
@@ -355,10 +388,11 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                 print(e)
 
     counter += 1
+    foundCounter += 1
 
     # cv2.imshow('img', img)
     # cv2.waitKey(50)
-    if saveValue:
+    if saveValue and len(all_dets) > 1:
         with open(path + "/possibleCollisions.csv", "a") as f:
             print(img_name, len(all_dets), sep=',', file=f)
 
@@ -379,3 +413,4 @@ if platform == "linux" or platform == "linux2":
     shutil.copy(path + "/possibleCollisions.csv",
                 "/content/drive/My Drive/pracaMgr/possibleCollisions" + str(datetime.date.today()) + "final.csv")
 print("Finished")
+print("Found " + str(foundCounter) + " ships")
