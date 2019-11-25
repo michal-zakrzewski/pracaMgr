@@ -128,13 +128,6 @@ print('Num train samples {}'.format(len(train_imgs)))
 print('Num val samples {}'.format(len(val_imgs)))
 print('Num test samples {}'.format(len(test_imgs)))
 
-# groundtruth anchor
-data_gen_train = data_generators.get_anchor_gt(
-    train_imgs, classes_count, C, nn.get_img_output_length, K.image_dim_ordering(), mode='train')
-data_gen_val = data_generators.get_anchor_gt(
-    val_imgs, classes_count, C, nn.get_img_output_length, K.image_dim_ordering(), mode='val')
-data_gen_test = data_generators.get_anchor_gt(
-    test_imgs, classes_count, C, nn.get_img_output_length, K.image_dim_ordering(), mode='test')
 
 if K.image_dim_ordering() == 'th':
     input_shape_img = (3, None, None)
@@ -174,8 +167,8 @@ except:
     print('Could not load pretrained model weights. Weights can be found in the keras application folder \
         https://github.com/fchollet/keras/tree/master/keras/applications')
 
-optimizer = Adam(lr=1e-6)
-optimizer_classifier = Adam(lr=1e-6)
+optimizer = Adam(lr=1e-5)
+optimizer_classifier = Adam(lr=1e-5)
 model_rpn.compile(optimizer=optimizer, loss=[losses.rpn_loss_cls(
     num_anchors), losses.rpn_loss_regr(num_anchors)])
 model_classifier.compile(optimizer=optimizer_classifier, loss=[losses.class_loss_cls, losses.class_loss_regr(
@@ -215,13 +208,21 @@ if os.path.exists(path + "/losses_values.csv"):
     os.remove(path + "/losses_values.csv")
 with open(path + "/losses_values.csv", "w") as f:
     f.write('epoch_num,curr_loss,loss_rpn_regr,rpn_loss,time\n')
-with open(path + "/rpn_loss.csv", "w") as f:
-    f.write('train_step,rpn_cls,rpn_regr,detector_cls,detector_regr,total\n')
+# with open(path + "/rpn_loss.csv", "w") as f:
+#     f.write('train_step,rpn_cls,rpn_regr,detector_cls,detector_regr,total\n')
 
 for epoch_num in range(num_epochs):
 
     progbar = generic_utils.Progbar(epoch_length)   # keras progress bar
     print('Epoch {}/{}'.format(epoch_num + 1, num_epochs))
+
+    # groundtruth anchor
+    data_gen_train = data_generators.get_anchor_gt(
+        train_imgs, classes_count, C, nn.get_img_output_length, K.image_dim_ordering(), mode='train')
+    data_gen_val = data_generators.get_anchor_gt(
+        val_imgs, classes_count, C, nn.get_img_output_length, K.image_dim_ordering(), mode='val')
+    data_gen_test = data_generators.get_anchor_gt(
+        test_imgs, classes_count, C, nn.get_img_output_length, K.image_dim_ordering(), mode='test')
 
     while True:
         # try:
@@ -315,21 +316,21 @@ for epoch_num in range(num_epochs):
         iter_num += 1
         export_counter += 1
 
-        with open(path + "/rpn_loss.csv", "a") as f:
-            print(train_step, np.mean(losses[:iter_num, 0]), np.mean(losses[:iter_num, 1]),
-                  np.mean(losses[:iter_num, 2]), np.mean(losses[:iter_num, 3]),
-                  np.mean(losses[:iter_num, 0]) + np.mean(losses[:iter_num, 1]) + np.mean(losses[:iter_num, 2]) + np.mean(losses[:iter_num, 3]),
-                  sep=',', file=f)
+        # with open(path + "/rpn_loss.csv", "a") as f:
+        #     print(train_step, np.mean(losses[:iter_num, 0]), np.mean(losses[:iter_num, 1]),
+        #           np.mean(losses[:iter_num, 2]), np.mean(losses[:iter_num, 3]),
+        #           np.mean(losses[:iter_num, 0]) + np.mean(losses[:iter_num, 1]) + np.mean(losses[:iter_num, 2]) + np.mean(losses[:iter_num, 3]),
+        #           sep=',', file=f)
         progbar.update(iter_num, [('rpn_cls', np.mean(losses[:iter_num, 0])), ('rpn_regr', np.mean(losses[:iter_num, 1])),
                                   ('detector_cls', np.mean(losses[:iter_num, 2])), ('detector_regr', np.mean(losses[:iter_num, 3]))])
 
-        if export_counter == 50:
-            try:
-                shutil.copy(path + "/rpn_loss.csv", "/content/drive/My Drive/pracaMgr/rpn_loss.csv")
-                export_counter = 0
-            except Exception as e:
-                print("Saving rpn_loss.csv was not possible")
-                print(e)
+        # if export_counter == 50:
+        #     try:
+        #         shutil.copy(path + "/rpn_loss.csv", "/content/drive/My Drive/pracaMgr/rpn_loss.csv")
+        #         export_counter = 0
+        #     except Exception as e:
+        #         print("Saving rpn_loss.csv was not possible")
+        #         print(e)
 
         if iter_num == epoch_length:
             loss_rpn_cls = np.mean(losses[:, 0])
@@ -375,7 +376,7 @@ for epoch_num in range(num_epochs):
                       epoch_num)
 
             if curr_loss < best_loss:
-                filename = "weights" + str(curr_loss)[2:6] +".hdf5"
+                filename = "weights" + str(curr_loss)[0:6] +".hdf5"
                 if C.verbose:
                     print('Total loss decreased from {} to {}, saving weights'.format(
                         best_loss, curr_loss))
@@ -387,7 +388,7 @@ for epoch_num in range(num_epochs):
                     print(e)
                 try:
                     os.remove(
-                        "/content/drive/My Drive/pracaMgr/Weights/weights" + str(best_loss)[2:6] + ".hdf5")
+                        "/content/drive/My Drive/pracaMgr/Weights/weights" + str(best_loss)[0:6] + ".hdf5")
                 except OSError as e:
                     print("File removing was not possible")
                     print(e)
