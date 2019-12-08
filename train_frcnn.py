@@ -22,6 +22,7 @@ from keras.utils import generic_utils
 from keras.callbacks import TensorBoard
 from keras_frcnn.simple_parser import get_data
 from sys import platform
+from keras_frcnn import resnet as nn
 
 if platform == "linux" or platform == "linux2":
     from IPython.core.display import display
@@ -54,15 +55,19 @@ parser.add_option("--num_epochs", dest="num_epochs",
                   help="Number of epochs.", default=40)
 parser.add_option("--epoch_length", dest="epoch_length",
                   help="Number of length", default=1000)
+parser.add_option("--num_rois", dest="num_rois",
+                  help="Number of RoIs", default=32)
 parser.add_option("--config_filename", dest="config_filename",
                   help="Location to store all the metadata related to the training (to be used when testing).",
                   default="config.pickle")
+parser.add_option("--hf", dest="horizontal_flips", help="Augment with horizontal flips in training. (Default=false).", action="store_true", default=False)
+parser.add_option("--vf", dest="vertical_flips", help="Augment with vertical flips in training. (Default=false).", action="store_true", default=False)
+parser.add_option("--rot", "--rot_90", dest="rot_90", help="Augment with 90 degree rotations in training. (Default=false).",
+                  action="store_true", default=False)
 parser.add_option("--output_weight_path", dest="output_weight_path",
                   help="Output path for weights.", default=path + '/weights.hdf5')
 parser.add_option("--input_weight_path",
                   dest="input_weight_path", help="Input path for weights.")
-parser.add_option("--network", dest="network", help="Base network to use. Supports vgg or resnet50.",
-                  default='resnet50')
 
 (options, args) = parser.parse_args()
 
@@ -74,18 +79,12 @@ if not options.train_path:   # if filename is not given
 C = config.Config()
 
 C.model_path = options.output_weight_path
-C.num_rois = 32
-if options.network == 'vgg':
-    C.network = 'vgg'
-    print('Using VGG')
-    from keras_frcnn import vgg as nn
-elif options.network == 'resnet50':
-    from keras_frcnn import resnet as nn
-    print('Using resnet50')
-    C.network = 'resnet50'
-else:
-    print('Not a valid model')
-    raise ValueError
+C.num_rois = int(options.num_rois)
+
+# turn off any data augmentation at test time
+C.use_horizontal_flips = False
+C.use_vertical_flips = False
+C.rot_90 = False
 
 # check if weight path was passed via command line
 if options.input_weight_path:
@@ -129,13 +128,6 @@ print('Num train samples {}'.format(len(train_imgs)))
 print('Num val samples {}'.format(len(val_imgs)))
 print('Num test samples {}'.format(len(test_imgs)))
 
-# groundtruth anchor
-data_gen_train = data_generators.get_anchor_gt(
-    train_imgs, classes_count, C, nn.get_img_output_length, K.image_dim_ordering(), mode='train')
-data_gen_val = data_generators.get_anchor_gt(
-    val_imgs, classes_count, C, nn.get_img_output_length, K.image_dim_ordering(), mode='val')
-data_gen_test = data_generators.get_anchor_gt(
-    test_imgs, classes_count, C, nn.get_img_output_length, K.image_dim_ordering(), mode='test')
 
 if K.image_dim_ordering() == 'th':
     input_shape_img = (3, None, None)
@@ -216,13 +208,21 @@ if os.path.exists(path + "/losses_values.csv"):
     os.remove(path + "/losses_values.csv")
 with open(path + "/losses_values.csv", "w") as f:
     f.write('epoch_num,curr_loss,loss_rpn_regr,rpn_loss,time\n')
-with open(path + "/rpn_loss.csv", "w") as f:
-    f.write('train_step,rpn_cls,rpn_regr,detector_cls,detector_regr,total\n')
+# with open(path + "/rpn_loss.csv", "w") as f:
+#     f.write('train_step,rpn_cls,rpn_regr,detector_cls,detector_regr,total\n')
 
 for epoch_num in range(num_epochs):
 
     progbar = generic_utils.Progbar(epoch_length)   # keras progress bar
     print('Epoch {}/{}'.format(epoch_num + 1, num_epochs))
+
+    # groundtruth anchor
+    data_gen_train = data_generators.get_anchor_gt(
+        train_imgs, classes_count, C, nn.get_img_output_length, K.image_dim_ordering(), mode='train')
+    data_gen_val = data_generators.get_anchor_gt(
+        val_imgs, classes_count, C, nn.get_img_output_length, K.image_dim_ordering(), mode='val')
+    data_gen_test = data_generators.get_anchor_gt(
+        test_imgs, classes_count, C, nn.get_img_output_length, K.image_dim_ordering(), mode='test')
 
     while True:
         # try:
@@ -247,7 +247,7 @@ for epoch_num in range(num_epochs):
         P_rpn = model_rpn.predict_on_batch(X)
 
         R = roi_helpers.rpn_to_roi(P_rpn[0], P_rpn[1], C, K.image_dim_ordering(
-        ), use_regr=True, overlap_thresh=0.6, max_boxes=300)
+        ), use_regr=True, overlap_thresh=0.7, max_boxes=300)
         # note: calc_iou converts from (x1,y1,x2,y2) to (x,y,w,h) format
         X2, Y1, Y2, IouS = roi_helpers.calc_iou(R, img_data, C, class_mapping)
 
@@ -316,21 +316,21 @@ for epoch_num in range(num_epochs):
         iter_num += 1
         export_counter += 1
 
-        with open(path + "/rpn_loss.csv", "a") as f:
-            print(train_step, np.mean(losses[:iter_num, 0]), np.mean(losses[:iter_num, 1]),
-                  np.mean(losses[:iter_num, 2]), np.mean(losses[:iter_num, 3]),
-                  np.mean(losses[:iter_num, 0]) + np.mean(losses[:iter_num, 1]) + np.mean(losses[:iter_num, 2]) + np.mean(losses[:iter_num, 3]),
-                  sep=',', file=f)
+        # with open(path + "/rpn_loss.csv", "a") as f:
+        #     print(train_step, np.mean(losses[:iter_num, 0]), np.mean(losses[:iter_num, 1]),
+        #           np.mean(losses[:iter_num, 2]), np.mean(losses[:iter_num, 3]),
+        #           np.mean(losses[:iter_num, 0]) + np.mean(losses[:iter_num, 1]) + np.mean(losses[:iter_num, 2]) + np.mean(losses[:iter_num, 3]),
+        #           sep=',', file=f)
         progbar.update(iter_num, [('rpn_cls', np.mean(losses[:iter_num, 0])), ('rpn_regr', np.mean(losses[:iter_num, 1])),
                                   ('detector_cls', np.mean(losses[:iter_num, 2])), ('detector_regr', np.mean(losses[:iter_num, 3]))])
 
-        if export_counter == 50:
-            try:
-                shutil.copy(path + "/rpn_loss.csv", "/content/drive/My Drive/pracaMgr/rpn_loss.csv")
-                export_counter = 0
-            except Exception as e:
-                print("Saving rpn_loss.csv was not possible")
-                print(e)
+        # if export_counter == 50:
+        #     try:
+        #         shutil.copy(path + "/rpn_loss.csv", "/content/drive/My Drive/pracaMgr/rpn_loss.csv")
+        #         export_counter = 0
+        #     except Exception as e:
+        #         print("Saving rpn_loss.csv was not possible")
+        #         print(e)
 
         if iter_num == epoch_length:
             loss_rpn_cls = np.mean(losses[:, 0])
@@ -376,7 +376,7 @@ for epoch_num in range(num_epochs):
                       epoch_num)
 
             if curr_loss < best_loss:
-                filename = "weights" + str(curr_loss)[2:6] + options.network +".hdf5"
+                filename = "weights" + str(curr_loss)[0:6] +".hdf5"
                 if C.verbose:
                     print('Total loss decreased from {} to {}, saving weights'.format(
                         best_loss, curr_loss))
@@ -388,7 +388,7 @@ for epoch_num in range(num_epochs):
                     print(e)
                 try:
                     os.remove(
-                        "/content/drive/My Drive/pracaMgr/Weights/weights" + str(best_loss)[2:6] + options.network + ".hdf5")
+                        "/content/drive/My Drive/pracaMgr/Weights/weights" + str(best_loss)[0:6] + ".hdf5")
                 except OSError as e:
                     print("File removing was not possible")
                     print(e)
