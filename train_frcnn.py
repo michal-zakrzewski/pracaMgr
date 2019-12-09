@@ -26,13 +26,12 @@ from keras_frcnn import resnet as nn
 
 if platform == "linux" or platform == "linux2":
     from IPython.core.display import display
+
     path = str("/content/pracaMgr/input")
 elif platform == "darwin":
     path = str("./input")
 elif platform == "win32":
     path = str("../input")
-
-# tensorboard
 
 
 def write_log(callback, names, logs, batch_no):
@@ -45,6 +44,7 @@ def write_log(callback, names, logs, batch_no):
         callback.writer.flush()
 
 
+# Wczytanie danych wprowadzonych jako parametry w konsoli
 sys.setrecursionlimit(40000)
 
 parser = OptionParser()
@@ -60,9 +60,12 @@ parser.add_option("--num_rois", dest="num_rois",
 parser.add_option("--config_filename", dest="config_filename",
                   help="Location to store all the metadata related to the training (to be used when testing).",
                   default="config.pickle")
-parser.add_option("--hf", dest="horizontal_flips", help="Augment with horizontal flips in training. (Default=false).", action="store_true", default=False)
-parser.add_option("--vf", dest="vertical_flips", help="Augment with vertical flips in training. (Default=false).", action="store_true", default=False)
-parser.add_option("--rot", "--rot_90", dest="rot_90", help="Augment with 90 degree rotations in training. (Default=false).",
+parser.add_option("--hf", dest="horizontal_flips", help="Augment with horizontal flips in training. (Default=false).",
+                  action="store_true", default=False)
+parser.add_option("--vf", dest="vertical_flips", help="Augment with vertical flips in training. (Default=false).",
+                  action="store_true", default=False)
+parser.add_option("--rot", "--rot_90", dest="rot_90",
+                  help="Augment with 90 degree rotations in training. (Default=false).",
                   action="store_true", default=False)
 parser.add_option("--output_weight_path", dest="output_weight_path",
                   help="Output path for weights.", default=path + '/weights.hdf5')
@@ -71,32 +74,32 @@ parser.add_option("--input_weight_path",
 
 (options, args) = parser.parse_args()
 
-if not options.train_path:   # if filename is not given
+if not options.train_path:  # if filename is not given
     parser.error(
         'Error: path to training data must be specified. Pass --path to command line')
 
-# pass the settings from the command line, and persist them in the config object
+# przekazanie ustawien z linii polecen i uzycie ich w konfiguracji
 C = config.Config()
 
 C.model_path = options.output_weight_path
 C.num_rois = int(options.num_rois)
 
-# turn off any data augmentation at test time
+# wylaczanie modyfikacji obrazu podczas testu
 C.use_horizontal_flips = False
 C.use_vertical_flips = False
 C.rot_90 = False
 
-# check if weight path was passed via command line
+# sprawdzenie, czy w linii polecen przekazano sciezke do pliku wag
 if options.input_weight_path:
     C.base_net_weights = options.input_weight_path
 else:
-    # set the path to weights based on backend and model
+    # ustawienie sciezki do wag
     C.base_net_weights = nn.get_weight_path()
 
 # parser
 all_imgs, classes_count, class_mapping = get_data(options.train_path)
 
-# bg
+# tlo (bg)
 if 'bg' not in classes_count:
     classes_count['bg'] = 0
     class_mapping['bg'] = len(class_mapping)
@@ -120,6 +123,7 @@ random.shuffle(all_imgs)
 
 num_imgs = len(all_imgs)
 
+# Wczytanie flag oznaczanych zbiór jako treningowy/walidacyjny/testowy (sprawdzający accuracy podczas treningu)
 train_imgs = [s for s in all_imgs if s['imageset'] == 'train']
 val_imgs = [s for s in all_imgs if s['imageset'] == 'val']
 test_imgs = [s for s in all_imgs if s['imageset'] == 'test']
@@ -127,7 +131,6 @@ test_imgs = [s for s in all_imgs if s['imageset'] == 'test']
 print('Num train samples {}'.format(len(train_imgs)))
 print('Num val samples {}'.format(len(val_imgs)))
 print('Num test samples {}'.format(len(test_imgs)))
-
 
 if K.image_dim_ordering() == 'th':
     input_shape_img = (3, None, None)
@@ -138,28 +141,25 @@ else:
 img_input = Input(shape=input_shape_img)
 roi_input = Input(shape=(None, 4))
 
-# base network(feature extractor) (resnet, VGG, Inception, Inception Resnet V2, etc)
+# base network (definicja architektury do wyciągania mapy cech z obrazu)
 shared_layers = nn.nn_base(img_input, trainable=True)
 
-# define the RPN, built on the base layers
-# RPN
+# definicja RPN
 num_anchors = len(C.anchor_box_scales) * len(C.anchor_box_ratios)
 rpn = nn.rpn(shared_layers, num_anchors)
 
-# detection network
+# sięc do klasyfikacji
 classifier = nn.classifier(shared_layers, roi_input, C.num_rois, nb_classes=len(
     classes_count), trainable=True)
 
 model_rpn = Model(img_input, rpn[:2])
 model_classifier = Model([img_input, roi_input], classifier)
 
-# this is a model that holds both the RPN and the classifier, used to load/save weights for the models
+# definicja modelu, ktory przetrzymuje obie sieci, RPN i klasyfikator, do zapisywania/wczytania wag modelu
 model_all = Model([img_input, roi_input], rpn[:2] + classifier)
 
 try:
-    # load_weights by name
-    # some keras application model does not containing name
-    # for this kinds of model, we need to re-construct model with naming
+    # wczytanie modelu (jesli zostal przekazany)
     print('loading weights from {}'.format(C.base_net_weights))
     model_rpn.load_weights(C.base_net_weights, by_name=True)
     model_classifier.load_weights(C.base_net_weights, by_name=True)
@@ -167,12 +167,13 @@ except:
     print('Could not load pretrained model weights. Weights can be found in the keras application folder \
         https://github.com/fchollet/keras/tree/master/keras/applications')
 
+# parametry zwiazane z nauka
 optimizer = Adam(lr=1e-5)
 optimizer_classifier = Adam(lr=1e-5)
 model_rpn.compile(optimizer=optimizer, loss=[losses.rpn_loss_cls(
     num_anchors), losses.rpn_loss_regr(num_anchors)])
 model_classifier.compile(optimizer=optimizer_classifier, loss=[losses.class_loss_cls, losses.class_loss_regr(
-    len(classes_count)-1)], metrics={'dense_class_{}'.format(len(classes_count)): 'accuracy'})
+    len(classes_count) - 1)], metrics={'dense_class_{}'.format(len(classes_count)): 'accuracy'})
 model_all.compile(optimizer='sgd', loss='mae')
 
 # Tensorboard log
@@ -200,6 +201,7 @@ best_loss = np.Inf
 class_mapping_inv = {v: k for k, v in class_mapping.items()}
 print('Starting training')
 
+# Do logowania na Google Drive wynikow
 if os.path.exists("/content/drive/My Drive/pracaMgr/Weights/config.pickle"):
     os.remove("/content/drive/My Drive/pracaMgr/Weights/config.pickle")
 if os.path.exists("/content/drive/My Drive/pracaMgr/losses_values.csv"):
@@ -208,15 +210,16 @@ if os.path.exists(path + "/losses_values.csv"):
     os.remove(path + "/losses_values.csv")
 with open(path + "/losses_values.csv", "w") as f:
     f.write('epoch_num,curr_loss,loss_rpn_regr,rpn_loss,time\n')
-# with open(path + "/rpn_loss.csv", "w") as f:
-#     f.write('train_step,rpn_cls,rpn_regr,detector_cls,detector_regr,total\n')
+with open(path + "/rpn_loss.csv", "w") as f:
+    f.write('train_step,rpn_cls,rpn_regr,detector_cls,detector_regr,total\n')
 
+# Petla z treningiem
 for epoch_num in range(num_epochs):
 
-    progbar = generic_utils.Progbar(epoch_length)   # keras progress bar
+    progbar = generic_utils.Progbar(epoch_length)  # keras progress bar
     print('Epoch {}/{}'.format(epoch_num + 1, num_epochs))
 
-    # groundtruth anchor
+    # okreslenie polozenia GT
     data_gen_train = data_generators.get_anchor_gt(
         train_imgs, classes_count, C, nn.get_img_output_length, K.image_dim_ordering(), mode='train')
     data_gen_val = data_generators.get_anchor_gt(
@@ -225,11 +228,9 @@ for epoch_num in range(num_epochs):
         test_imgs, classes_count, C, nn.get_img_output_length, K.image_dim_ordering(), mode='test')
 
     while True:
-        # try:
-        # mean overlapping bboxes
         if len(rpn_accuracy_rpn_monitor) == epoch_length and C.verbose:
             mean_overlapping_bboxes = float(
-                sum(rpn_accuracy_rpn_monitor))/len(rpn_accuracy_rpn_monitor)
+                sum(rpn_accuracy_rpn_monitor)) / len(rpn_accuracy_rpn_monitor)
             rpn_accuracy_rpn_monitor = []
             print('\nAverage number of overlapping bounding boxes from RPN = {} for {} previous iterations'.format(
                 mean_overlapping_bboxes, epoch_length))
@@ -237,7 +238,7 @@ for epoch_num in range(num_epochs):
                 print(
                     'RPN is not producing bounding boxes that overlap the ground truth boxes. Check RPN settings or keep training.')
 
-        # data generator X, Y, image
+        # data generator X (wejscie), Y (wyjscie), image
         X, Y, img_data = next(data_gen_train)
 
         loss_rpn = model_rpn.train_on_batch(X, Y)
@@ -248,7 +249,7 @@ for epoch_num in range(num_epochs):
 
         R = roi_helpers.rpn_to_roi(P_rpn[0], P_rpn[1], C, K.image_dim_ordering(
         ), use_regr=True, overlap_thresh=0.7, max_boxes=300)
-        # note: calc_iou converts from (x1,y1,x2,y2) to (x,y,w,h) format
+        # zamiana (x1,x2,y1,y2) na (x,y,w,h)
         X2, Y1, Y2, IouS = roi_helpers.calc_iou(R, img_data, C, class_mapping)
 
         if X2 is None:
@@ -256,7 +257,7 @@ for epoch_num in range(num_epochs):
             rpn_accuracy_for_epoch.append(0)
             continue
 
-        # sampling positive/negative samples
+        # ustawianie pozytywne/negatywne przyklady (Y1 - lista klas do klasyfikacji)
         neg_samples = np.where(Y1[0, :, -1] == 1)
         pos_samples = np.where(Y1[0, :, -1] == 0)
 
@@ -274,11 +275,11 @@ for epoch_num in range(num_epochs):
         rpn_accuracy_for_epoch.append((len(pos_samples)))
 
         if C.num_rois > 1:
-            if len(pos_samples) < C.num_rois//2:
+            if len(pos_samples) < C.num_rois // 2:
                 selected_pos_samples = pos_samples.tolist()
             else:
                 selected_pos_samples = np.random.choice(
-                    pos_samples, C.num_rois//2, replace=False).tolist()
+                    pos_samples, C.num_rois // 2, replace=False).tolist()
             try:
                 selected_neg_samples = np.random.choice(
                     neg_samples, C.num_rois - len(selected_pos_samples), replace=False).tolist()
@@ -287,12 +288,12 @@ for epoch_num in range(num_epochs):
                     selected_neg_samples = np.random.choice(
                         neg_samples, C.num_rois - len(selected_pos_samples), replace=True).tolist()
                 except:
-                    # The neg_samples is [[1 0 ]] only, therefore there's no negative sample
+                    # wyjatek - neg_samples to [[1 0 ]], wiec nie ma zadnych negatywnych przykladow
                     continue
 
             sel_samples = selected_pos_samples + selected_neg_samples
         else:
-            # in the extreme case where num_rois = 1, we pick a random pos or neg sample
+            # w przypadku num_rois = 1 pozytywny lub negatywny przyklad jest losowany
             selected_pos_samples = pos_samples.tolist()
             selected_neg_samples = neg_samples.tolist()
             if np.random.randint(0, 2):
@@ -316,21 +317,24 @@ for epoch_num in range(num_epochs):
         iter_num += 1
         export_counter += 1
 
-        # with open(path + "/rpn_loss.csv", "a") as f:
-        #     print(train_step, np.mean(losses[:iter_num, 0]), np.mean(losses[:iter_num, 1]),
-        #           np.mean(losses[:iter_num, 2]), np.mean(losses[:iter_num, 3]),
-        #           np.mean(losses[:iter_num, 0]) + np.mean(losses[:iter_num, 1]) + np.mean(losses[:iter_num, 2]) + np.mean(losses[:iter_num, 3]),
-        #           sep=',', file=f)
-        progbar.update(iter_num, [('rpn_cls', np.mean(losses[:iter_num, 0])), ('rpn_regr', np.mean(losses[:iter_num, 1])),
-                                  ('detector_cls', np.mean(losses[:iter_num, 2])), ('detector_regr', np.mean(losses[:iter_num, 3]))])
+        with open(path + "/rpn_loss.csv", "a") as f:
+            print(train_step, np.mean(losses[:iter_num, 0]), np.mean(losses[:iter_num, 1]),
+                  np.mean(losses[:iter_num, 2]), np.mean(losses[:iter_num, 3]),
+                  np.mean(losses[:iter_num, 0]) + np.mean(losses[:iter_num, 1]) + np.mean(
+                      losses[:iter_num, 2]) + np.mean(losses[:iter_num, 3]),
+                  sep=',', file=f)
+        progbar.update(iter_num,
+                       [('rpn_cls', np.mean(losses[:iter_num, 0])), ('rpn_regr', np.mean(losses[:iter_num, 1])),
+                        ('detector_cls', np.mean(losses[:iter_num, 2])),
+                        ('detector_regr', np.mean(losses[:iter_num, 3]))])
 
-        # if export_counter == 50:
-        #     try:
-        #         shutil.copy(path + "/rpn_loss.csv", "/content/drive/My Drive/pracaMgr/rpn_loss.csv")
-        #         export_counter = 0
-        #     except Exception as e:
-        #         print("Saving rpn_loss.csv was not possible")
-        #         print(e)
+        if export_counter == 50:
+            try:
+                shutil.copy(path + "/rpn_loss.csv", "/content/drive/My Drive/pracaMgr/rpn_loss.csv")
+                export_counter = 0
+            except Exception as e:
+                print("Saving rpn_loss.csv was not possible")
+                print(e)
 
         if iter_num == epoch_length:
             loss_rpn_cls = np.mean(losses[:, 0])
@@ -376,7 +380,8 @@ for epoch_num in range(num_epochs):
                       epoch_num)
 
             if curr_loss < best_loss:
-                filename = "weights" + str(curr_loss)[0:6] +".hdf5"
+                # Backupy od razu zapisywane sa na dysk
+                filename = "weights" + str(curr_loss)[0:6] + ".hdf5"
                 if C.verbose:
                     print('Total loss decreased from {} to {}, saving weights'.format(
                         best_loss, curr_loss))
@@ -397,11 +402,14 @@ for epoch_num in range(num_epochs):
                 if platform == "linux" or platform == "linux2":
                     if not os.path.exists("/content/drive/My Drive/pracaMgr/Weights/config.pickle"):
                         if os.path.exists("/content/config.pickle"):
-                            shutil.copy("/content/config.pickle", "/content/drive/My Drive/pracaMgr/Weights/config.pickle")
+                            shutil.copy("/content/config.pickle",
+                                        "/content/drive/My Drive/pracaMgr/Weights/config.pickle")
                         elif os.path.exists("/content/pracaMgr/config.pickle"):
-                            shutil.copy("/content/pracaMgr/config.pickle", "/content/drive/My Drive/pracaMgr/Weights/config.pickle")
+                            shutil.copy("/content/pracaMgr/config.pickle",
+                                        "/content/drive/My Drive/pracaMgr/Weights/config.pickle")
                         elif os.path.exists("/content/pracaMgr/input/config.pickle"):
-                            shutil.copy("/content/pracaMgr/input/config.pickle", "/content/drive/My Drive/pracaMgr/Weights/config.pickle")
+                            shutil.copy("/content/pracaMgr/input/config.pickle",
+                                        "/content/drive/My Drive/pracaMgr/Weights/config.pickle")
 
             break
 

@@ -9,7 +9,6 @@ import PIL
 
 if platform == "linux" or platform == "linux2":
     from IPython.core.display import display
-
     path = str("/content/pracaMgr/input")
 elif platform == "darwin":
     path = str("./input")
@@ -65,6 +64,11 @@ pixels = [(pixel_position % 768, pixel_position // 768)
 
 
 def size_checker(rle_code):
+    """
+    Funkcja sprawdzajaca, czy dany statek jest wiekszy niz zadany parametr
+    :param rle_code: lista pikseli w formie RLE oznaczajaca ktore piksele to statek
+    :return: prawda/falsz, czy dany statek jest mniejszy niz zadany prog
+    """
     rle_code = [int(i) for i in rle_code.split()]
     if int(options.no_small) is not 0:
         if sum(rle_code[1::2]) < int(options.no_small):
@@ -76,6 +80,11 @@ def size_checker(rle_code):
 
 
 def checker(rle_code):
+    """
+    Fukcja sprawdzajaca ulozenie statku wzgledem krawedzi
+    :param rle_code: lista pikseli w formie RLE oznaczajaca ktore piksele to statek
+    :return: prawda/falsz, czy dany statek jest ustawiony rownolegle do krawedzi
+    """
     rle_code = [int(i) for i in rle_code.split()]
     rle_pixels = [int(i) for i in (rle_code[0::2])]
     X_pixels = [s % 768 for s in rle_pixels]
@@ -97,9 +106,9 @@ def checker(rle_code):
 
 
 def rle_to_pixels(rle_code):
-    '''
-    Transforms a RLE code string into a list of pixels of a (768, 768) canvas
-    '''
+    """
+    Zmiana listy pikseli zakodowana w RLE na wspolrzedne (x,y) kazdego piksela
+    """
     rle_code = [int(i) for i in rle_code.split()]
     pixels = [(pixel_position % 768, pixel_position // 768)
               for start, length in list(zip(rle_code[0:-1:2], rle_code[1::2]))
@@ -143,7 +152,9 @@ for i in tqdm(range(number)):
             if cond1 or cond2 or cond3 or cond4:
                 incorrect += 1
             else:
-
+                """
+                    Ten fragment kodu mozna odkomentowac celem sprawdzenia, czy statek jest oznaczany poprawnie
+                """
                 # Following code is not necessary right now
                 # with open("incorrect_images.csv", "a") as g:
                 #     g.write("input/train_v2/")

@@ -6,26 +6,23 @@ if K.backend() == 'tensorflow':
 
 
 class RoiPoolingConv(Layer):
-    '''
-    ROI pooling layer for 2D inputs.
-    See Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition,
+    """
+    ROI pooling dla wejsc 2D
+    Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition,
     K. He, X. Zhang, S. Ren, J. Sun
-    # Arguments
+
+    # Parametry:
         pool_size: int
-            Size of pooling region to use. pool_size = 7 will result in a 7x7 region.
-        num_rois: number of regions of interest to be used
-    # Input shape
-        list of two 4D tensors [X_img,X_roi] with shape:
-        X_img:
-        `(1, channels, rows, cols)` if dim_ordering='th'
-        or 4D tensor with shape:
-        `(1, rows, cols, channels)` if dim_ordering='tf'.
-        X_roi:
-        `(1,num_rois,4)` list of rois, with ordering (x,y,w,h)
-    # Output shape
-        3D tensor with shape:
-        `(1, num_rois, channels, pool_size, pool_size)`
-    '''
+            Wielkosc obszaru, ustawienie np pool_size = 7 da obszar o wielkosci 7x7
+        num_rois: int
+            Ilosc obszarow zainteresowania, ktore powinny zostac uzyte
+    # Wejscie:
+        lista dwoch tensorow [X_img,X_roi] o strukturze:
+        X_img:  macierz 4D o strukturze (1, wiersze, kolumny, kanaly (kolory))
+        X_roi: tensor 3D (1, num_rois, 4), lista rois z formatem (x,y,w,h)
+    # Wyjscie:
+        Tensor 3D o formacie (1, num_rois, pool_size, pool_size, kanaly)
+    """
 
     def __init__(self, pool_size, num_rois, **kwargs):
 

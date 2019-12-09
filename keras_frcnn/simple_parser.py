@@ -2,7 +2,17 @@ import cv2
 import numpy as np
 from tqdm import tqdm
 
+
 def get_data(input_path):
+    """
+    Funkcja odpowiadajaca za przygotowanie danych wejsciowych do procesu treningu
+    :param input_path: sciezka do plikow zawierajacych dane wejsciowe
+    :return:
+        all_data - zbior wszystkich zdjec z parametrem train/val/test w zaleznosci od sposobu uzycia
+            wraz ze wspolrzednymi polozenia GT
+        classes_count - liczba klas, ktora jest zapisana w pliku wejsciowym
+        class_mapping - lsita klas, wliczajac klase tla (bg)
+    """
     found_bg = False
     all_imgs = {}
 
@@ -26,7 +36,7 @@ def get_data(input_path):
 
             if class_name not in class_mapping:
                 if class_name == 'bg' and found_bg == False:
-                    print('Found class name with special name bg. Will be treated as a background region (this is usually for hard negative mining).')
+                    print('Found class name with special name bg. Will be treated as a background region (hard negative mining).')
                     found_bg = True
                 class_mapping[class_name] = len(class_mapping)
 

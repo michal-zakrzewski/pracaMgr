@@ -1,22 +1,31 @@
 import numpy as np
-import pdb
 import math
 from . import data_generators
 import copy
-import time
 
 
 def calc_iou(R, img_data, C, class_mapping):
+    """
+    Konwersja wspolrzednych z (x1,x2,y1,y2) na (x,y,w,h)
+    :param R: wyjscie z warstwy non_max_suppression
+    :param img_data: zdjecie
+    :param C: konfiguracja przekazana w linii komend
+    :param class_mapping: lista klas, ktore zostaly przekazane w ramach treningu
+    :return: informacje o iou:
+        X - wspolrzedne wejsciowe w formacie (x1,y1,w,h)
+        Y1 - obszary odnoszace sie do liczby klas
+        Y2 - wartosc probki treningowej dla ostatniej warstwy regresji (okresla, czy nalezy dodac do obliczen odpowiedni parametr)
+    """
 
     bboxes = img_data['bboxes']
     (width, height) = (img_data['width'], img_data['height'])
-    # get image dimensions for resizing
+    # wez wymiary obrazka dla zmian rozmiaru
     (resized_width, resized_height) = data_generators.get_new_img_size(width, height, C.im_size)
 
     gta = np.zeros((len(bboxes), 4))
 
     for bbox_num, bbox in enumerate(bboxes):
-        # get the GT box coordinates, and resize to account for image resizing
+        # oblicz wspolrzedne GT i zmien rozmiar
         gta[bbox_num, 0] = int(round(bbox['x1'] * (resized_width / float(width))/C.rpn_stride))
         gta[bbox_num, 1] = int(round(bbox['x2'] * (resized_width / float(width))/C.rpn_stride))
         gta[bbox_num, 2] = int(round(bbox['y1'] * (resized_height / float(height))/C.rpn_stride))
@@ -26,7 +35,7 @@ def calc_iou(R, img_data, C, class_mapping):
     y_class_num = []
     y_class_regr_coords = []
     y_class_regr_label = []
-    IoUs = [] # for debugging only
+    IoUs = [] # do celow statystycznych
 
     for ix in range(R.shape[0]):
         (x1, y1, x2, y2) = R[ix, :]
@@ -52,7 +61,7 @@ def calc_iou(R, img_data, C, class_mapping):
             IoUs.append(best_iou)
 
             if C.classifier_min_overlap <= best_iou < C.classifier_max_overlap:
-                # hard negative example
+                # hard negative mining
                 cls_name = 'bg'
             elif C.classifier_max_overlap <= best_iou:
                 cls_name = bboxes[best_bbox]['class']
@@ -98,15 +107,33 @@ def calc_iou(R, img_data, C, class_mapping):
 
 
 def apply_regr(x, y, w, h, tx, ty, tw, th):
+    """
+    Cel regresji to zblizenie wartosci T (poprzedni bbox) do X (obecny bbox).
+    Po uzyskaniu wyniku prognozy rzeczywiste wspolrzedne obszaru predykcji mozna uzyskac za pomoca tej funkcji
+    :param x: Wspolrzedna X srodka obszaru
+    :param y: Wspolrzedna Y srodka obszaru
+    :param w: Szerokosc obszaru
+    :param h: Wysokosc obszaru
+    :param tx: Wspolrzedna X poprzedniego srodka obszaru
+    :param ty: Wspolrzedna Y poprzedniego srodka obszaru
+    :param tw: Szerokosc poprzedniego obszaru
+    :param th: Wysokosc poprzedniego obszaru
+    :return: Nowe wspolrzedne (o ile dadza poprawe - w przypadku bledu zwraca poprzednie wartosci)
+    """
     try:
+        # wysrodkuj wspolrzedne
         cx = x + w/2.
         cy = y + h/2.
+        # stale centrum do zmian wybiaru
         cx1 = tx * w + cx
         cy1 = ty * h + cy
+        # stala wysokosc i szerokosc
         w1 = math.exp(tw) * w
         h1 = math.exp(th) * h
+        # stala wartosc lewej gornej wspolrzednej
         x1 = cx1 - w1/2.
         y1 = cy1 - h1/2.
+        # zaokraglanie
         x1 = int(round(x1))
         y1 = int(round(y1))
         w1 = int(round(w1))
@@ -124,6 +151,12 @@ def apply_regr(x, y, w, h, tx, ty, tw, th):
 
 
 def apply_regr_np(X, T):
+    """
+    Funkcja dostosowywujaca pozycje GT za pomoca przewidywanej wartosci warstwy regresji RPN
+    :param X: aktualne koordynaty
+    :param T: parametry odpowiadajace obszarowi do poprawy
+    :return: poprawione wspolrzedne obszaru
+    """
     try:
         x = X[0, :, :]
         y = X[1, :, :]
@@ -156,6 +189,14 @@ def apply_regr_np(X, T):
 
 
 def non_max_suppression_fast(boxes, probs, overlap_thresh=0.9, max_boxes=300):
+    """
+    Warstwa non_max_suprression
+    :param boxes: obszar o strukturze (n,4) z odpowiadajacymi koordynatami
+    :param probs: prawdopodobienstwo odpowiadajace kazdemu obszarowi
+    :param max_boxes: maksymalna ilosc obszarow do sprawdzenia (uwaga, moze byc przekazana jako pamaetr z innej funkcji)
+    :param overlap_thresh: prog okreslania pozytywnej probki (uwaga, moze byc przekazana jako pamaetr z innej funkcji)
+    :return: wyjscie z warstwy non_max_suppression
+    """
     # code used from here: http://www.pyimagesearch.com/2015/02/16/faster-non-maximum-suppression-python/
     # if there are no boxes, return an empty list
     if len(boxes) == 0:
@@ -222,6 +263,17 @@ def non_max_suppression_fast(boxes, probs, overlap_thresh=0.9, max_boxes=300):
 
 
 def rpn_to_roi(rpn_layer, regr_layer, C, dim_ordering, use_regr=True, max_boxes=300, overlap_thresh=0.8):
+    """
+    Funkcja zmieniajaca wygenerowane obszary z sieci RPN jako ROI (jako wyjscie warstwy non_max_suppression) do celow testowych skutecznosci treningu
+    :param rpn_layer: wyjscie modelu predykcyjnego sieci RPN - warstwa klasyfikacji
+    :param regr_layer: wyjscie modelu predyjcyjnego sieci RPN - warstwa regresji
+    :param C: konfiguracja przekazana z linii komand
+    :param dim_ordering: parametr okreslajacy ulozenie parametrow (czy najpierw ida wymiary i na koncu kanaly jak w theano, czy kanaly pierwsze, jak w tf)
+    :param use_regr: parametr okreslajacy czy wspolrzedne moga byc zmieniane w zaleznosci od znalezionych gradientow
+    :param max_boxes: maksymalna ilosc obszarow do sprawdzenia (uwaga, moze byc przekazana jako pamaetr z innej funkcji)
+    :param overlap_thresh: prog okreslania pozytywnej probki (uwaga, moze byc przekazana jako pamaetr z innej funkcji)
+    :return: ROI dla obszarow z sieci RPN
+    """
 
     regr_layer = regr_layer / C.std_scaling
 
