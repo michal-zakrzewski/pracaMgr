@@ -4,7 +4,9 @@ from keras import backend as K
 
 
 class FixedBatchNormalization(Layer):
-
+    """
+    Klasa normalizujaca zestaw danych na potrzebny architektury sieci Resnet 50
+    """
     def __init__(self, epsilon=1e-3, axis=-1,
                  weights=None, beta_init='zero', gamma_init='one',
                  gamma_regularizer=None, beta_regularizer=None, **kwargs):
