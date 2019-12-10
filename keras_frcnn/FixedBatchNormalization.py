@@ -80,4 +80,5 @@ class FixedBatchNormalization(Layer):
                   'gamma_regularizer': self.gamma_regularizer.get_config() if self.gamma_regularizer else None,
                   'beta_regularizer': self.beta_regularizer.get_config() if self.beta_regularizer else None}
         base_config = super(FixedBatchNormalization, self).get_config()
+
         return dict(list(base_config.items()) + list(config.items()))

@@ -294,9 +294,12 @@ def rpn_to_roi(rpn_layer, regr_layer, C, dim_ordering, use_regr=True, max_boxes=
     elif dim_ordering == 'th':
         A = np.zeros((4, rpn_layer.shape[2], rpn_layer.shape[3], rpn_layer.shape[1]))
 
+    # wymiary [128, 256, 512]
     for anchor_size in anchor_sizes:
+        # ratio, 1:2, 2:1, 1:1
         for anchor_ratio in anchor_ratios:
 
+            # znajdz szerokosc i wysokosc GT na mapie cech
             anchor_x = (anchor_size * anchor_ratio[0])/C.rpn_stride
             anchor_y = (anchor_size * anchor_ratio[1])/C.rpn_stride
             if dim_ordering == 'th':
@@ -307,6 +310,7 @@ def rpn_to_roi(rpn_layer, regr_layer, C, dim_ordering, use_regr=True, max_boxes=
 
             X, Y = np.meshgrid(np.arange(cols),np. arange(rows))
 
+            # zapisz wspolrzedne GT (x,y,w,h)
             A[0, :, :, curr_layer] = X - anchor_x/2
             A[1, :, :, curr_layer] = Y - anchor_y/2
             A[2, :, :, curr_layer] = anchor_x
@@ -315,18 +319,22 @@ def rpn_to_roi(rpn_layer, regr_layer, C, dim_ordering, use_regr=True, max_boxes=
             if use_regr:
                 A[:, :, :, curr_layer] = apply_regr_np(A[:, :, :, curr_layer], regr)
 
+            # usun koordynaty niepasujace
+            # np.maximum(1, []) ustawia wartosc 1 w tabeli [] dla wartosci mniejszych niz 1
             A[2, :, :, curr_layer] = np.maximum(1, A[2, :, :, curr_layer])
             A[3, :, :, curr_layer] = np.maximum(1, A[3, :, :, curr_layer])
             A[2, :, :, curr_layer] += A[0, :, :, curr_layer]
             A[3, :, :, curr_layer] += A[1, :, :, curr_layer]
 
+            # sprawdzenie, czy wartosci nie wychodza za obrazek
             A[0, :, :, curr_layer] = np.maximum(0, A[0, :, :, curr_layer])
             A[1, :, :, curr_layer] = np.maximum(0, A[1, :, :, curr_layer])
             A[2, :, :, curr_layer] = np.minimum(cols-1, A[2, :, :, curr_layer])
             A[3, :, :, curr_layer] = np.minimum(rows-1, A[3, :, :, curr_layer])
 
+            # nastepna warstwa
             curr_layer += 1
-
+    # obszar o strukturze (n,4) z odpowiadajacymi koordynatami oraz ich prawdopodobienstwo
     all_boxes = np.reshape(A.transpose((0, 3, 1,2)), (4, -1)).transpose((1, 0))
     all_probs = rpn_layer.transpose((0, 3, 1, 2)).reshape((-1))
 

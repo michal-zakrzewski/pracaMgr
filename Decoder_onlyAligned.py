@@ -44,9 +44,9 @@ else:
         number = int(options.ships_number)
         print("Checking randomly selected", number, "aligned ships")
 
-# turn rle example into a list of ints
+# zamien string na liste intow
 rle = [int(i) for i in df['EncodedPixels']['55bd28f41.jpg'].split()]
-# turn list of ints into a list of (`start`, `length`) `pairs`
+# zamien liste liczb na liste par (poczatek, koniec)
 pairs = list(zip(rle[0:-1:2], rle[1::2]))
 
 start = pairs[0][0]
@@ -93,9 +93,9 @@ def checker(rle_code):
 
 
 def rle_to_pixels(rle_code):
-    '''
-    Transforms a RLE code string into a list of pixels of a (768, 768) canvas
-    '''
+    """
+    Zmiana listy pikseli zakodowana w RLE na wspolrzedne (x,y) kazdego piksela
+    """
     rle_code = [int(i) for i in rle_code.split()]
     pixels = [(pixel_position % 768, pixel_position // 768)
               for start, length in list(zip(rle_code[0:-1:2], rle_code[1::2]))
@@ -103,11 +103,10 @@ def rle_to_pixels(rle_code):
     return pixels
 
 
-# An image may have more than one row in the df,
-# Meaning that the image has more than one ship present
-# This part resets index for next ship occurrence
+# Jesli zdjecie ma wiecej niz 1 wpis w plik, to jest wiecej niz 1 statek na zdjeciu
+# Trzeba zresetowac indeks przed kolejnym statkiem
 df = df.reset_index()
-# Counter for ships detected and set incorrectly by rle_to_pixels, TODO: check why
+# Policz statki, ktore przejda przez ten dekoder poprawnie
 incorrect = 0
 correct = 0
 notAlignedShips = 0
@@ -115,10 +114,10 @@ used_rows = []
 
 for i in tqdm(range(number)):
     if number == len(df):
-        row_index = i  # take all rows one-by-one
+        row_index = i  # wez wszystkie statki jeden po drugim
     else:
         while True:
-            row_index = np.random.randint(len(df))  # take a random row from the df
+            row_index = np.random.randint(len(df))  # losuj statek z df
             if row_index not in used_rows:
                 used_rows.append(row_index)
                 break
@@ -140,7 +139,7 @@ for i in tqdm(range(number)):
                 incorrect += 1
             else:
 
-                # # NOTE: uncomment following part for checking if the Bounding Boxes are correctly selected
+                # =====Ten fragment kodu mozna odkomentowac celem sprawdzenia, czy statek jest oznaczany poprawnie
                 # load_img = lambda filename: np.array(PIL.Image.open(f"./input/train_v2/{filename}"))
                 # im = np.array(load_img(df.loc[row_index, 'ImageId']), dtype=np.uint8)
                 # # Create figure and axes

@@ -14,6 +14,11 @@ epsilon = 1e-4
 
 
 def rpn_loss_regr(num_anchors):
+    """
+    Funkcja obliczajaca wartosc funkcji strat regresji sieci RPN
+    :param num_anchors: ilosc kotwic
+    :return: wartosc funkcji strat regresji sieci RPN
+    """
     def rpn_loss_regr_fixed_num(y_true, y_pred):
         if K.image_dim_ordering() == 'th':
             x = y_true[:, 4 * num_anchors:, :, :] - y_pred
@@ -33,6 +38,11 @@ def rpn_loss_regr(num_anchors):
 
 
 def rpn_loss_cls(num_anchors):
+    """
+    Funkcja obliczajaca wartosc funkcji strat klasyfikacji sieci RPN
+    :param num_anchors: ilosc kotwic
+    :return: wartosc funkcji strat klasyfikacji sieci RPN
+    """
     def rpn_loss_cls_fixed_num(y_true, y_pred):
         if K.image_dim_ordering() == 'tf':
             return lambda_rpn_class * K.sum(y_true[:, :, :, :num_anchors] * K.binary_crossentropy(y_pred[:, :, :, :], y_true[:, :, :, num_anchors:])) / K.sum(epsilon + y_true[:, :, :, :num_anchors])
@@ -43,6 +53,11 @@ def rpn_loss_cls(num_anchors):
 
 
 def class_loss_regr(num_classes):
+    """
+    Funkcja obliczajaca wartosc funkcji strat regresji sieci klasyfikacyjnej
+    :param num_classes: ilosc klas
+    :return: wartosc funkcji strat sieci klasyfikacyjnej
+    """
     def class_loss_regr_fixed_num(y_true, y_pred):
         x = y_true[:, :, 4*num_classes:] - y_pred
         x_abs = K.abs(x)
@@ -52,4 +67,7 @@ def class_loss_regr(num_classes):
 
 
 def class_loss_cls(y_true, y_pred):
+    """
+    Funkcja obliczajaca wartosc funkcji strat klasyfikacji sieci klasyfikacyjnej
+    """
     return lambda_cls_class * K.mean(categorical_crossentropy(y_true[0, :, :], y_pred[0, :, :]))

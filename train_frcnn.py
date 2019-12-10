@@ -228,8 +228,10 @@ for epoch_num in range(num_epochs):
         test_imgs, classes_count, C, nn.get_img_output_length, K.image_dim_ordering(), mode='test')
 
     while True:
+        # Ten fragment wyrzuca blad, jesli RPN nie jest w stanie wyrzucic zadnego regionu dla pozytywnej probki
         if len(rpn_accuracy_rpn_monitor) == epoch_length and C.verbose:
             mean_overlapping_bboxes = float(
+                # pozytywne obszary/wszystkie obszary
                 sum(rpn_accuracy_rpn_monitor)) / len(rpn_accuracy_rpn_monitor)
             rpn_accuracy_rpn_monitor = []
             print('\nAverage number of overlapping bounding boxes from RPN = {} for {} previous iterations'.format(
@@ -238,20 +240,25 @@ for epoch_num in range(num_epochs):
                 print(
                     'RPN is not producing bounding boxes that overlap the ground truth boxes. Check RPN settings or keep training.')
 
-        # data generator X (wejscie), Y (wyjscie), image
+        # uzyskaj informacje o zdjeciu dla RPN: X wejscie, Y wyjscie
         X, Y, img_data = next(data_gen_train)
 
+        # trenuj model - X to wejscie (obraz), Y to wyjscie
         loss_rpn = model_rpn.train_on_batch(X, Y)
         write_log(callback, ['rpn_cls_loss',
                              'rpn_reg_loss'], loss_rpn, train_step)
 
+        # wygeneruj nowy Y korzystajac z poprzedniego modelu
         P_rpn = model_rpn.predict_on_batch(X)
 
+        # przeksztalc rpn na obszary (bbox)
         R = roi_helpers.rpn_to_roi(P_rpn[0], P_rpn[1], C, K.image_dim_ordering(
         ), use_regr=True, overlap_thresh=0.7, max_boxes=300)
+
         # zamiana (x1,x2,y1,y2) na (x,y,w,h)
         X2, Y1, Y2, IouS = roi_helpers.calc_iou(R, img_data, C, class_mapping)
 
+        # w przypadku braku X2 (zadnych obszarow) zakoncz ten epoch
         if X2 is None:
             rpn_accuracy_rpn_monitor.append(0)
             rpn_accuracy_for_epoch.append(0)
@@ -271,26 +278,33 @@ for epoch_num in range(num_epochs):
         else:
             pos_samples = []
 
+        # Zapisz pozytywne przyklady
         rpn_accuracy_rpn_monitor.append(len(pos_samples))
         rpn_accuracy_for_epoch.append((len(pos_samples)))
 
         if C.num_rois > 1:
+            # Jesli pozytywnych przykladow jest mniej niz 2
             if len(pos_samples) < C.num_rois // 2:
+                # Uzyj wszystkich przykladow
                 selected_pos_samples = pos_samples.tolist()
             else:
+                # Jesli wiecej, wylosuj 2 pozytywne przyklady
                 selected_pos_samples = np.random.choice(
                     pos_samples, C.num_rois // 2, replace=False).tolist()
             try:
+                # Wyszukaj negatywny przyklad
                 selected_neg_samples = np.random.choice(
                     neg_samples, C.num_rois - len(selected_pos_samples), replace=False).tolist()
             except ValueError:
+                # W przpyadku braku negatywnych przykladow, skopiuj poprzedni negatywny przyklad
                 try:
                     selected_neg_samples = np.random.choice(
                         neg_samples, C.num_rois - len(selected_pos_samples), replace=True).tolist()
                 except:
-                    # wyjatek - neg_samples to [[1 0 ]], wiec nie ma zadnych negatywnych przykladow
+                    # wyjatek - poprzedni negatywny przyklad to [[1 0 ]], wiec nie ma zadnych negatywnych przykladow
                     continue
 
+            # Przekaz przyklady do sieci klasyfikatora
             sel_samples = selected_pos_samples + selected_neg_samples
         else:
             # w przypadku num_rois = 1 pozytywny lub negatywny przyklad jest losowany
@@ -301,12 +315,14 @@ for epoch_num in range(num_epochs):
             else:
                 sel_samples = random.choice(pos_samples)
 
+        # trening sieci klasyfikatora - dane obrazka, wsp wybranych przykladow, mapowanie wspolczynnikow
         loss_class = model_classifier.train_on_batch(
             [X, X2[:, sel_samples, :]], [Y1[:, sel_samples, :], Y2[:, sel_samples, :]])
         write_log(callback, ['detection_cls_loss', 'detection_reg_loss',
                              'detection_acc'], loss_class, train_step)
         train_step += 1
 
+        # Zapisanie strat
         losses[iter_num, 0] = loss_rpn[1]
         losses[iter_num, 1] = loss_rpn[2]
 
@@ -317,6 +333,7 @@ for epoch_num in range(num_epochs):
         iter_num += 1
         export_counter += 1
 
+        # zapisanie poszczegolnych strat do pliku
         with open(path + "/rpn_loss.csv", "a") as f:
             print(train_step, np.mean(losses[:iter_num, 0]), np.mean(losses[:iter_num, 1]),
                   np.mean(losses[:iter_num, 2]), np.mean(losses[:iter_num, 3]),
@@ -328,6 +345,7 @@ for epoch_num in range(num_epochs):
                         ('detector_cls', np.mean(losses[:iter_num, 2])),
                         ('detector_regr', np.mean(losses[:iter_num, 3]))])
 
+        # Do backupu na Google Drive
         if export_counter == 50:
             try:
                 shutil.copy(path + "/rpn_loss.csv", "/content/drive/My Drive/pracaMgr/rpn_loss.csv")

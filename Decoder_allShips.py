@@ -43,9 +43,9 @@ else:
         number = int(options.ships_number)
         print("Checking randomly selected", number, "ships")
 
-# turn rle example into a list of ints
+# zamien string na liste intow
 rle = [int(i) for i in df['EncodedPixels']['55bd28f41.jpg'].split()]
-# turn list of ints into a list of (`start`, `length`) `pairs`
+# zamien liste liczb na liste par (poczatek, koniec)
 pairs = list(zip(rle[0:-1:2], rle[1::2]))
 
 start = pairs[0][0]
@@ -60,6 +60,11 @@ pixels = [(pixel_position % 768, pixel_position // 768)
 
 
 def size_checker(rle_code):
+    """
+    Funkcja sprawdzajaca, czy dany statek jest wiekszy niz zadany parametr
+    :param rle_code: lista pikseli w formie RLE oznaczajaca ktore piksele to statek
+    :return: prawda/falsz, czy dany statek jest mniejszy niz zadany prog
+    """
     rle_code = [int(i) for i in rle_code.split()]
     if int(options.no_small) is not 0:
         if sum(rle_code[1::2]) < int(options.no_small):
@@ -71,30 +76,31 @@ def size_checker(rle_code):
 
 
 def rle_to_pixels(rle_code):
-    '''
-    Transforms a RLE code string into a list of pixels of a (768, 768) canvas
-    '''
+    """
+    Fukcja sprawdzajaca ulozenie statku wzgledem krawedzi
+    :param rle_code: lista pikseli w formie RLE oznaczajaca ktore piksele to statek
+    :return: prawda/falsz, czy dany statek jest ustawiony rownolegle do krawedzi
+    """
     rle_code = [int(i) for i in rle_code.split()]
     pixels = [(pixel_position % 768, pixel_position // 768)
                  for start, length in list(zip(rle_code[0:-1:2], rle_code[1::2]))
                  for pixel_position in range(start, start + length)]
     return pixels
 
-# An image may have more than one row in the df,
-# Meaning that the image has more than one ship present
-# This part resets index for next ship occurrence
+# Jesli zdjecie ma wiecej niz 1 wpis w plik, to jest wiecej niz 1 statek na zdjeciu
+# Trzeba zresetowac indeks przed kolejnym statkiem
 df = df.reset_index()
-# Counter for ships detected and set incorrectly by rle_to_pixels, TODO: check why
+# Policz statki, ktore przejda przez ten dekoder poprawnie
 incorrect = 0
 correct = 0
 used_rows = []
 
 for i in tqdm(range(number)):
     if number == len(df):
-        row_index = i  # take all rows one-by-one
+        row_index = i  # uzyj wszystkich statkow jeden po drugim
     else:
         while True:
-            row_index = np.random.randint(len(df))  # take a random row from the df
+            row_index = np.random.randint(len(df))  # wylosuj wiersz w df
             if row_index not in used_rows:
                 used_rows.append(row_index)
                 break
@@ -111,18 +117,13 @@ for i in tqdm(range(number)):
     cond3 = y_min == 0 and y_max == 767
     cond4 = y_max == 0 and y_min == 767
 
-    # decoder might makes mistakes - make sure that there's no BB for whole width/height
+    # upewnij sie, ze nie ma statkow zajmujacych caly ekran (blad dekodera)
     if size_checker(df.loc[row_index, 'EncodedPixels']):
         if cond1 or cond2 or cond3 or cond4:
             incorrect += 1
-            # Following code is not necessary right now
-            # with open("incorrect_images.csv", "a") as g:
-            #     g.write("input/train_v2/")
-            #     print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
-            #           file=g)
 
         else:
-            # NOTE: uncomment following part for checking if the Bounding Boxes are correctly selected
+            # =====Ten fragment kodu mozna odkomentowac celem sprawdzenia, czy statek jest oznaczany poprawnie
 
             # load_img = lambda filename: np.array(PIL.Image.open(f"./input/train_v2/{filename}"))
             # im = np.array(load_img(df.loc[row_index, 'ImageId']), dtype=np.uint8)

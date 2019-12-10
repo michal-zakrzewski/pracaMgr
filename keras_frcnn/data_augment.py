@@ -4,6 +4,13 @@ import copy
 
 
 def augment(img_data, config, augment=True):
+    """
+    Funkcja odpowiadajaca za obroty lub odbcia obrazow
+    :param img_data: zdjecie do obrobki
+    :param config: koniguracja
+    :param augment: czy obracac
+    :return:
+    """
     assert 'filepath' in img_data
     assert 'bboxes' in img_data
     assert 'width' in img_data
@@ -16,6 +23,7 @@ def augment(img_data, config, augment=True):
     if augment:
         rows, cols = img.shape[:2]
 
+        # przerzuc zdjecie w poziomie
         if config.use_horizontal_flips and np.random.randint(0, 2) == 0:
             img = cv2.flip(img, 1)
             for bbox in img_data_aug['bboxes']:
@@ -24,6 +32,7 @@ def augment(img_data, config, augment=True):
                 bbox['x2'] = cols - x1
                 bbox['x1'] = cols - x2
 
+        # przerzuc zdjecie w pionie
         if config.use_vertical_flips and np.random.randint(0, 2) == 0:
             img = cv2.flip(img, 0)
             for bbox in img_data_aug['bboxes']:
@@ -32,6 +41,7 @@ def augment(img_data, config, augment=True):
                 bbox['y2'] = rows - y1
                 bbox['y1'] = rows - y2
 
+        # obroc zdjecie o kat (losowanie z zakresu: (0,90,180,270)
         if config.rot_90:
             angle = np.random.choice([0,90,180,270],1)[0]
             if angle == 270:

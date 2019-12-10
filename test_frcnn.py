@@ -18,7 +18,6 @@ import datetime
 
 if platform == "linux" or platform == "linux2":
     from IPython.core.display import display
-
     path = str("/content/pracaMgr/input")
 elif platform == "darwin":
     path = str("./input")
@@ -45,9 +44,11 @@ if not options.test_path:  # if filename is not given
 
 config_output_filename = options.config_filename
 
+# wczytanie pliku konfiguracyjnego wag
 with open(config_output_filename, 'rb') as f_in:
     C = pickle.load(f_in)
 
+# stworzenie plikow do zapisywania wynikow testu
 with open(path + "/submission.csv", "w") as f:
     f.write('ImageId,EncodedPixels\n')
 with open(path + "/moreShips.csv", "w") as f:
@@ -55,7 +56,7 @@ with open(path + "/moreShips.csv", "w") as f:
 with open(path + "/possibleCollisions.csv", "w") as f:
     f.write('ImageId,numberOfShips\n')
 
-# turn off any data augmentation at test time
+# wylacz zmiane plikow podczas testu
 C.use_horizontal_flips = False
 C.use_vertical_flips = False
 C.rot_90 = False
@@ -64,7 +65,12 @@ img_path = options.test_path
 
 
 def format_img_size(img, C):
-    """ formats the image size based on config """
+    """
+    Funkcja formatujaca rozmiar obrazka bazujac na konfiguracji
+    :param img: zdjecie
+    :param C: konfiguracja
+    :return: zdjecie wraz ze skala, ktora trzeba uzyc do zmiany zdjecia
+    """
     img_min_side = float(C.im_size)
     (height, width, _) = img.shape
 
@@ -81,7 +87,12 @@ def format_img_size(img, C):
 
 
 def format_img_channels(img, C):
-    """ formats the image channels based on config """
+    """
+    Funkcja formatujaca kanaly na zdjeciu bazujac na konfiguracji
+    :param img: zdjecie
+    :param C: konfiguracja
+    :return: zdjecie z rozpisaniem informacji o kanalach
+    """
     img = img[:, :, (2, 1, 0)]
     img = img.astype(np.float32)
     img[:, :, 0] -= C.img_channel_mean[0]
@@ -94,14 +105,27 @@ def format_img_channels(img, C):
 
 
 def format_img(img, C):
-    """ formats an image for model prediction based on config """
+    """
+    Funckja formatujaca obraz dla modelu predykcyjnego bazujacego na konfiguracji
+    :param img: zdjecie
+    :param C: konfiguracja
+    :return: zdjecie (z wyciagnietymi informacjami o kanalach) oraz skala uzyta w konfiguracji
+    """
     img, ratio = format_img_size(img, C)
     img = format_img_channels(img, C)
     return img, ratio
 
 
-# Method to transform the coordinates of the bounding box to its original size
 def get_real_coordinates(ratio, x1, y1, x2, y2):
+    """
+    Metoda zmieniajaca wspolrzedne BBoxa do oryginalnego rozmiaru
+    :param ratio: skala uzyta podczas analizy zdjecia
+    :param x1: Wsp X lewego gornego rogu
+    :param y1: Wsp X prawego dolnego rogu
+    :param x2: Wsp Y lewego gornego rogu
+    :param y2: Wsp Y prawego dolnego rogu
+    :return: Rzeczywiste polozenie wsp BBoxa na oryginalnym obrazie
+    """
     real_x1 = int(round(x1 // ratio))
     real_y1 = int(round(y1 // ratio))
     real_x2 = int(round(x2 // ratio))
@@ -112,6 +136,16 @@ def get_real_coordinates(ratio, x1, y1, x2, y2):
 
 # Following function returns true if the rectangles are overlaping
 def overlap_checker(x1, y1, x2, y2, all_coord):
+    """
+    Funkcja sprawdzajaca, czy obszary nie nakrywaja sie ze soba (generuje to bledy podczas
+        sprawdzania pliku na portalu Kaggle
+    :param x1: Wsp X lewego gornego rogu
+    :param y1: Wsp X prawego dolnego rogu
+    :param x2: Wsp Y lewego gornego rogu
+    :param y2: Wsp Y prawego dolnego rogu
+    :param all_coord: Lista wszystkich wsp poprzednich statkow dla danego zdjecia
+    :return: Prawda/Falsz o nakladaniu sie zdjec
+    """
     overlaps = False
     i = 0
     start = 0
@@ -158,13 +192,14 @@ img_input = Input(shape=input_shape_img)
 roi_input = Input(shape=(C.num_rois, 4))
 feature_map_input = Input(shape=input_shape_features)
 
-# define the base network
+# definicja ekstraktora mapy cech (Resnet)
 shared_layers = nn.nn_base(img_input, trainable=True)
 
-# define the RPN, built on the base layers
+# definicja sieci RPN bazujaca na Resnet
 num_anchors = len(C.anchor_box_scales) * len(C.anchor_box_ratios)
 rpn_layers = nn.rpn(shared_layers, num_anchors)
 
+# definicja sieci klasyfikujacej
 classifier = nn.classifier(feature_map_input, roi_input, C.num_rois, nb_classes=len(class_mapping), trainable=True)
 
 model_rpn = Model(img_input, rpn_layers)
@@ -172,11 +207,11 @@ model_classifier_only = Model([feature_map_input, roi_input], classifier)
 
 model_classifier = Model([feature_map_input, roi_input], classifier)
 
+# wczytanie pliku wag
 model_path = options.input_weight_path
 print('Loading weights from {}'.format(model_path))
 model_rpn.load_weights(model_path, by_name=True)
 model_classifier.load_weights(model_path, by_name=True)
-
 
 model_rpn.compile(optimizer='sgd', loss='mse')
 model_classifier.compile(optimizer='sgd', loss='mse')
@@ -185,6 +220,7 @@ all_imgs = []
 
 classes = {}
 
+# ustawienie progu pozytywnej probki
 bbox_threshold = 0.8
 
 visualise = True
@@ -212,12 +248,16 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     if K.image_dim_ordering() == 'tf':
         X = np.transpose(X, (0, 2, 3, 1))
 
-    # get the feature maps and output from the RPN
+    # wydobycie mapy cech obrazu i wyjscia z sieci RPN
+    # Y1 - prawdopodobienstwo zawierania kotwicy
+    # Y2 - gradient regresji odpowiadajacy kotwicy
+    # F - mapa obiektow po konwolucji
     [Y1, Y2, F] = model_rpn.predict(X)
 
+    # przeksztalc rpn na obszary (bbox)
     R = roi_helpers.rpn_to_roi(Y1, Y2, C, K.image_dim_ordering(), overlap_thresh=0.5)
 
-    # convert from (x1,y1,x2,y2) to (x,y,w,h)
+    # zamiana wsp (x1,y1,x2,y2) na (x,y,w,h)
     R[:, 2] -= R[:, 0]
     R[:, 3] -= R[:, 1]
 
@@ -225,11 +265,15 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     bboxes = {}
     probs = {}
 
+    # iteruj po wszystkich znalezionych obszarach
     for jk in range(R.shape[0] // C.num_rois + 1):
+        # zapisz wszystkie num_rois ROIs
         ROIs = np.expand_dims(R[C.num_rois * jk:C.num_rois * (jk + 1), :], axis=0)
+        # Jesli nie ma zadnych obszarow, przerwij
         if ROIs.shape[1] == 0:
             break
 
+        # Jesli kolejnego nie ma, wypelnij rois samymi 0
         if jk == R.shape[0] // C.num_rois:
             # pad R
             curr_shape = ROIs.shape
@@ -239,33 +283,49 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             ROIs_padded[0, curr_shape[1]:, :] = ROIs[0, 0, :]
             ROIs = ROIs_padded
 
+        # Wyslij dane do sieci klasyfikacyjnej, oszacuj granice obszarow
+        # P_cls - prawdopodobienstwo, ze granica nalezy do okreslonej kategorii
+        # P_regr - gradient regresji granicy odpowiadajacy kazdej kategorii
+        # F - konwolucyjna mapa obiektow uzyskana przez siec RPN
+        # ROIs - wstepnie wybrany obszar analizy
         [P_cls, P_regr] = model_classifier_only.predict([F, ROIs])
 
         for ii in range(P_cls.shape[1]):
 
+            # Jesli obszar jest mniejszy, niz rozmiar w konfiguracji, bbox jest niepoprawny => jest tlem
+            # pomin ten obszar
             if np.max(P_cls[0, ii, :]) < bbox_threshold or np.argmax(P_cls[0, ii, :]) == (P_cls.shape[2] - 1):
                 continue
 
+            # sprawdz do ktorej klasy jest max prawdopodobienstwo przynaleznosci
             cls_name = class_mapping[np.argmax(P_cls[0, ii, :])]
 
+            # zapis bboxy i prawodpodobienstwa
             if cls_name not in bboxes:
                 bboxes[cls_name] = []
                 probs[cls_name] = []
 
+            # oblicz obecne wsp propozycji obszaru
             (x, y, w, h) = ROIs[0, ii, :]
 
+            # wyznacz ktora pozycja ma max prawdopodobienstwo
             cls_num = np.argmax(P_cls[0, ii, :])
             try:
+                # zdobadz poprzednie polozenie propozycji obszaru
                 (tx, ty, tw, th) = P_regr[0, ii, 4 * cls_num:4 * (cls_num + 1)]
+                # przypomnienie: a /= b oznacza a = a/b
                 tx /= C.classifier_regr_std[0]
                 ty /= C.classifier_regr_std[1]
                 tw /= C.classifier_regr_std[2]
                 th /= C.classifier_regr_std[3]
+                # oblicz nowe pozycje wsp
                 x, y, w, h = roi_helpers.apply_regr(x, y, w, h, tx, ty, tw, th)
             except:
                 pass
+            # zapisz rzeczywiste wsp obecnego obszaru
             bboxes[cls_name].append(
                 [C.rpn_stride * x, C.rpn_stride * y, C.rpn_stride * (x + w), C.rpn_stride * (y + h)])
+            # oraz odpowiadajace jej prawodpodobienstwo
             probs[cls_name].append(np.max(P_cls[0, ii, :]))
 
     all_dets = []
@@ -273,15 +333,19 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     thick = 0
     lastPixel = 0
 
+    # dla wszystkich klas obecnych bboxow
     for key in bboxes:
+        # wsp bboxow
         bbox = np.array(bboxes[key])
 
+        # zlacz ze soba obszary bedace obok siebie korzystajac z alg non max suppression
         new_boxes, new_probs = roi_helpers.non_max_suppression_fast(bbox, np.array(probs[key]), overlap_thresh=0.8)
         for jk in range(new_boxes.shape[0]):
             (x1, y1, x2, y2) = new_boxes[jk, :]
 
+            # oblicz rzeczywiste polozenie wsp na oryginalnym obrazie
             (real_x1, real_y1, real_x2, real_y2) = get_real_coordinates(ratio, x1, y1, x2, y2)
-            # Downsize BBox by 1 pixel to prevent overlapping
+            # aby uniknac nakladania sie obszarow zmniejsz wsp o 1
             if abs(real_x2-real_x1) >= 3 and abs(real_y2 - real_y1) >= 3:
                 if real_x1 < real_x2:
                     real_x1 += 1
@@ -295,7 +359,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                 else:
                     real_y1 -= 1
                     real_y2 += 1
-            # Make sure that no pixel is out of bound
+            # upewnij sie, ze absolutnie zadna pozycja nie wypadla poza obraz
             if real_x1 > 767:
                 real_x1 = 767
             if real_x2 > 767:
@@ -312,10 +376,13 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                 real_y1 = 0
             if real_y2 < 0:
                 real_y2 = 0
+            # upewnij sie, ze dany obszar nie pokrywa sie z istniejacym juz wczesniej
             if all_coordinates:
                 if overlap_checker(real_x1, real_y1, real_x2, real_y2, all_coordinates):
                     saveValue = True
+                    # jesli tak - pomin obecny
                     continue
+            # kodowanie pozycji bboxa na RLE
             all_coordinates = all_coordinates + tuple([real_x1, real_y1, real_x2, real_y2])
             encodedPixels = ''
             i = 1
@@ -324,10 +391,12 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             lastPixel = real_x2 * 768 + real_y2
             if firstPixel == 0:
                 firstPixel = 1
+            # zapisanie pozycji kolejnych pikseli w formacie RLE jako string
             encodedPixels += str(firstPixel)
             encodedPixels += " "
             encodedPixels += str(thick)
             encodedPixels += " "
+            # parametr i to liczba linii
             while True:
                 nextPixel = firstPixel + 768 * i
                 checkLastPixel = nextPixel + thick
@@ -338,9 +407,12 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                 encodedPixels += " "
                 encodedPixels += str(thick)
                 encodedPixels += " "
+            # zapisz wynik do pliku submission.csv
             with open(path + "/submission.csv", "a") as f:
                 print(img_name, encodedPixels, sep=',', file=f)
 
+            # fragment kodu obdpowiadajacy za narysowanie prostokata wokol statku i dodanie tekstu
+            # oznaczajacego klase wraz z prawdopodobienstwem przyporzadkowania do tej klasy
             cv2.rectangle(img, (real_x1, real_y1), (real_x2, real_y2),
                           (int(class_to_color[key][0]), int(class_to_color[key][1]), int(class_to_color[key][2])), 2)
 
@@ -350,12 +422,13 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             (retval, baseLine) = cv2.getTextSize(textLabel, cv2.FONT_HERSHEY_COMPLEX, 1, 1)
             textOrg = (real_x1, real_y1)
 
-            # cv2.rectangle(img, (textOrg[0] - 5, textOrg[1] + baseLine - 5),
-            #              (textOrg[0] + retval[0] + 5, textOrg[1] - retval[1] - 5), (0, 0, 0), 2)
-            # cv2.rectangle(img, (textOrg[0] - 5, textOrg[1] + baseLine - 5),
-            #              (textOrg[0] + retval[0] + 5, textOrg[1] - retval[1] - 5), (255, 255, 255), -1)
-            # cv2.putText(img, textLabel, textOrg, cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 0), 1)
+            cv2.rectangle(img, (textOrg[0] - 5, textOrg[1] + baseLine - 5),
+                         (textOrg[0] + retval[0] + 5, textOrg[1] - retval[1] - 5), (0, 0, 0), 2)
+            cv2.rectangle(img, (textOrg[0] - 5, textOrg[1] + baseLine - 5),
+                         (textOrg[0] + retval[0] + 5, textOrg[1] - retval[1] - 5), (255, 255, 255), -1)
+            cv2.putText(img, textLabel, textOrg, cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 0), 1)
 
+    # zapisz statystyki zwiazane z analiza obrazu
     print('Elapsed time = {}'.format(time.time() - st))
     print(all_dets)
     if len(all_dets) > 0:
@@ -382,6 +455,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
             print(img_name, len(all_dets), sep=',', file=f)
         if platform == "linux" or platform == "linux2":
             try:
+                # zapisz obraz z wieksza iloscia statkow na zewnetrznym folderze
                 cv2.imwrite('/content/drive/My Drive/pracaMgr/moreShipsImages/{}'.format(img_name), img)
             except Exception as e:
                 print("No possibility to save an image!")
@@ -390,12 +464,12 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
     counter += 1
     foundCounter += 1
 
-    # cv2.imshow('img', img)
-    # cv2.waitKey(50)
+    # debug only - do sprawdzenia potencjalnych kolizji
     if saveValue and len(all_dets) > 1:
         with open(path + "/possibleCollisions.csv", "a") as f:
             print(img_name, len(all_dets), sep=',', file=f)
 
+    # zapisanie plikow na dysku Google
     if platform == "linux" or platform == "linux2" and counter == 20:
         shutil.copy(path + "/submission.csv",
                     "/content/drive/My Drive/pracaMgr/submission.csv")
@@ -405,6 +479,7 @@ for idx, img_name in enumerate(sorted(os.listdir(img_path))):
                     "/content/drive/My Drive/pracaMgr/possibleCollisions.csv")
         counter = 0
 
+# zapisanie ostatecznych wynikow na dysku Google
 if platform == "linux" or platform == "linux2":
     shutil.copy(path + "/submission.csv",
                 "/content/drive/My Drive/pracaMgr/submission" + str(datetime.date.today()) + "final.csv")

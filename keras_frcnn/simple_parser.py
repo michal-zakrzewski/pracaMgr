@@ -64,7 +64,7 @@ def get_data(input_path):
         for key in all_imgs:
             all_data.append(all_imgs[key])
 
-        # make sure the bg class is last in the list
+        # sprawdz, czy jest klasa bg w spisie klas
         if found_bg:
             if class_mapping['bg'] != len(class_mapping) - 1:
                 key_to_switch = [key for key in class_mapping.keys() if class_mapping[key] == len(class_mapping)-1][0]

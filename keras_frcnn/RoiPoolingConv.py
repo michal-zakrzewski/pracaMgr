@@ -69,9 +69,6 @@ class RoiPoolingConv(Layer):
 
             num_pool_regions = self.pool_size
 
-            #NOTE: the RoiPooling implementation differs between theano and tensorflow due to the lack of a resize op
-            # in theano. The theano implementation is much less efficient and leads to long compile times
-
             if self.dim_ordering == 'th':
                 for jy in range(num_pool_regions):
                     for ix in range(num_pool_regions):

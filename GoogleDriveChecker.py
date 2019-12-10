@@ -6,13 +6,18 @@ from os import path
 if platform == "linux" or platform == "linux2":
     from IPython.core.display import display
     path = str("/content/pracaMgr")
-# TODO: Add possibility to upload weights from local to Google Drive
 elif platform == "darwin":
     path = str("./")
     # from google.colab import drive
     # drive.mount('/content/drive', force_remount=True)
 elif platform == "win32":
     path = str("../")
+
+"""
+Skrypt sprawdzajacy poprawnosc polaczenia do dysku Google
+W przypadku bledow cala operacja treningu/testu na Google Colab zostanie zatrzymana
+Test opera sie na stworzeniu losowego pliku, eksporcie go na dysk Google, a nastepnie proba jego usuniecia
+"""
 
 working_directory = os.getcwd()
 absolute_path = working_directory + '/Example_file.txt'
@@ -29,7 +34,7 @@ except OSError as e:
     raise
 
 try:
-    # Try to copy file to Google Drive
+    # Sprobuj skopiowac plik na dysk Google
     shutil.copy(absolute_path, "/content/drive/My Drive/pracaMgr/Weights/Example_file.txt")
     try:
         os.path.exists("/content/drive/My Drive/pracaMgr/Weights/Example_file.txt")

@@ -22,15 +22,11 @@ parser = OptionParser()
 
 parser.add_option("-n", "--ships_number", dest="ships_number", help="Number of ships for detection")
 parser.add_option("--no_small", dest="no_small", help="Number of minimum amount of pixels of the ship", default=0)
-# parser.add_option("-s", "--one_ship", dest="one_ship", help="Retreive images with 1 ship only")
 
 (options, args) = parser.parse_args()
 
 path_to_csv = path + "/train_ship_segmentations_v2.csv"
 df = pd.read_csv(path_to_csv, index_col=0).dropna()
-# if options.one_ship:
-#     print("Using images with only 1 ship")
-#     df = df.loc[~df.index.duplicated(keep=False)]
 print("Number of ships: ", len(df))
 if not options.ships_number:
     print("Going with full check")
@@ -47,9 +43,9 @@ else:
         number = int(options.ships_number)
         print("Checking randomly selected", number, "not aligned ships")
 
-# turn rle example into a list of ints
+# zamien string na liste intow
 rle = [int(i) for i in df['EncodedPixels']['55bd28f41.jpg'].split()]
-# turn list of ints into a list of (`start`, `length`) `pairs`
+# zamien liste liczb na liste par (poczatek, koniec)
 pairs = list(zip(rle[0:-1:2], rle[1::2]))
 
 start = pairs[0][0]
@@ -115,12 +111,10 @@ def rle_to_pixels(rle_code):
               for pixel_position in range(start, start + length)]
     return pixels
 
-
-# An image may have more than one row in the df,
-# Meaning that the image has more than one ship present
-# This part resets index for next ship occurrence
+# Jesli zdjecie ma wiecej niz 1 wpis w plik, to jest wiecej niz 1 statek na zdjeciu
+# Trzeba zresetowac indeks przed kolejnym statkiem
 df = df.reset_index()
-# Counter for ships detected and set incorrectly by rle_to_pixels
+# Policz statki, ktore przejda przez ten dekoder poprawnie
 incorrect = 0
 correct = 0
 notAlignedShips = 0
@@ -128,10 +122,10 @@ used_rows = []
 
 for i in tqdm(range(number)):
     if number == len(df):
-        row_index = i  # take all rows one-by-one
+        row_index = i  # uzyj wszystkich statkow jeden po drugim
     else:
         while True:
-            row_index = np.random.randint(len(df))  # take a random row from the df
+            row_index = np.random.randint(len(df))  # wylosuj wiersz w df
             if row_index not in used_rows:
                 used_rows.append(row_index)
                 break
@@ -152,16 +146,13 @@ for i in tqdm(range(number)):
             if cond1 or cond2 or cond3 or cond4:
                 incorrect += 1
             else:
-                """
-                    Ten fragment kodu mozna odkomentowac celem sprawdzenia, czy statek jest oznaczany poprawnie
-                """
-                # Following code is not necessary right now
+
+                #=====Ten fragment kodu mozna odkomentowac celem sprawdzenia, czy statek jest oznaczany poprawnie
                 # with open("incorrect_images.csv", "a") as g:
                 #     g.write("input/train_v2/")
                 #     print(df.loc[row_index, 'ImageId'], x_min, y_min, x_max, y_max, "ship", sep=',',
                 #           file=g)
 
-                # NOTE: uncomment following part for checking if the Bounding Boxes are correctly selected
                 # load_img = lambda filename: np.array(PIL.Image.open(f"./input/train_v2/{filename}"))
                 # im = np.array(load_img(df.loc[row_index, 'ImageId']), dtype=np.uint8)
                 # # Create figure and axes
