@@ -48,14 +48,15 @@ df = df.reset_index()
 
 for i in tqdm(range(number)):
     if number == len(df):
-        row_index = i  # take all rows one-by-one
+        row_index = i 
     else:
         while True:
-            row_index = np.random.randint(len(df))  # take a random row from the df
+            row_index = np.random.randint(len(df))
             if row_index not in used_rows:
                 used_rows.append(row_index)
                 break
 
+    # ustaw losowa wielkosc bboxa
     size = random.randrange(1, 10)
     x_min = random.randrange(2, 500)
     x_max = x_min + 5 * size
