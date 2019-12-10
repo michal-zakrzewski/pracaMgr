@@ -197,42 +197,38 @@ def non_max_suppression_fast(boxes, probs, overlap_thresh=0.9, max_boxes=300):
     :param overlap_thresh: prog okreslania pozytywnej probki (uwaga, moze byc przekazana jako pamaetr z innej funkcji)
     :return: wyjscie z warstwy non_max_suppression
     """
-    # code used from here: http://www.pyimagesearch.com/2015/02/16/faster-non-maximum-suppression-python/
-    # if there are no boxes, return an empty list
+    # jesli nie ma zadnych bboxow, zwrot pusta liste i wyjdz
     if len(boxes) == 0:
         return []
 
-    # grab the coordinates of the bounding boxes
+    # wyciagnij wspolrzedne bboxa
     x1 = boxes[:, 0]
     y1 = boxes[:, 1]
     x2 = boxes[:, 2]
     y2 = boxes[:, 3]      
 
-    # if the bounding boxes integers, convert them to floats --
-    # this is important since we'll be doing a bunch of divisions
+    # zmien rodzaj zmiennej z int na float (dalej sa dzielenia)
     if boxes.dtype.kind == "i":
         boxes = boxes.astype("float")
 
-    # initialize the list of picked indexes
+    # definicja listy uzytych indeksow
     pick = []
 
-    # calculate the areas
+    # oblicz wielkosc obszaru
     area = (x2 - x1) * (y2 - y1)
 
-    # sort the bounding boxes
+    # posortuj bboxy
     idxs = np.argsort(probs)
 
-    # keep looping while some indexes still remain in the indexes
-    # list
+    # petla sprawdzajaca wszystkie indeksy
     while len(idxs) > 0:
-        # grab the last index in the indexes list and add the
-        # index value to the list of picked indexes
+        # przenies ostatni indeks z listy indeksow wejsciowych i wstaw
+        # do listy indeksow sprawdzonych
         last = len(idxs) - 1
         i = idxs[last]
         pick.append(i)
 
-        # find the intersection
-
+        # oblicz iloczyn obszarow
         xx1_int = np.maximum(x1[i], x1[idxs[:last]])
         yy1_int = np.maximum(y1[i], y1[idxs[:last]])
         xx2_int = np.minimum(x2[i], x2[idxs[:last]])
@@ -243,20 +239,20 @@ def non_max_suppression_fast(boxes, probs, overlap_thresh=0.9, max_boxes=300):
 
         area_int = ww_int * hh_int
 
-        # find the union
+        # oblicz sume obszarow
         area_union = area[i] + area[idxs[:last]] - area_int
 
-        # compute the ratio of overlap
+        # oblicz wsp nakladania sie obszarow
         overlap = area_int/(area_union + 1e-3)
 
-        # delete all indexes from the index list that have
+        # usun wszystkie zuzyte/nie nakladajace sie indeksy (zeby nie byly brane ponownie pod uwage)
         idxs = np.delete(idxs, np.concatenate(([last],
             np.where(overlap > overlap_thresh)[0])))
 
         if len(pick) >= max_boxes:
             break
 
-    # return only the bounding boxes that were picked using the integer data type
+    # zwroc tylko te bboxy, ktore zostaly uzyte zamieniajac ich pozycje na inty
     boxes = boxes[pick].astype("int")
     probs = probs[pick]
     return boxes, probs
