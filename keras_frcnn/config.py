@@ -16,7 +16,7 @@ class Config:
         self.rot_90 = False
 
         # domyslna wielkosc rozmiarow obszarow sieci RPN
-        self.anchor_box_scales = [128, 256, 512]
+        self.anchor_box_scales = [150, 300, 600]
 
         # domyslna wielkosc skal sieci RPN
         self.anchor_box_ratios = [[1, 1], [1, 2], [2, 1]]
